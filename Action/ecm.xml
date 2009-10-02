@@ -1,0 +1,351 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>
+            Ecm
+        </title>
+        <script>
+            if (!("console" in window)) {window.console = {'log': function(s) {}}}
+        </script>
+        <!-- Ext Library -->
+        <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
+        <!--<link rel="stylesheet" type="text/css" href="lib/ext/resources/css/xtheme-slate.css"/>-->
+        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js">
+        </script>
+        <script type="text/javascript" src="lib/ext/ext-all-debug.js">
+        </script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]">
+        </script>
+        <script type="text/javascript" src="lib/data/json2.js">
+        </script>
+        
+        <!-- Ext User Extensions -->
+        <script src="lib/user/override.js">
+        </script>
+        <link rel="stylesheet" type="text/css" href="lib/user/file-upload.css"/>
+        <script src="lib/user/FileUploadField.js">
+        </script>
+        <link rel="stylesheet" type="text/css" href="lib/user/tab-panel.css"/>
+        <script type="text/javascript" src="lib/user/TabPanel.js">
+        </script>
+        <script src="lib/user/Ext.ux.form.DateTime.js">
+        </script>
+        <link rel="stylesheet" type="text/css" href="lib/user/color-field.css"/>
+        <script src="lib/user/ColorField.js">
+        </script>
+        <script src="lib/user/Ext.ux.InlineToolbarTabPanel.js">
+        </script>
+        <script src="lib/user/SearchField.js">
+        </script>
+        <script type="text/javascript" src="lib/user/Ext.ux.grid.RowActions.js">
+        </script>
+        <link rel="stylesheet" type="text/css" href="lib/user/Ext.ux.grid.RowActions.css"/>
+        
+        
+        <link rel="stylesheet" type="text/css" href="lib/ui/widget-services.css"/>
+        <link rel="stylesheet" type="text/css" href="lib/ui/widget-notes.css"/>
+        
+        <script type="text/javascript" src="lib/user/PagingStore.js">
+        </script>
+        
+        <script type="text/javascript" src="lib/user/Ext.ux.form.XCheckbox.js">
+        </script>
+        
+        
+        <link rel="stylesheet" type="text/css" href="lib/user/desktop.css"/>
+        <script type="text/javascript" src="lib/user/TaskBar.js">
+        </script>
+        
+        <!-- Ext Media -->
+        <script src="lib/user/uxmedia.js">
+        </script>
+        
+        <script src="lib/ext/examples/ux/RowExpander.js">
+        </script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/wfdl.js?v=[WVERSION]">
+        </script>
+        
+        <!--Ecm Offline -->
+
+		<link rel="stylesheet" type="text/css" href="ECM/Layout/ecmOffline.css"/>
+        <script type="text/javascript" src="ECM/Layout/ecmOffline.js?v=[WVERSION]">
+        </script>
+        
+        <script src="lib/ext/source/locale/ext-lang-fr.js">
+        </script>
+        <!-- Ecm Client Application -->
+        <script language="javascript" src="ECM/Layout/ecm.js?v=[WVERSION]">
+        </script>
+        <script language="javascript" src="ECM/Layout/ecm_gadget.js?v=[WVERSION]">
+        </script>
+        
+        
+        <style>
+            /*
+            body {
+            background:url(ECM/Images/our.desktop.png);
+            }
+            */
+            /*
+            Style for a tag applies to docid
+            */
+            .docid {
+            color:#15428B;
+            cursor:pointer;
+            font-family:tahoma,arial,helvetica,sans-serif;
+            font-size:11px;
+            font-size-adjust:none;
+            font-style:normal;
+            font-variant:normal;
+            font-weight:bold;
+            text-decoration:none;
+            }
+            .docid:hover {
+            text-decoration:underline;
+            }
+            div.item {
+            float:left;
+            border:1px solid silver;
+            background-color:#ff8;
+            margin:5px;
+            height:40px;
+            width:150px;
+            text-align:center;
+            line-height:40px;
+            font-size:11px;
+            font-family:sans-serif;
+            -moz-border-radius: 10px;
+            }
+            div.item:hover{
+            background-color:#ffc
+            }
+            div.fav {
+            border:1px solid transparent;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            }
+            div.fav:hover{
+            -moz-border-radius: 10px;
+            background-color:#ffc;
+            border:1px solid silver;
+            }
+            .clickable {
+            cursor:pointer;
+            }
+            
+            .upload-icon {
+            background:transparent url(lib/user/image_add.png) no-repeat scroll 0 0 !important;
+            }
+            
+            /* Opacity for SimpleFile properties */
+            .opacity .x-panel-bwrap {
+            background-color:transparent;
+            background-image:url(CORE/Images/op75.png);
+            }
+            .opacity .x-panel-body {
+            background-color:transparent;
+            padding: 5px;
+            }
+            
+            /* Correct size of text in file upload input*/
+            /* .x-form-file-text {
+            width: 87% !important;
+            }
+            */
+            #grid-example .x-grid-col-1 {
+            text-align: right;
+            }
+            #grid-example .x-grid-col-2{
+            text-align: right;
+            }
+            #grid-example .x-grid-col-3 {
+            text-align: right;
+            }
+            #grid-example .x-grid-col-4 {
+            text-align: right;
+            }
+            #grid-example.x-grid-mso
+            {
+            border: 1px solid #6593cf;
+            }
+            #grid-example.x-grid-vista
+            {
+            border: 1px solid #b3bcc0;
+            }
+            #xml-grid-example
+            {
+            border: 1px solid #cbc7b8;
+            left: 0;
+            position: relative;
+            top: 0;
+            }
+            #editor-grid .x-grid-col-2
+            {
+            text-align:right;
+            }
+            .x-grid3-td-topic b {
+            font-family:arial, tahoma, verdana;
+            display:block;
+            color: #385F95;
+            }
+            .x-grid3-td-topic b:hover {
+            text-decoration:underline;
+            }
+            .x-grid3-td-topic b i {
+            font-weight:normal;
+            font-style: normal;
+            color:#000;
+            }
+            .x-grid3-td-topic .x-grid3-cell-inner {
+            white-space:normal;
+            }
+            
+            /* Small correction for align of images in toolbars*/
+            .x-toolbar .ytb-text {
+            padding:0;
+            }
+            
+            /* Image for Ecm Gears*/
+            .iconErase {
+            background: url(GEARS/Images/erase.gif) !important;
+            }
+            
+            /* Style for icon in the center panel */
+            .icon-wrap {
+            float:left;
+            margin:10px;
+            padding:5px;
+            width: 100px;
+            height: 50px;
+            }
+            
+            .icon{
+            margin-left: auto;
+            margin-right: auto;
+            width: 32px;
+            padding: 5px;
+            }
+            
+            .icon-wrap span {
+            display:block;
+            overflow:hidden;
+            text-align:center;
+            }
+            .x-view-selected .icon {
+            background:#8DB2E3 none repeat scroll 0 0;
+            }
+            /* Style for shortcuts(trash) in the center panel */
+            .util-wrap {
+            float:right;
+            margin:10px;
+            padding:5px;
+            width: 100px;
+            }
+            
+            .util{
+            margin-left: auto;
+            margin-right: auto;
+            width: 32px;
+            padding: 5px;
+            }
+            
+            .util-wrap span {
+            display:block;
+            overflow:hidden;
+            text-align:center;
+            }
+            .x-view-selected .util {
+            background:#8DB2E3 none repeat scroll 0 0;
+            }
+            
+            .xcheckbox-wrap {
+            line-height: 18px;
+            padding-top:2px;
+            }
+            .xcheckbox-wrap a {
+            display:block;
+            width:16px;
+            height:16px;
+            float:left;
+            }
+            .x-toolbar .xcheckbox-wrap {
+            padding: 0 0 2px 0;
+            }
+            .xcheckbox-on {
+            background:transparent url(./lib/ext/resources/images/default/menu/checked.gif) no-repeat 0 0;
+            }
+            .xcheckbox-off {
+            background:transparent url(./lib/ext/resources/images/default/menu/unchecked.gif) no-repeat 0 0;
+            }
+            .xcheckbox-disabled {
+            opacity: 0.5;
+            -moz-opacity: 0.5;
+            filter: alpha(opacity=50);
+            cursor:default;
+            }
+            
+            /*
+            Remove emptyText from field
+            http://extjs.com/forum/showthread.php?t=66409
+            */
+            .x-field-empty-text {
+            color: gray;
+            padding: 3px 4px 0;
+            position: absolute;
+            visibility: hidden;
+            overflow: hidden;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            }
+            
+            .msg .x-box-mc {
+            font-size:14px;
+            }
+            #msg-div {
+            position:absolute;
+            width:250px;
+            z-index:200000;
+            }
+            
+            /* CSS for tabs in default documents */
+            #center ul.x-tab-strip-top {
+            background-color:#FFFFFF;
+            background-image:none;
+            }
+            
+            /* CSS for list display in default documents */
+            /*.x-form-display-field ul {
+            list-style-type: disc;
+            list-style-position: inside;
+            margin-left: 20px;
+            }*/
+            
+			
+            /* CSS to remove default margin of ExtJS for displayField */
+            /*.x-form-item {
+            margin-bottom:0px;
+			font-weight: inherit;
+			font-size:inherit;
+            }*/
+			
+            .x-form-item {
+			font-size:11px;
+            }
+			
+        </style>
+        
+    </head>
+    <body>
+        
+        <div id="loading" style="position:absolute;left:40%;top:45%;font-weight:bold;font-size:large;">
+            <img src="ECM/Images/large-loading.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>Chargement de freedom-ecm 3.0 ...
+        </div>
+        
+        <iframe name='download_frame' style='display:none;'>
+        </iframe>
+    </body>
+</html>

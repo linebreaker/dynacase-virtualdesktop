@@ -1,0 +1,24 @@
+# ============================================
+# $Id: Makefile.in,v 1.10 2009/01/19 14:21:36 jerome Exp $
+# ============================================
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+utildir=@PUBRULE@
+appname = @APPNAME@
+pubdir = @prefix@
+srcdir = @srcdir@
+applib = FDL
+
+export pubdir utildir appname applib
+
+TAR = gtar
+GZIP_ENV = --best
+
+export targetdir PACKAGE
+
+SUBDIR= Class Zone Ui Action Api Families Images debian
+
+pages_not_xml = info.xml
+
+include $(utildir)/PubRule
+

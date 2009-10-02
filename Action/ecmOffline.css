@@ -1,0 +1,90 @@
+.divFO{
+	padding:5px;
+   	font-size: 11px;
+   	font-family: tahoma,arial,verdana,sans-serif;
+	height: 110px;
+}
+
+.divDragDrop{
+	padding-top:55px;
+	padding-bottom:55px;
+	padding-right:20px;
+	padding-left:20px;
+	font-size: 11px;
+   	font-family: tahoma,arial,verdana,sans-serif;
+}
+
+.liFO{
+	padding-bottom:10px;
+	padding-left: 10px;
+}
+
+.aFO{
+	padding-left: 2px;
+	text-decoration: none;
+	color: black; 
+	width: 40px;
+	display: inline;
+}
+
+.aFO:hover{	
+	padding-left: 4px;
+	background-color: #d9e7f8;
+	text-decoration: none;
+	display: inline;
+}
+
+
+.icon-lock {
+	background-image:url(../../ECM/Images/lock_add.png) ! important;
+}
+
+.icon-other-lock {
+	background-image:url(../../ECM/Images/redlock.png) ! important;
+}
+
+.icon-unlock {
+	background-image:url(../../ECM/Images/lock_delete.png) ! important;
+}
+
+.icon-delete {
+	background-image:url(../../ECM/Images/cross.png) ! important;
+}
+
+.iconModify {
+	background-image:url(../../ECM/Images/page_edit.png) ! important;
+}
+
+.iconOpenFolder {
+	background-image:url(../../ECM/Images/folder_go.png) ! important;
+}
+
+.iconDl {
+	background-image:url(../../ECM/Images/download.gif) ! important;
+	background-repeat: no-repeat ! important;
+	background-position:left ! important;
+	width: 15px ! important;
+	height: 15px ! important;
+	padding-right: 12px;
+	display: inline;
+}
+
+.iconRefresh {
+	background-image:url(../../ECM/Images/arrow_refresh.png) ! important;
+}
+
+.greenlock{
+	background-image:url(../../ECM/Images/greenlock.png) ! important;
+	width: 15px ! important;
+	height: 15px ! important;
+	background-position:left ! important;
+	background-repeat: no-repeat ! important;
+}
+
+.redlock{
+	background-image:url(../../ECM/Images/redlock.png) ! important;
+	width: 15px ! important;
+	height: 15px ! important;
+	background-position:left ! important;
+	background-repeat: no-repeat ! important;
+}

@@ -1,0 +1,12 @@
+Source: freedom-ecm
+Section: web
+Priority: extra
+Maintainer: yannick <yannick.lebriquer@anakeen.com>
+Build-Depends: debhelper (>= 5), autoconf
+Standards-Version: 3.7.2
+
+Package: freedom-ecm
+Architecture: all
+Depends: freedom-extui, freedom-workspace
+Description: ECM interface to manipulate document with freedom
+

@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WORKSPACE\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-06-24 10:34+0200\n"
+"PO-Revision-Date: 2001-03-14 00:54-0500\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"\n"
+
+msgid "cr_init"
+msgstr ""
+
+msgid "cr_redacted"
+msgstr ""
+
+msgid "cr_published"
+msgstr ""
+
+msgid "cr_refused"
+msgstr ""
+
+msgid "Tcr_published"
+msgstr ""
+
+msgid "Tcr_redacted"
+msgstr ""
+
+msgid "Tcr_retry"
+msgstr ""
+
+msgid "Tcr_refused"
+msgstr ""
+
+msgid "attach a new note"
+msgstr ""
+
+#, c-format
+msgid "detach note %s"
+msgstr ""
+
+msgid "Ouranos"
+msgstr ""
+
+msgid "Simple interface to manipulate documents"
+msgstr ""
+
+msgid "Access to ouranos"
+msgstr ""
+
+msgid "main interface"
+msgstr ""
+
+msgid "defaut family use to create"
+msgstr ""
+
+msgid "ouranos session data"
+msgstr ""
+
+msgid "Desktop"
+msgstr ""
+
+#, c-format
+msgid "Desktop of %s"
+msgstr ""
+
+msgid "Offline"
+msgstr ""
+
+#, c-format
+msgid "Offline folder of %s"
+msgstr ""

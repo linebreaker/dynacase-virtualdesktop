@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<family>
+<property name="generateVersion">3</property>
+<icon src="photo.png"/>
+<method src="Method.Report.php"/>
+
+
+<security>
+</security>
+<attributes>
+</attributes>
+
+<view default="yes" order="1" mask="" label="" name="reportview"  kind="consultation" 
+      media="extjs" extwidget="Ext.fdl.DocumentReport" extsrc="ECM/ui/extreport.js"/>
+<view default="yes" order="1" mask="" label="" name="reportedit"  kind="edition" 
+      media="extjs" extwidget="Ext.fdl.FormDocumentReport" extsrc="ECM/ui/extreport.js"/>
+
+</family>
