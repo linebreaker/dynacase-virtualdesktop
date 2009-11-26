@@ -51,8 +51,7 @@
         </script>
         
         <script type="text/javascript" src="lib/user/Ext.ux.form.XCheckbox.js">
-        </script>
-        
+        </script>        
         
         <link rel="stylesheet" type="text/css" href="lib/user/desktop.css"/>
         <script type="text/javascript" src="lib/user/TaskBar.js">
