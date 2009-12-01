@@ -4,6 +4,7 @@
 
   <requires>
     <module name="freedom-extui" />
+    <module name="freedom-api" version="0.0.3" comp="ge" />
     <module name="freedom-workspace" />
   </requires>
 

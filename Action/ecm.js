@@ -35,7 +35,7 @@ Ext.onReady(function(){
         if (!n.hasChildNodes()) {
             var c = Fdl.ApplicationManager.getCollection(n.attributes.collection);
             if (c.isAlive()) {
-                var sf = c.getSubFolders();
+                var sf = c.getSubCollections();
                 for (var i = 0; i < sf.length; i++) {
                     var doc = sf[i];
                     n.appendChild(createTreeNode(doc, false));
@@ -54,7 +54,7 @@ Ext.onReady(function(){
         }
         var c = Fdl.ApplicationManager.getCollection(n.attributes.collection);
         if (c.isAlive()) {
-            var sf = c.getSubFolders();
+            var sf = c.getSubCollections();
             for (var i = 0; i < sf.length; i++) {
                 var doc = sf[i];
                 n.appendChild(createTreeNode(doc, false));
