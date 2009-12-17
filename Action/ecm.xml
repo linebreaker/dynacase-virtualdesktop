@@ -4,84 +4,56 @@
         <title>
             Ecm
         </title>
+		
+		<!-- Handle console without Firebug -->
         <script>
             if (!("console" in window)) {window.console = {'log': function(s) {}}}
         </script>
+		
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
         <!--<link rel="stylesheet" type="text/css" href="lib/ext/resources/css/xtheme-slate.css"/>-->
-        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js">
+        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js">
         </script>
         <script type="text/javascript" src="lib/ext/ext-all-debug.js">
+        </script>
+		
+		<script src="lib/ext/source/locale/ext-lang-fr.js">
+        </script>
+		
+		<!-- Ext User Extensions -->
+        <link rel="stylesheet" type="text/css" href="lib/user/ext-user.css"/>
+        <script type="text/javascript" src="lib/user/ext-user.js">
         </script>
         
         <!-- Freedom Data Library -->
         <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]">
         </script>
         <script type="text/javascript" src="lib/data/json2.js">
-        </script>
-        
-        <!-- Ext User Extensions -->
-        <script src="lib/user/override.js">
-        </script>
-        <link rel="stylesheet" type="text/css" href="lib/user/file-upload.css"/>
-        <script src="lib/user/FileUploadField.js">
-        </script>
-        <link rel="stylesheet" type="text/css" href="lib/user/tab-panel.css"/>
-        <script type="text/javascript" src="lib/user/TabPanel.js">
-        </script>
-        <script src="lib/user/Ext.ux.form.DateTime.js">
-        </script>
-        <link rel="stylesheet" type="text/css" href="lib/user/color-field.css"/>
-        <script src="lib/user/ColorField.js">
-        </script>
-        <script src="lib/user/Ext.ux.InlineToolbarTabPanel.js">
-        </script>
-        <script src="lib/user/SearchField.js">
-        </script>
-        <script type="text/javascript" src="lib/user/Ext.ux.grid.RowActions.js">
-        </script>
-        <link rel="stylesheet" type="text/css" href="lib/user/Ext.ux.grid.RowActions.css"/>
-        
+        </script>        
+		
+		<!-- Freedom Widget Library -->
+		<link rel="stylesheet" type="text/css" href="lib/ui/widget.css"/>
+        <script type="text/javascript" src="lib/ui/wfdl.js?v=[WVERSION]">
+        </script>        
         
         <link rel="stylesheet" type="text/css" href="lib/ui/widget-services.css"/>
         <link rel="stylesheet" type="text/css" href="lib/ui/widget-notes.css"/>
         
-        <script type="text/javascript" src="lib/user/PagingStore.js">
-        </script>
-        
-        <script type="text/javascript" src="lib/user/Ext.ux.form.XCheckbox.js">
+        <script src="lib/ext/examples/ux/RowExpander.js">
         </script>        
         
-        <link rel="stylesheet" type="text/css" href="lib/user/desktop.css"/>
-        <script type="text/javascript" src="lib/user/TaskBar.js">
-        </script>
-        
-        <!-- Ext Media -->
-        <script src="lib/user/uxmedia.js">
-        </script>
-        
-        <script src="lib/ext/examples/ux/RowExpander.js">
-        </script>
-        
-        <!-- Freedom Widget Library -->
-        <script type="text/javascript" src="lib/ui/wfdl.js?v=[WVERSION]">
-        </script>
-        
-        <!--Ecm Offline -->
-
+        <!-- Ecm Offline -->
 		<link rel="stylesheet" type="text/css" href="ECM/Layout/ecmOffline.css"/>
         <script type="text/javascript" src="ECM/Layout/ecmOffline.js?v=[WVERSION]">
         </script>
         
-        <script src="lib/ext/source/locale/ext-lang-fr.js">
-        </script>
         <!-- Ecm Client Application -->
         <script language="javascript" src="ECM/Layout/ecm.js?v=[WVERSION]">
         </script>
         <script language="javascript" src="ECM/Layout/ecm_gadget.js?v=[WVERSION]">
         </script>
-        
+		        
         
         <style>
             /*

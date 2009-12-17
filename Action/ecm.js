@@ -1,10 +1,3 @@
-/**
- * Ext JS Library 2.2.1
- * Copyright(c) 2006-2009, Ext JS, LLC.
- * licensing@extjs.com
- *
- * http://extjs.com/license
- */
 Ext.onReady(function(){
 
     // Necessary to Ext
@@ -25,15 +18,17 @@ Ext.onReady(function(){
     // Store documents id contained in the docBar
     docBar = [];
     
-    // Data connection
-    Fdl.connect({
-        url: window.location.pathname
-    });
-    
+	// Data connection
+	var context = new Fdl.Context({
+		url: window.location.pathname
+	});
+	    
     // Tree node expanding (cache folders)
     var expandFolder = function(n){
         if (!n.hasChildNodes()) {
-            var c = Fdl.ApplicationManager.getCollection(n.attributes.collection);
+            var c = context.getDocument({
+				id: n.attributes.collection
+			}); // TODO n.attributes.collectionId would be less confusive
             if (c.isAlive()) {
                 var sf = c.getSubCollections();
                 for (var i = 0; i < sf.length; i++) {
@@ -89,7 +84,7 @@ Ext.onReady(function(){
     };
     
     // Create workspace by getting first returned workspace from search
-    var sd = new Fdl.SearchDocument();
+    var sd = context.getSearchDocument();
     wr = sd.search({
         famid: 'WORKSPACE'
     });
@@ -98,7 +93,9 @@ Ext.onReady(function(){
     
     if (wr.length > 0) {
         workspace = wr[0];
-    };
+    } else {
+		Ext.Msg.alert('freedom ecm','No workspace');
+	};
     
     // Set a tree to be able to receive document drops
     function installDocumentDropOnTree(tree){
@@ -152,9 +149,12 @@ Ext.onReady(function(){
         };
     };
     
+
     
     // Init the tree folder	
-    var home = Fdl.getHomeFolder();
+    var home = context.getHomeFolder();
+	
+				console.log('TOTO2');
     
     if (home.isAlive()) {
         var home_node = createTreeNode(home, true);
@@ -163,6 +163,8 @@ Ext.onReady(function(){
     else {
         var t = 'ERROR:' + Fdl.getLastErrorMessage();
     }
+	
+	console.log('TOTO3');
     
     var homeTree = new Ext.tree.TreePanel({
         title: 'Personnel',
@@ -183,7 +185,7 @@ Ext.onReady(function(){
         }
         
         if (!n.hasChildNodes()) {
-            var s = new Fdl.SearchDocument();
+            var s = context.getSearchDocument();
             var sr = s.search({
                 famid: 'REPORT',
                 filter: 'owner=' + Fdl.user.id
@@ -210,13 +212,15 @@ Ext.onReady(function(){
             }
         }
     };
+	
+	
     
     
     // Reload desktop content and display
     updateDesktop = function(){
     
         // Get desktop document
-        var c = new Fdl.getDesktopFolder();
+        var c = context.getDesktopFolder();
         var p = c.getContent();
         
         var data = new Array();
@@ -473,7 +477,8 @@ Ext.onReady(function(){
                         html: '<form id="create_simple_file" enctype="multipart/form-data" method="post" style="height:100%;width:100%;background-image:url(\'Images/our_import.png\');background-repeat:no-repeat;background-position:center;" ><input type="file" name="sfi_file" onchange="this.form.style.backgroundImage=\'url(Images/loading.gif)\';createSimpleFile();this.form.style.backgroundImage=\'url(Images/our_import.png)\';" onclick="event.stopPropagation();return false;" style="font-size:200pt;opacity:0;"/></form>',
                         disabled: !testDragDropUpload(),
                         tabTip: testDragDropUpload() ? 'Importez un fichier depuis votre système' : 'Installez le plugin firefox dragdropupload pour activer cette fonctionalité'
-                    }, offlineTab()]
+                    }]
+					//}, offlineTab()] // TODO Restore offlineTab
                 
                 }]
             }, {
