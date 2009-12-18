@@ -10,7 +10,7 @@ Ext.fdl.SimpleNote = {
 	var nocolor=this.document.getValue('note_color');
 	if (nocolor) color=nocolor;
         var note=this.document;
-	var ismynote=(note.getProperty('owner')==Fdl.getUser().id);
+	var ismynote=(note.getProperty('owner')==context.getUser().id);
         var panel = new Ext.Panel({
 	    //style:'background-color:'+nocolor,
             layout: 'fit',

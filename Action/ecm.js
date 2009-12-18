@@ -1,3 +1,8 @@
+// Data connection
+var context = new Fdl.Context({
+    url: window.location.pathname
+});
+
 Ext.onReady(function(){
 
     // Necessary to Ext
@@ -18,17 +23,12 @@ Ext.onReady(function(){
     // Store documents id contained in the docBar
     docBar = [];
     
-	// Data connection
-	var context = new Fdl.Context({
-		url: window.location.pathname
-	});
-	    
     // Tree node expanding (cache folders)
     var expandFolder = function(n){
         if (!n.hasChildNodes()) {
             var c = context.getDocument({
-				id: n.attributes.collection
-			}); // TODO n.attributes.collectionId would be less confusive
+                id: n.attributes.collection
+            }); // TODO n.attributes.collectionId would be less confusive
             if (c.isAlive()) {
                 var sf = c.getSubCollections();
                 for (var i = 0; i < sf.length; i++) {
@@ -40,14 +40,14 @@ Ext.onReady(function(){
                 var t = 'ERROR:' + Fdl.getLastErrorMessage();
             }
         }
-    }
+    };
     
     // Tree node updating (reload folders)
     updateNode = function(n){
         while (n.firstChild) {
             n.removeChild(n.firstChild);
         }
-        var c = Fdl.ApplicationManager.getCollection(n.attributes.collection);
+        var c = context.getCollection(n.attributes.collection);
         if (c.isAlive()) {
             var sf = c.getSubCollections();
             for (var i = 0; i < sf.length; i++) {
@@ -59,7 +59,7 @@ Ext.onReady(function(){
             var t = 'ERROR:' + Fdl.getLastErrorMessage();
         }
         return n;
-    }
+    };
     
     // Create an Ext TreeNode from Fdl.Collection 
     var createTreeNode = function(collection, isRoot){
@@ -93,9 +93,10 @@ Ext.onReady(function(){
     
     if (wr.length > 0) {
         workspace = wr[0];
-    } else {
-		Ext.Msg.alert('freedom ecm','No workspace');
-	};
+    }
+    else {
+        Ext.Msg.alert('freedom ecm', 'No workspace');
+    };
     
     // Set a tree to be able to receive document drops
     function installDocumentDropOnTree(tree){
@@ -149,12 +150,8 @@ Ext.onReady(function(){
         };
     };
     
-
-    
     // Init the tree folder	
     var home = context.getHomeFolder();
-	
-				console.log('TOTO2');
     
     if (home.isAlive()) {
         var home_node = createTreeNode(home, true);
@@ -163,8 +160,6 @@ Ext.onReady(function(){
     else {
         var t = 'ERROR:' + Fdl.getLastErrorMessage();
     }
-	
-	console.log('TOTO3');
     
     var homeTree = new Ext.tree.TreePanel({
         title: 'Personnel',
@@ -188,7 +183,7 @@ Ext.onReady(function(){
             var s = context.getSearchDocument();
             var sr = s.search({
                 famid: 'REPORT',
-                filter: 'owner=' + Fdl.user.id
+                filter: 'owner=' + context.getUser().id
             });
             for (var i = 0; i < sr.length; i++) {
                 var search = sr[i];
@@ -212,8 +207,7 @@ Ext.onReady(function(){
             }
         }
     };
-	
-	
+    
     
     
     // Reload desktop content and display
@@ -260,7 +254,9 @@ Ext.onReady(function(){
         // Generate utils shortcuts, for now only trash
         var utilData = new Array();
         
-        var myTrash = Fdl.ApplicationManager.getDocument('OUR_MYTRASH');
+        var myTrash = context.getDocument({
+            id: 'OUR_MYTRASH'
+        });
         
         utilData.push([myTrash.getProperty('name'), myTrash.getProperty('id'), myTrash.getProperty('title'), myTrash.getIcon({
             width: 32
@@ -283,7 +279,7 @@ Ext.onReady(function(){
                     
                         case 'OUR_MYTRASH':
                             
-                            var c = Fdl.ApplicationManager.getCollection('OUR_MYTRASH');
+                            var c = context.getCollection('OUR_MYTRASH');
                             
                             var cv = new Fdl.CollectionView({
                                 collection: c
@@ -308,7 +304,7 @@ Ext.onReady(function(){
                             var dropTarget = new Ext.dd.DropTarget(trashWin.body, {
                                 ddGroup: 'documentDD',
                                 notifyDrop: function(ddSource, e, data){
-                                    var document = Fdl.ApplicationManager.getDocument(ddSource.dragData.documentId);
+                                    var document = context.getDocument(ddSource.dragData.documentId);
                                     document.remove();
                                     cv.update(true);
                                     updateDesktop();
@@ -325,8 +321,8 @@ Ext.onReady(function(){
             }
         });
         
-		var center = Ext.getCmp('center');
-       	center.removeAll();
+        var center = Ext.getCmp('center');
+        center.removeAll();
         center.add(iconView);
         center.add(utilView);
         center.doLayout();
@@ -334,7 +330,7 @@ Ext.onReady(function(){
         var dropTarget = new Ext.dd.DropTarget(Ext.get('OUR_MYTRASH'), {
             ddGroup: 'documentDD',
             notifyDrop: function(ddSource, e, data){
-                var document = Fdl.ApplicationManager.getDocument(ddSource.dragData.documentId);
+                var document = context.getDocument(ddSource.dragData.documentId);
                 document.remove();
                 // TODO Update open window if applicable                                 
                 updateDesktop();
@@ -373,35 +369,40 @@ Ext.onReady(function(){
         form.reset();
     };
     
-    function getFamilyCreation() {
-	var sfam = Fdl.getParameter({
+    getFamilyCreation = function(){
+    
+        var sfam = context.getParameter({
             id: 'OUR_NEW_FAMILIES'
         });
-	var rfam=[];
-	if (sfam){
-	    for (var i=0;i<sfam.length;i++) {
-		rfam.push({
+        var rfam = [];
+        if (sfam) {
+            for (var i = 0; i < sfam.length; i++) {
+                rfam.push({
                     id: sfam[i],
-                    img: Fdl.ApplicationManager.getDocument(sfam[i]).getIcon({
+                    img: context.getDocument({
+                        id: sfam[i]
+                    }).getIcon({
                         width: 32
                     }),
-                    title: Fdl.ApplicationManager.getDocument(sfam[i]).getTitle()
+                    title: context.getDocument({
+                        id: sfam[i]
+                    }).getTitle()
                 });
-	    }
-	    
-
-	    
-	}
-	return rfam;
+            }
+            
+            
+            
+        }
+        return rfam;
     }
-
+    
     function createWorkspacePanel(workspace){
     
         return new Ext.Panel({
             title: (workspace) ? workspace.getTitle() : 'Indéfini',
             closable: true,
             layout: 'border',
-			border: false,
+            border: false,
             items: [{
                 region: 'west',
                 layout: 'border',
@@ -412,7 +413,7 @@ Ext.onReady(function(){
                 minSize: 200,
                 maxSize: 300,
                 defaults: {},
-				border: false,
+                border: false,
                 items: [{
                     xtype: 'toolbar',
                     region: 'north',
@@ -446,10 +447,10 @@ Ext.onReady(function(){
                             
                             this.hasSearch = true;
                             this.triggers[0].show();
-
-                            Fdl.ApplicationManager.displaySearch(v,null,{
-								windowName: 'simplesearch'
-							});                            
+                            
+                            Fdl.ApplicationManager.displaySearch(v, null, {
+                                windowName: 'simplesearch'
+                            });
                         }
                     })]
                 }, {
@@ -478,7 +479,7 @@ Ext.onReady(function(){
                         disabled: !testDragDropUpload(),
                         tabTip: testDragDropUpload() ? 'Importez un fichier depuis votre système' : 'Installez le plugin firefox dragdropupload pour activer cette fonctionalité'
                     }]
-					//}, offlineTab()] // TODO Restore offlineTab
+                    //}, offlineTab()] // TODO Restore offlineTab
                 
                 }]
             }, {
@@ -487,7 +488,7 @@ Ext.onReady(function(){
                 anchor: '100% 100%',
                 id: 'center',
                 items: [],
-				border: false
+                border: false
             }, {
                 region: 'east',
                 xtype: 'panel',
@@ -528,19 +529,17 @@ Ext.onReady(function(){
     
     var workspacePanel = createWorkspacePanel(workspace);
     var tab = [];
-	tab.push(workspacePanel);
-	
-	for (var i = 1 ; i < wr.length ; i++)
-	{
-		if(wr[i])
-		{
-			tab.push({
-				title: wr[i].getTitle(),
-				closable: true
-			})
-		}
-	}
-	
+    tab.push(workspacePanel);
+    
+    for (var i = 1; i < wr.length; i++) {
+        if (wr[i]) {
+            tab.push({
+                title: wr[i].getTitle(),
+                closable: true
+            })
+        }
+    }
+    
     // Main Tab display
     var tabs = new Ext.ux.InlineToolbarTabPanel({
         region: 'center',
@@ -575,7 +574,7 @@ Ext.onReady(function(){
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: 'ECM/Images/our.identity.png',
-                text: Fdl.getUser().getDisplayName(),
+                text: context.getUser().getDisplayName(),
                 handler: function(){
                     //Ext.Msg.alert('Utilisateur', 'Pas encore implémenté');
                 }
@@ -610,7 +609,6 @@ Ext.onReady(function(){
         }
     
     });
-    
     
     addTreeToPanel(treePanel);
     
@@ -683,25 +681,27 @@ Ext.onReady(function(){
         }));
         
         // Create families tree
-        var ourfam = Fdl.ApplicationManager.getDocument('OUR_FAMILIES');
+        var ourfam = context.getDocument({
+            id: 'OUR_FAMILIES'
+        });
         if (ourfam.isAlive()) {
             var family_node = createTreeNode(ourfam, true);
             expandFolder(family_node);
         }
-       var familyTree = new Ext.tree.TreePanel({
+        var familyTree = new Ext.tree.TreePanel({
             title: 'Par famille',
             loader: new Ext.tree.TreeLoader(),
             rootVisible: false,
             lines: false,
             autoScroll: true,
-	    
-           root: family_node,
+            
+            root: family_node,
             enableDD: false,
             ddGroup: 'documentDD'
         });
         
         panel.add(ecm.getOnefamGrid("ONEFAM"));
-//       panel.add(familyTree);
+        //       panel.add(familyTree);
         panel.doLayout();
         
         mask.hide();
@@ -738,9 +738,9 @@ Ext.onReady(function(){
                 folderId: Fdl.getDesktopFolder().id
             });
             if (source.dragData.grid) {
-            	 if (source.dragData.grid.ownerCt && source.dragData.grid.ownerCt.collectionView) {
-               		source.dragData.grid.ownerCt.collectionView.update();
-            	 }
+                if (source.dragData.grid.ownerCt && source.dragData.grid.ownerCt.collectionView) {
+                    source.dragData.grid.ownerCt.collectionView.update();
+                }
             }
             
             if (treedrop) {
@@ -870,7 +870,7 @@ var ecm = new Object();
 ecm.getSession = function(config){
     if ((!ecm.session) || (config && config.reset)) {
     
-        ecm.session = Fdl.getParameter({
+        ecm.session = context.getParameter({
             id: 'OUR_SESSION'
         });
         if ((!ecm.session) || (typeof ecm.session != 'object')) {
@@ -881,7 +881,7 @@ ecm.getSession = function(config){
 }
 ecm.setSession = function(v){
     ecm.session = v;
-    if (!Fdl.setParameter({
+    if (!context.setParameter({
         id: 'OUR_SESSION',
         value: JSON.stringify(ecm.session)
     })) {
@@ -890,117 +890,139 @@ ecm.setSession = function(v){
     return ecm.session;
 }
 
-ecm.getOnefamGrid= function(appid) {
+ecm.getOnefamGrid = function(appid){
 
-    var famsearches=Fdl.retrieveData({app:'ECM',action:'GETASSOCIATEDSEARCHES',
-				      appid:appid});
+    var famsearches = context.retrieveData({
+        app: 'ECM',
+        action: 'GETASSOCIATEDSEARCHES',
+        appid: appid
+    });
     console.log(famsearches);
-     var children = [{
-	    text:'First Level Child 1'
-	    ,children:[{
-		text:'Second Level Child 1'
-		,leaf:true,
-		listeners: {
-                
+    var children = [{
+        text: 'First Level Child 1',
+        children: [{
+            text: 'Second Level Child 1',
+            leaf: true,
+            listeners: {
+            
                 click: function(n, e){
                     alert('9');
                 }
             }
-	    },{
-		text:'Second Level Child 2'
-		,leaf:true
-	    }]
-	},{
-	    text:'First Level Child 2'
-	    ,children:[{
-		text:'Second Level Child 1'
-		,leaf:true
-	    },{
-		text:'Second Level Child 2'
-		,leaf:true
-	    }]
-	    
-	}];
-
-   
-    var afamilies=ecm.getOnefamSearches(famsearches.admin);
-    var ufamilies=ecm.getOnefamSearches(famsearches.user);
-
-    var families=afamilies.concat(ufamilies);
-
-        var tree = new Ext.tree.TreePanel({
-            title: famsearches.application.label,
-            loader: new Ext.tree.TreeLoader(),
-            rootVisible: false,
-            lines: false,
-            autoScroll: true,
-	    root:new Ext.tree.AsyncTreeNode({
-		expanded:true
-		,leaf:false
-		,text:'Tree Root'
-		,children:families}),
-            //root: family_node,
-            enableDD: false,
-            ddGroup: 'documentDD'
-        });
-
+        }, {
+            text: 'Second Level Child 2',
+            leaf: true
+        }]
+    }, {
+        text: 'First Level Child 2',
+        children: [{
+            text: 'Second Level Child 1',
+            leaf: true
+        }, {
+            text: 'Second Level Child 2',
+            leaf: true
+        }]
+    
+    }];
+    
+    
+    var afamilies = ecm.getOnefamSearches(famsearches.admin);
+    var ufamilies = ecm.getOnefamSearches(famsearches.user);
+    
+    var families = afamilies.concat(ufamilies);
+    
+    var tree = new Ext.tree.TreePanel({
+        title: famsearches.application.label,
+        loader: new Ext.tree.TreeLoader(),
+        rootVisible: false,
+        lines: false,
+        autoScroll: true,
+        root: new Ext.tree.AsyncTreeNode({
+            expanded: true,
+            leaf: false,
+            text: 'Tree Root',
+            children: families
+        }),
+        //root: family_node,
+        enableDD: false,
+        ddGroup: 'documentDD'
+    });
+    
     return tree;
 }
 
 
-ecm.getOnefamSearches= function(searches) { 
-    var families=[];
-    var sf=[];
-    for (var i=0;i<searches.length;i++) {
-	sf=[];
-	for (var j in searches[i].userSearches) {
-	    sf.push({text:searches[i].userSearches[j].title,
-		     icon:Fdl.resizeImage(searches[i].userSearches[j].icon,16),
-		     documentId:searches[i].userSearches[j].id,
-		     leaf:true,
-		     listeners: {                
-			 click: function(n, e){
-			       Fdl.ApplicationManager.displayDocument(n.attributes.documentId);
-			 }}});
-	}
-	for (var j in searches[i].adminSearches) {
-	    sf.push({text:searches[i].adminSearches[j].title,
-		     icon:Fdl.resizeImage(searches[i].adminSearches[j].icon,16),
-		     documentId:searches[i].adminSearches[j].id,
-		     leaf:true,
-		     listeners: {                
-			 click: function(n, e){
-			       Fdl.ApplicationManager.displayDocument(n.attributes.documentId);
-			 }}});
-	}
-	for (var j in searches[i].workflow) {
-	    sf.push({text:(searches[i].workflow[j].activity)?searches[i].workflow[j].activity:searches[i].workflow[j].label,
-		     icon:Fdl.resizeImage('Images/workflow.png',20),
-		     documentState:searches[i].workflow[j].state,
-		     documentId:searches[i].info.id,		
-		     documentTitle:searches[i].info.title,     
-		     leaf:true,
-		     listeners: {                
-			 click: function(n, e){
-			     Fdl.ApplicationManager.displaySearch('',{famid:n.attributes.documentId,
-								      filter:"state='"+n.attributes.documentState+"'"},
-								  {windowName: 'worflow'+n.attributes.documentId+n.attributes.documentState,
-								   windowTitle:n.attributes.documentTitle+' '+n.text});
-			 }}});
-	}
-
-	families.push({text:searches[i].info.title,
-		       icon:Fdl.resizeImage(searches[i].info.icon,16),
-		       documentId:searches[i].info.id,
-		       documentTitle:searches[i].info.title,
-		       leaf:(sf.length==0),
-		       children:sf,
-		       listeners: {                
-			   click: function(n, e){
-			       Fdl.ApplicationManager.displaySearch('',{famid:n.attributes.documentId},
-								    {windowName: 'family'+n.attributes.documentId,
-								     windowTitle:n.attributes.documentTitle});
-			   }}});
+ecm.getOnefamSearches = function(searches){
+    var families = [];
+    var sf = [];
+    for (var i = 0; i < searches.length; i++) {
+        sf = [];
+        for (var j in searches[i].userSearches) {
+            sf.push({
+                text: searches[i].userSearches[j].title,
+                icon: context.resizeImage(searches[i].userSearches[j].icon, 16),
+                documentId: searches[i].userSearches[j].id,
+                leaf: true,
+                listeners: {
+                    click: function(n, e){
+                        Fdl.ApplicationManager.displayDocument(n.attributes.documentId);
+                    }
+                }
+            });
+        }
+        for (var j in searches[i].adminSearches) {
+            sf.push({
+                text: searches[i].adminSearches[j].title,
+                icon: context.resizeImage(searches[i].adminSearches[j].icon, 16),
+                documentId: searches[i].adminSearches[j].id,
+                leaf: true,
+                listeners: {
+                    click: function(n, e){
+                        Fdl.ApplicationManager.displayDocument(n.attributes.documentId);
+                    }
+                }
+            });
+        }
+        for (var j in searches[i].workflow) {
+            sf.push({
+                text: (searches[i].workflow[j].activity) ? searches[i].workflow[j].activity : searches[i].workflow[j].label,
+                icon: context.resizeImage('Images/workflow.png', 20),
+                documentState: searches[i].workflow[j].state,
+                documentId: searches[i].info.id,
+                documentTitle: searches[i].info.title,
+                leaf: true,
+                listeners: {
+                    click: function(n, e){
+                        Fdl.ApplicationManager.displaySearch('', {
+                            famid: n.attributes.documentId,
+                            filter: "state='" + n.attributes.documentState + "'"
+                        }, {
+                            windowName: 'worflow' + n.attributes.documentId + n.attributes.documentState,
+                            windowTitle: n.attributes.documentTitle + ' ' + n.text
+                        });
+                    }
+                }
+            });
+        }
+        
+        families.push({
+            text: searches[i].info.title,
+            icon: context.resizeImage(searches[i].info.icon, 16),
+            documentId: searches[i].info.id,
+            documentTitle: searches[i].info.title,
+            leaf: (sf.length == 0),
+            children: sf,
+            listeners: {
+                click: function(n, e){
+                    Fdl.ApplicationManager.displaySearch('', {
+                        famid: n.attributes.documentId
+                    }, {
+                        windowName: 'family' + n.attributes.documentId,
+                        windowTitle: n.attributes.documentTitle
+                    });
+                }
+            }
+        });
     }
     return families;
 }
