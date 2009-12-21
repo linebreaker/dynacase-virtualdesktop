@@ -208,8 +208,6 @@ Ext.onReady(function(){
         }
     };
     
-    
-    
     // Reload desktop content and display
     updateDesktop = function(){
     
