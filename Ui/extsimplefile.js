@@ -69,7 +69,7 @@ Ext.fdl.DocumentSimpleFile = {
             
         }
         
-        var u = Fdl.getUser();
+        var u = this.document.context.getUser();
         var info = u.getInfo();
         
         // Generate the text to display for version
