@@ -3,6 +3,12 @@ var context = new Fdl.Context({
     url: window.location.pathname
 });
 
+// TODO Think about javascript error managing in ecm and extui
+//	window.onerror = function(msg, url, line){
+//		Ext.Msg.alert('Javascript Error', '<b>Message : </b>' + msg + '<br/>' + '<b>Url : </b>' + url + '<br/>' + '<b>Line : </b>' + line);
+//	};
+
+
 Ext.onReady(function(){
 
     // Necessary to Ext
