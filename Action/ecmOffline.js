@@ -8,7 +8,7 @@ var fichierVersion = URL_FREEDOM + "/offline/Apps/VERSION"
 var fichierRelease = URL_FREEDOM + "/offline/Apps/RELEASE"
 
 
-function offlineTab() {
+var offlineTab = function(){
 	
 	var offlineModule = false;
 	
@@ -74,7 +74,7 @@ function offlineTab() {
         	var westGridM = Ext.getCmp('westGridModif');
         	var downloadFreedomOff = Ext.getCmp('downloadFreedomOff');
         	var dragDropPanel = Ext.getCmp('dragDropPanel');
-        	var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+        	var dataGrid = createDataGrid(context.getOfflineFolder());
         	if (!downloadFreedomOff.hidden || !dragDropPanel.hidden || !westGridM.hidden){
         		downloadFreedomOff.hide();
         		westGridM.hide();
@@ -102,7 +102,7 @@ function offlineTab() {
         handler: function(btn){
             var westGrid = Ext.getCmp('westGrid');
             var westGridM = Ext.getCmp('westGridModif');
-            var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+            var dataGrid = createDataGrid(context.getOfflineFolder());
             if (!westGridM.hidden){    	
         		westGrid.show();
         		westGridM.hide();
@@ -126,7 +126,7 @@ function offlineTab() {
             var westGrid = Ext.getCmp('westGrid');
             var westGridM = Ext.getCmp('westGridModif');
         	var dragDropPanel = Ext.getCmp('dragDropPanel');
-			var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+			var dataGrid = createDataGrid(context.getOfflineFolder());
 			if (dataGrid.length == 0){	
         			if (!westGrid.hidden){
         				westGrid.hide();
@@ -181,10 +181,15 @@ function offlineTab() {
 	
 	
 	var dataGrid = [];
-	Fdl.connect({
-						url: URL_FREEDOM
-					});
-	var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+	
+//	var context = new Fdl.Context({
+//		url : URL_FREEDOM
+//	});
+//	
+//	Fdl.connect({
+//						url: URL_FREEDOM
+//					});
+	var dataGrid = createDataGrid(context.getOfflineFolder());
 	
     var store = new Ext.data.Store({
         data: dataGrid,
@@ -234,43 +239,43 @@ function offlineTab() {
 	action.on({
 		action:function(grid, record, action, row, col) {
 			var docId = record.data.id;
-			Fdl.connect({
-			     		 url: URL_FREEDOM
-			   	});
+//			Fdl.connect({
+//			     		 url: URL_FREEDOM
+//			   	});
 			if (action == "icon-lock"){			
-			   	var doc = new Fdl.Document({
+			   	var doc = context.getDocument({
 			   		id : docId
 			   	});
 			   	if (!doc.lock()){
-			   		alert(Fdl.getLastErrorMessage());
+			   		Ext.Msg.alert('Error',context.getLastErrorMessage());
 			   	}else{
 			   		store.loadData([]);
-					var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+					var dataGrid = createDataGrid(context.getOfflineFolder());
 					store.loadData(dataGrid);
 			   	}
 			}else if (action == "icon-unlock"){
-			   	var doc = new Fdl.Document({
+			   	var doc = context.getDocument({
 			   		id : docId
 			   	});
 			   	if (!doc.unlock()){
-			   		alert(Fdl.getLastErrorMessage());
+			   		Ext.Msg.alert('Error',context.getLastErrorMessage());
 			   	}else{
 			   		store.loadData([]);
-					var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+					var dataGrid = createDataGrid(context.getOfflineFolder());
 					store.loadData(dataGrid);
 			   	}
 			}else if (action == "icon-delete"){						
-			    var d = Fdl.getOfflineFolder()
+			    var d = context.getOfflineFolder();
 			
 			    if (d.isAlive()) {
 		            var rs = d.unlinkDocument({
 		                id: docId
 		            })
 		            if (!rs) {
-		                alert(Fdl.getLastErrorMessage())
+		                Ext.Msg.alert('Error',context.getLastErrorMessage())
 		            }
 					store.loadData([]);
-					var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+					var dataGrid = createDataGrid(context.getOfflineFolder());
 					store.loadData(dataGrid);
 			    }
 			}
@@ -281,6 +286,7 @@ function offlineTab() {
         id: 'westGrid',
         xtype: 'grid',
         region:'center',
+		border: false,
         hidden: false,
         enableDrag: true,
         ddGroup: 'documentDD',
@@ -359,6 +365,7 @@ function offlineTab() {
         id: 'westGridModif',
         xtype: 'grid',
         region:'north',
+		border: false,
         //autoHeight : true,
         height: 200,
         hidden: true,
@@ -461,6 +468,7 @@ function offlineTab() {
 	var centerPanel = new Ext.Panel({
 		region: 'center',
         xtype: 'panel',
+		border: false,
         layout:'fit',
         id: 'centerPanel',
         items:[grid,
@@ -476,10 +484,10 @@ function offlineTab() {
 	}
 	
     var tab = new Ext.Panel({
-		title: 'offline',
+		title: 'Offline',
 		id: 'offlineTab',
 		layout: 'border',
-		tabTip: 'Après avoir téléchargé une des applications, permet de travailler en mode déconnecté.',
+		tabTip: 'Après avoir téléchargé une des applications, travailler en mode déconnecté.',
 		border: false,
 		anchor: '100%',
 		items: [{
@@ -497,7 +505,7 @@ function offlineTab() {
 		listeners: {
 			activate:function(tab){
 				Ext.getCmp('westGrid').store.loadData([]);
-				var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+				var dataGrid = createDataGrid(context.getOfflineFolder());
 				if (dataGrid.length == 0){
 					var westGrid = Ext.getCmp('westGrid');
         			var dragDropPanel = Ext.getCmp('dragDropPanel');
@@ -516,25 +524,31 @@ function offlineTab() {
 			        	
 			            if (source.dragData.documentId) {
 			                // Drop from Desktop on Desktop
-			                var document = Fdl.ApplicationManager.getDocument(source.dragData.documentId);
+			                var document = context.getDocument({
+								id: source.dragData.documentId
+							});
 			            }
 			            else {
 			                if (source.dragData.selections) {
 			                    // Drop from Grid on Desktop
-			                    var document = Fdl.ApplicationManager.getDocument(source.dragData.selections[0].data.id);
+			                    var document = context.getDocument({
+									id: source.dragData.selections[0].data.id
+									});
 			                    var fromId = source.dragData.grid.collectionId;
 			                }
 			                else {
 			                    if (source.dragData.node.attributes.collection) {
 			                        //console.log('Drop from Tree on Desktop');
 			                        var treedrop = true;
-			                        var document = Fdl.ApplicationManager.getDocument(source.dragData.node.attributes.collection);
+			                        var document = context.getDocument({
+										id: source.dragData.node.attributes.collection
+										});
 			                    }
 			                }
 			            }
 			            addDoc(document.id);
 			            Ext.getCmp('westGrid').store.loadData([]);
-			            var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+			            var dataGrid = createDataGrid(context.getOfflineFolder());
 			            Ext.getCmp('westGrid').store.loadData(dataGrid);
 
 			            return (true);
@@ -584,19 +598,19 @@ function offlineTab() {
 
 function addDoc(docId){
 
-    Fdl.connect({
-        url: URL_FREEDOM
-    });
-    var d = Fdl.getOfflineFolder()
+//    Fdl.connect({
+//        url: URL_FREEDOM
+//    });
+    var d = context.getOfflineFolder()
     if (d.isAlive()) {
         var rs = d.insertDocument({
             id: docId
         })
         if (!rs) {
-            alert(Fdl.getLastErrorMessage())
+            Ext.Msg.alert('Error',context.getLastErrorMessage())
         }
         var westGrid = Ext.getCmp('westGrid');
-        var dataGrid = createDataGrid(Fdl.getOfflineFolder());
+        var dataGrid = createDataGrid(context.getOfflineFolder());
         var dragDropPanel = Ext.getCmp('dragDropPanel');
         westGrid.store.loadData([]);
         if (westGrid.hidden){
@@ -614,10 +628,10 @@ function createDataGrid(docIdContainer){
     var hostName = window.location.hostname;
     var dataArray = new Array();
     var resume = '';
-    Fdl.connect({
-        url: URL_FREEDOM
-    });
-    var u = Fdl.getUser({
+//    Fdl.connect({
+//        url: URL_FREEDOM
+//    });
+    var u = context.getUser({
 				reset : true
 			});
 	var info = u.getInfo();
@@ -664,10 +678,10 @@ function createDataGrid(docIdContainer){
 
 function eraseAllOnServer(){
 
-    Fdl.connect({
-        url: URL_FREEDOM
-    });
-    var d = Fdl.getOfflineFolder()
+//    Fdl.connect({
+//        url: URL_FREEDOM
+//    });
+    var d = context.getOfflineFolder()
 
     if (d.isAlive()) {
         var p = d.getContent();
@@ -677,7 +691,7 @@ function eraseAllOnServer(){
                 id: doc.getProperties().id
             })
             if (!rs) {
-                alert(Fdl.getLastErrorMessage())
+                Ext.Msg.alert('Error',context.getLastErrorMessage())
             }
             Ext.getCmp('westGrid').store.loadData([]);
         }

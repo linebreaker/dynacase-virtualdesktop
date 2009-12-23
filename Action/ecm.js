@@ -249,7 +249,7 @@ Ext.onReady(function(){
             '<br/>dernière modif. : {mdate}' +
             '" src="{icon}" class="icon-img"></div>', '<span style="color:silver;">{shorttitle}</span></div>', '</tpl>'),
             listeners: {
-                click: function(dataview, index, node, e){
+                dblclick: function(dataview, index, node, e){
                     Fdl.ApplicationManager.displayDocument(node.id, 'view', node);
                 }
             }
@@ -278,46 +278,10 @@ Ext.onReady(function(){
             }),
             tpl: new Ext.XTemplate('<tpl for=".">', '<div class="util-wrap" id="{name}">', '<div class="icon"><img ext:qtip="<b>titre : {title}</b>" src="{icon}" class="icon-img" style="width:32px;"></div>', '<span style="color:silver;">{title}</span></div>', '</tpl>'),
             listeners: {
-                click: function(dataview, index, node, e){
-                    switch (node.id) {
-                    
-                        case 'OUR_MYTRASH':
-                            
-                            var c = context.getCollection('OUR_MYTRASH');
-                            
-                            var cv = new Fdl.CollectionView({
-                                collection: c
-                            });
-                            
-                            var view = cv.viewCollection();
-                            
-                            trashWin = new Ext.Window({
-                                title: c.getTitle(),
-                                constrain: true,
-                                width: 400,
-                                height: 560,
-                                resizable: false,
-                                collapsible: true,
-                                autoScroll: true,
-                                layout: 'fit',
-                                items: [view],
-                                renderTo: Ext.getCmp('center').body
-                            });
-                            
-                            // Handle drop
-                            var dropTarget = new Ext.dd.DropTarget(trashWin.body, {
-                                ddGroup: 'documentDD',
-                                notifyDrop: function(ddSource, e, data){
-                                    var document = context.getDocument(ddSource.dragData.documentId);
-                                    document.remove();
-                                    cv.update(true);
-                                    updateDesktop();
-                                    return (true);
-                                }
-                            });
-                            
-                            trashWin.show(e);
-                            
+                dblclick: function(dataview, index, node, e){
+                    switch (node.id) {                    
+                        case 'OUR_MYTRASH':                            
+							Fdl.ApplicationManager.displayDocument('OUR_MYTRASH', 'view', e);							                            
                             break;
                     }
                     
@@ -334,7 +298,10 @@ Ext.onReady(function(){
         var dropTarget = new Ext.dd.DropTarget(Ext.get('OUR_MYTRASH'), {
             ddGroup: 'documentDD',
             notifyDrop: function(ddSource, e, data){
-                var document = context.getDocument(ddSource.dragData.documentId);
+                var document = context.getDocument({
+					id: ddSource.dragData.documentId,
+					useCache: true
+				});
                 document.remove();
                 // TODO Update open window if applicable                                 
                 updateDesktop();
@@ -482,8 +449,7 @@ Ext.onReady(function(){
                         html: '<form id="create_simple_file" enctype="multipart/form-data" method="post" style="height:100%;width:100%;background-image:url(\'Images/our_import.png\');background-repeat:no-repeat;background-position:center;" ><input type="file" name="sfi_file" onchange="this.form.style.backgroundImage=\'url(Images/loading.gif)\';createSimpleFile();this.form.style.backgroundImage=\'url(Images/our_import.png)\';" onclick="event.stopPropagation();return false;" style="font-size:200pt;opacity:0;"/></form>',
                         disabled: !testDragDropUpload(),
                         tabTip: testDragDropUpload() ? 'Importez un fichier depuis votre système' : 'Installez le plugin firefox dragdropupload pour activer cette fonctionalité'
-                    }]
-                    //}, offlineTab()] // TODO Restore offlineTab
+                    }, offlineTab()]
                 
                 }]
             }, {
