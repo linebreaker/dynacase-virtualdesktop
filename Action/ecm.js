@@ -115,18 +115,18 @@ Ext.onReady(function(){
             if (source.dragData.documentId) {
                 //console.log('Drop from Desktop on Tree');
                 var desktopdrop = true;
-                var document = Fdl.ApplicationManager.getDocument(source.dragData.documentId);
+                var document = context.getDocument(source.dragData.documentId);
             }
             else {
                 if (source.dragData.selections) {
                     //console.log('Drop from Grid on Tree');
-                    var document = Fdl.ApplicationManager.getDocument(source.dragData.selections[0].data.id);
+                    var document = context.getDocument(source.dragData.selections[0].data.id);
                 }
                 else {
                     if (source.dragData.node.attributes.collection) {
                         //console.log('Drop from Tree on Tree');
                         var treedrop = true;
-                        var document = Fdl.ApplicationManager.getDocument(source.dragData.node.attributes.collection);
+                        var document = context.getDocument(source.dragData.node.attributes.collection);
                     }
                 }
             }
@@ -685,20 +685,20 @@ Ext.onReady(function(){
         
             if (source.dragData.documentId) {
                 // Drop from Desktop on Desktop
-                var document = Fdl.ApplicationManager.getDocument(source.dragData.documentId);
+                var document = context.getDocument(source.dragData.documentId);
                 return true;
             }
             else {
                 if (source.dragData.selections) {
                     // Drop from Grid on Desktop
-                    var document = Fdl.ApplicationManager.getDocument(source.dragData.selections[0].data.id);
+                    var document = context.getDocument(source.dragData.selections[0].data.id);
                     var fromId = source.dragData.grid.collectionId;
                 }
                 else {
                     if (source.dragData.node.attributes.collection) {
                         //console.log('Drop from Tree on Desktop');
                         var treedrop = true;
-                        var document = Fdl.ApplicationManager.getDocument(source.dragData.node.attributes.collection);
+                        var document = context.getDocument(source.dragData.node.attributes.collection);
                     }
                 }
             }
