@@ -611,6 +611,14 @@ Ext.onReady(function(){
             }, {
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
+                icon: '/lib/ui/icon/arrow_refresh.png',
+                text: 'Actualiser le Bureau',
+                handler: function(){
+                    updateDesktop();
+                }
+            }, {
+                xtype: 'tbbutton',
+                cls: 'x-btn-text-icon',
                 icon: 'ECM/Images/our.gadget.png',
                 text: 'Gadgets',
                 handler: function(){

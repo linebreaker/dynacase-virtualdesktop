@@ -28,7 +28,7 @@ Ext.fdl.FormDocumentReport = {
             
         }
         
-        var me = this;
+//        var me = this;
                 
 		console.log('Document Before Save',this.tmpDocument);
 				
