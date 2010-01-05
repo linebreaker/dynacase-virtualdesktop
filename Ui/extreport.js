@@ -20,7 +20,7 @@ Ext.fdl.FormDocumentReport = {
         
         if (this.tmpDocument == null) {
         
-            this.document.save();
+            //this.document.save();
             
             this.tmpDocument = this.document.cloneDocument({
                 temporary: true
@@ -28,13 +28,8 @@ Ext.fdl.FormDocumentReport = {
             
         }
         
-        var fdr = this;
-        
-        //	Check why this does not work				
-        //		this.tmpDocument.setValue('ba_title','Prévisualisation');
-        //		this.tmpDocument._data.values['ba_title'] = 'Prévisualisation';
-        //		console.log('Document Before Save',this.tmpDocument);
-        
+        var me = this;
+                
 		console.log('Document Before Save',this.tmpDocument);
 				
         this.tmpDocument.save({
@@ -43,7 +38,7 @@ Ext.fdl.FormDocumentReport = {
             
                 console.log('Document After Save',doc);
                 
-                fdr.tmpDocument = doc;
+                me.tmpDocument = doc;
                 
                 Fdl.ApplicationManager.closeDocument(doc.id);
                 Fdl.ApplicationManager.displayDocument(doc.id, 'view', null, {
@@ -52,7 +47,7 @@ Ext.fdl.FormDocumentReport = {
                 
             }
         });
-        
+    
     },
     
     renderEditToolbar: function(){
@@ -292,143 +287,143 @@ Ext.fdl.FormDocumentReport = {
         //this.add(this.getHeader());
         
         this.add(this.renderEditToolbar());
-		
-		var panel = new Ext.fdl.Requester({
-			document: this.document
-		});
         
-//        var tabPanel = new Ext.TabPanel({
-//        
-//            border: false,
-//            activeTab: 0,
-//            bodyStyle: 'padding:10px;',
-//            deferredRender: false
-//        
-//        });
-//        
-//        var fdr = this;
-//        
-//        var simpleSearchPanel = new Ext.Panel({
-//			border: false,
-//            layout: 'form',
-//            hidden: false,
-//            bodyStyle: 'padding:5px',
-//            items: [new Ext.fdl.Text({
-//                fieldLabel: 'Mot-clé',
-//                width: 180,
-//                value: this.document.getValue('se_key') ? this.document.getValue('se_key') : (this.config && this.config.key) ? this.config.key : '',
-//                listeners: {
-//                    change: function(field, newValue, oldValue){
-//                        this.ownerCt.ownerCt.ownerCt.key = newValue;
-//                    }
-//                },
-//                name: 'se_key',
-//            }), new Ext.fdl.MultiFamilyComboBox({
-//                fieldLabel: 'Famille',
-//                familyList: this.document.getValue('se_famid'),
-//                listeners: {
-//                    change: function(field, newValue, oldValue){
-//                    
-//                    },
-//                    select: function(combo, record, index){
-//                        fdr.familyIdList.push(record.id);
-//                        fdr.columnPanel.removeAll();
-//                        if (fdr.familyIdList.length == 1) {
-//                            fdr.columnPanel.add(fdr.renderColumnPanel(fdr.familyIdList[0]));
-//                        }
-//                        else {
-//                            fdr.columnPanel.add(new Ext.Panel({
-//                                html: '<p><i>La présentation ne fonctionne que pour les rapports sur une seule famille.</i></p><p><i>La présentation par défaut sera affichée.</i></p>'
-//                            }));
-//                        }
-//                        fdr.columnPanel.doLayout();
-//                    }
-//                },
-//                familyClear: function(id){
-//                    this.ownerCt.ownerCt.ownerCt.familyIdList.remove(id);
-//                    fdr.columnPanel.removeAll();
-//                    if (fdr.familyIdList[0]) {
-//                        fdr.columnPanel.add(fdr.renderColumnPanel(fdr.familyIdList[0]));
-//                    }
-//                    else {
-//                        fdr.columnPanel.add(new Ext.Panel({
-//                            html: '<p><i>La présentation ne fonctionne que pour les rapports sur une seule famille.</i></p><p><i>La présentation par défaut sera affichée.</i></p>'
-//                        }));
-//                    }
-//                    fdr.columnPanel.doLayout();
-//                }
-//            })]
-//        });
-//        
-//        ////////////
-//        var detailSearchPanel = this.detailSearch();        
-//        ////////////
-//        
-//        var criteria = new Ext.Panel({
-//            title: 'Critères',
-//            layout: 'form',
-//            autoHeight: true,
-//            
-//            items: [new Ext.form.RadioGroup({
-//                fieldLabel: 'Critère',
-//                hideLabel: true,
-//                columns: [100, 100],
-//                items: [{
-//                    boxLabel: 'Simple',
-//                    name: 'criteria',
-//                    checked: true,
-//                    listeners: {
-//                        check: function(radio, checked){
-//                            if (checked) {
-//                                //console.log('Simple checked');
-//                                simpleSearchPanel.show();
-//                                detailSearchPanel.hide();
-//                            }
-//                        }
-//                    }
-//                }, {
-//                    boxLabel: 'Détaillé',
-//                    name: 'criteria',
-//                    listeners: {
-//                        check: function(radio, checked){
-//                            if (checked) {
-//                                //console.log('Multiple checked');
-//                                simpleSearchPanel.hide();
-//                                detailSearchPanel.show();
-//                            }
-//                        }
-//                    }
-//                }]
-//            }), simpleSearchPanel, detailSearchPanel]
-//        
-//        });
-//        
-//        if (mode == 'edit') {
-//            criteria.add(new Ext.fdl.Text({
-//                fieldLabel: 'Titre',
-//                width: 180,
-//                name: 'ba_title',
-//                value: this.document.getValue('ba_title'),
-//                allowBlank: false
-//            }));
-//        }
-//        
-//        tabPanel.add(criteria);
-//        
-//        this.columnTabPanel = tabPanel.add(new Ext.Panel({
-//            title: 'Présentation',
-//            autoHeight: true,
-//            //items: [this.getExtInput('rep_tcols')]
-//            items: [this.renderColumnPanel(this.document.getValue('se_famid')[0])]
-//        }));
-//        
-//        tabPanel.add(new Ext.Panel({
-//            title: 'Options',
-//            items: []
-//            //            items: new Ext.fdl.AttributeComboBox({
-//            //                familyId: this.familyIdList[0]
-//            //            })
-//        }));
+        var panel = new Ext.fdl.Requester({
+            document: this.document
+        });
+        
+        //        var tabPanel = new Ext.TabPanel({
+        //        
+        //            border: false,
+        //            activeTab: 0,
+        //            bodyStyle: 'padding:10px;',
+        //            deferredRender: false
+        //        
+        //        });
+        //        
+        //        var fdr = this;
+        //        
+        //        var simpleSearchPanel = new Ext.Panel({
+        //			border: false,
+        //            layout: 'form',
+        //            hidden: false,
+        //            bodyStyle: 'padding:5px',
+        //            items: [new Ext.fdl.Text({
+        //                fieldLabel: 'Mot-clé',
+        //                width: 180,
+        //                value: this.document.getValue('se_key') ? this.document.getValue('se_key') : (this.config && this.config.key) ? this.config.key : '',
+        //                listeners: {
+        //                    change: function(field, newValue, oldValue){
+        //                        this.ownerCt.ownerCt.ownerCt.key = newValue;
+        //                    }
+        //                },
+        //                name: 'se_key',
+        //            }), new Ext.fdl.MultiFamilyComboBox({
+        //                fieldLabel: 'Famille',
+        //                familyList: this.document.getValue('se_famid'),
+        //                listeners: {
+        //                    change: function(field, newValue, oldValue){
+        //                    
+        //                    },
+        //                    select: function(combo, record, index){
+        //                        fdr.familyIdList.push(record.id);
+        //                        fdr.columnPanel.removeAll();
+        //                        if (fdr.familyIdList.length == 1) {
+        //                            fdr.columnPanel.add(fdr.renderColumnPanel(fdr.familyIdList[0]));
+        //                        }
+        //                        else {
+        //                            fdr.columnPanel.add(new Ext.Panel({
+        //                                html: '<p><i>La présentation ne fonctionne que pour les rapports sur une seule famille.</i></p><p><i>La présentation par défaut sera affichée.</i></p>'
+        //                            }));
+        //                        }
+        //                        fdr.columnPanel.doLayout();
+        //                    }
+        //                },
+        //                familyClear: function(id){
+        //                    this.ownerCt.ownerCt.ownerCt.familyIdList.remove(id);
+        //                    fdr.columnPanel.removeAll();
+        //                    if (fdr.familyIdList[0]) {
+        //                        fdr.columnPanel.add(fdr.renderColumnPanel(fdr.familyIdList[0]));
+        //                    }
+        //                    else {
+        //                        fdr.columnPanel.add(new Ext.Panel({
+        //                            html: '<p><i>La présentation ne fonctionne que pour les rapports sur une seule famille.</i></p><p><i>La présentation par défaut sera affichée.</i></p>'
+        //                        }));
+        //                    }
+        //                    fdr.columnPanel.doLayout();
+        //                }
+        //            })]
+        //        });
+        //        
+        //        ////////////
+        //        var detailSearchPanel = this.detailSearch();        
+        //        ////////////
+        //        
+        //        var criteria = new Ext.Panel({
+        //            title: 'Critères',
+        //            layout: 'form',
+        //            autoHeight: true,
+        //            
+        //            items: [new Ext.form.RadioGroup({
+        //                fieldLabel: 'Critère',
+        //                hideLabel: true,
+        //                columns: [100, 100],
+        //                items: [{
+        //                    boxLabel: 'Simple',
+        //                    name: 'criteria',
+        //                    checked: true,
+        //                    listeners: {
+        //                        check: function(radio, checked){
+        //                            if (checked) {
+        //                                //console.log('Simple checked');
+        //                                simpleSearchPanel.show();
+        //                                detailSearchPanel.hide();
+        //                            }
+        //                        }
+        //                    }
+        //                }, {
+        //                    boxLabel: 'Détaillé',
+        //                    name: 'criteria',
+        //                    listeners: {
+        //                        check: function(radio, checked){
+        //                            if (checked) {
+        //                                //console.log('Multiple checked');
+        //                                simpleSearchPanel.hide();
+        //                                detailSearchPanel.show();
+        //                            }
+        //                        }
+        //                    }
+        //                }]
+        //            }), simpleSearchPanel, detailSearchPanel]
+        //        
+        //        });
+        //        
+        //        if (mode == 'edit') {
+        //            criteria.add(new Ext.fdl.Text({
+        //                fieldLabel: 'Titre',
+        //                width: 180,
+        //                name: 'ba_title',
+        //                value: this.document.getValue('ba_title'),
+        //                allowBlank: false
+        //            }));
+        //        }
+        //        
+        //        tabPanel.add(criteria);
+        //        
+        //        this.columnTabPanel = tabPanel.add(new Ext.Panel({
+        //            title: 'Présentation',
+        //            autoHeight: true,
+        //            //items: [this.getExtInput('rep_tcols')]
+        //            items: [this.renderColumnPanel(this.document.getValue('se_famid')[0])]
+        //        }));
+        //        
+        //        tabPanel.add(new Ext.Panel({
+        //            title: 'Options',
+        //            items: []
+        //            //            items: new Ext.fdl.AttributeComboBox({
+        //            //                familyId: this.familyIdList[0]
+        //            //            })
+        //        }));
         
         this.add(panel);
     }

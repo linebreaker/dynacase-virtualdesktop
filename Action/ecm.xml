@@ -18,8 +18,8 @@
         <script type="text/javascript" src="lib/ext/ext-all-debug.js">
         </script>
 		
-		<script src="lib/ext/source/locale/ext-lang-fr.js">
-        </script>
+		<!--<script src="lib/ext/source/locale/ext-lang-fr.js">
+        </script>-->
 		
 		<!-- Ext User Extensions -->
         <link rel="stylesheet" type="text/css" href="lib/user/ext-user.css"/>

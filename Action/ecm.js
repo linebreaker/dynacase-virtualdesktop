@@ -54,8 +54,8 @@ Ext.onReady(function(){
             n.removeChild(n.firstChild);
         }
         var c = context.getDocument({
-			id: n.attributes.collection
-		});
+            id: n.attributes.collection
+        });
         if (c.isAlive()) {
             var sf = c.getSubCollections();
             for (var i = 0; i < sf.length; i++) {
@@ -118,26 +118,99 @@ Ext.onReady(function(){
                 //console.log('Drop from Desktop on Tree');
                 var desktopdrop = true;
                 var document = context.getDocument({
-					id: source.dragData.documentId,
-					useCache: true
-				});
+                    id: source.dragData.documentId,
+                    useCache: true
+                });
             }
             else {
                 if (source.dragData.selections) {
                     //console.log('Drop from Grid on Tree');
                     var document = context.getDocument({
-						id: source.dragData.selections[0].data.id,
-						useCache: true
-					});
+                        id: source.dragData.selections[0].data.id,
+                        useCache: true
+                    });
+                    
+                    //var ret = efc.notifyDocumentDrop(data.component, efc.collection, data.selection, dropDoc, data.component.pKey);
+                    
+                    //notifyDocumentDrop: function(dragWid, dropCol, dragSel, dropDoc, pKey){
+                    
+                    var dragWid = source.dragData.component;
+                    
+                    var targetCol = context.getDesktopFolder();
+                    
+                    var g = context.createGroupRequest();
+                    
+                    var dragSel = source.dragData.selection;
+                    
+                    g.addRequest({
+                        drop: g.getDocument({
+                            id: targetCol.id
+                        })
+                    });
+                    
+                    g.addRequest({
+                        drag: g.getDocument({
+                            id: dragSel.collectionId
+                        })
+                    });
+                    
+                    // Temporary Debug (problem on JSON.stringify if recursion, and there are many recursion in context
+                    var dContext = dragSel.context;
+                    dragSel.context = null;
+                    
+                    // If SHIFT is pressed.
+                    //                    if (pKey.indexOf(16) != -1) {
+                    //                        g.addRequest({
+                    //                            a: g.get('drop').callMethod('insertDocuments', {
+                    //                                selection: dragSel
+                    //                            })
+                    //                        });
+                    //                    }
+                    //                    else {
+                    g.addRequest({
+                        a: g.get('drag').callMethod('moveDocuments', {
+                            selection: dragSel,
+                            targetIdentificator: targetCol.id
+                        })
+                    });
+                    //                    }
+                    
+                    g.addRequest({
+                        c: g.get('drop').callMethod('getContent')
+                    });
+                    g.addRequest({
+                        d: g.get('drag').callMethod('getContent')
+                    });
+                    
+                    var r = g.submit();
+                    
+                    if (dragWid.reload) {
+                        dragWid.content = r.get('d');
+                        dragWid.collection = r.get('drag');
+                        dragWid.reload(false);
+                        //dragWid.reload(true);
+                    }
+                    
+                    // Actualize to where we drop
+                    if (n.ownerTree) {
+                        updateNode(n).expand();
+                    }
+                    
+                    // Temporary Debug
+                    dragSel.context = dContext;
+                    
+                    return true;
+                    
+                    
                 }
                 else {
                     if (source.dragData.node.attributes.collection) {
                         //console.log('Drop from Tree on Tree');
                         var treedrop = true;
                         var document = context.getDocument({
-							id: source.dragData.node.attributes.collection,
-							useCache: true
-						});
+                            id: source.dragData.node.attributes.collection,
+                            useCache: true
+                        });
                     }
                 }
             }
@@ -186,7 +259,7 @@ Ext.onReady(function(){
         autoScroll: true,
         root: home_node,
         enableDrop: true,
-        ddGroup: 'documentDD'
+        ddGroup: 'docDD'
     });
     
     // Handle search expanding and tree content
@@ -290,9 +363,9 @@ Ext.onReady(function(){
             tpl: new Ext.XTemplate('<tpl for=".">', '<div class="util-wrap" id="{name}">', '<div class="icon"><img ext:qtip="<b>titre : {title}</b>" src="{icon}" class="icon-img" style="width:32px;"></div>', '<span style="color:silver;">{title}</span></div>', '</tpl>'),
             listeners: {
                 dblclick: function(dataview, index, node, e){
-                    switch (node.id) {                    
-                        case 'OUR_MYTRASH':                            
-							Fdl.ApplicationManager.displayDocument('OUR_MYTRASH', 'view', e);							                            
+                    switch (node.id) {
+                        case 'OUR_MYTRASH':
+                            Fdl.ApplicationManager.displayDocument('OUR_MYTRASH', 'view', e);
                             break;
                     }
                     
@@ -307,12 +380,12 @@ Ext.onReady(function(){
         center.doLayout();
         
         var dropTarget = new Ext.dd.DropTarget(Ext.get('OUR_MYTRASH'), {
-            ddGroup: 'documentDD',
+            ddGroup: 'docDD',
             notifyDrop: function(ddSource, e, data){
                 var document = context.getDocument({
-					id: ddSource.dragData.documentId,
-					useCache: true
-				});
+                    id: ddSource.dragData.documentId,
+                    useCache: true
+                });
                 document.remove();
                 // TODO Update open window if applicable                                 
                 updateDesktop();
@@ -322,7 +395,7 @@ Ext.onReady(function(){
         
         var dragZone = new DocumentDragZone(iconView, {
             containerScroll: true,
-            ddGroup: 'documentDD'
+            ddGroup: 'docDD'
         });
         
     }
@@ -378,7 +451,7 @@ Ext.onReady(function(){
         return rfam;
     }
     
-    function createWorkspacePanel(workspace){
+    createWorkspacePanel = function(workspace){
     
         return new Ext.Panel({
             title: (workspace) ? workspace.getTitle() : 'Indéfini',
@@ -620,7 +693,7 @@ Ext.onReady(function(){
                 autoScroll: true,
                 root: workspace_node,
                 enableDD: true,
-                ddGroup: 'documentDD',
+                ddGroup: 'docDD',
                 listeners: {
                     afterrender: function(panel){
                         installDocumentDropOnTree(panel);
@@ -678,7 +751,7 @@ Ext.onReady(function(){
             
             root: family_node,
             enableDD: false,
-            ddGroup: 'documentDD'
+            ddGroup: 'docDD'
         });
         
         panel.add(ecm.getOnefamGrid("ONEFAM"));
@@ -691,41 +764,105 @@ Ext.onReady(function(){
     
     
     var dropTarget = new Ext.dd.DropTarget(Ext.getCmp('center').body, {
-        ddGroup: 'documentDD',
+        ddGroup: 'docDD',
         notifyDrop: function(source, e, data){
         
             if (source.dragData.documentId) {
                 // Drop from Desktop on Desktop
                 var document = context.getDocument({
-					id: source.dragData.documentId,
-					useCache: true
-				});
+                    id: source.dragData.documentId,
+                    useCache: true
+                });
                 return true;
             }
             else {
                 if (source.dragData.selections) {
+                    console.log('Drop from Grid on Desktop');
                     // Drop from Grid on Desktop
-                    var document = context.getDocument({
-						id: source.dragData.selections[0].data.id,
-						useCache: true
-					});
-                    var fromId = source.dragData.grid.collectionId;
+                    
+                    //var ret = efc.notifyDocumentDrop(data.component, efc.collection, data.selection, dropDoc, data.component.pKey);
+                    
+                    //notifyDocumentDrop: function(dragWid, dropCol, dragSel, dropDoc, pKey){
+                    
+                    var dragWid = source.dragData.component;
+                    
+                    var targetCol = context.getDesktopFolder();
+                    
+                    var g = context.createGroupRequest();
+                    
+                    var dragSel = source.dragData.selection;
+                    
+                    g.addRequest({
+                        drop: g.getDocument({
+                            id: targetCol.id
+                        })
+                    });
+                    
+                    g.addRequest({
+                        drag: g.getDocument({
+                            id: dragSel.collectionId
+                        })
+                    });
+                    
+                    // Temporary Debug (problem on JSON.stringify if recursion, and there are many recursion in context
+                    var dContext = dragSel.context;
+                    dragSel.context = null;
+                    
+                    // If SHIFT is pressed.
+                    //                    if (pKey.indexOf(16) != -1) {
+                    //                        g.addRequest({
+                    //                            a: g.get('drop').callMethod('insertDocuments', {
+                    //                                selection: dragSel
+                    //                            })
+                    //                        });
+                    //                    }
+                    //                    else {
+                    g.addRequest({
+                        a: g.get('drag').callMethod('moveDocuments', {
+                            selection: dragSel,
+                            targetIdentificator: targetCol.id
+                        })
+                    });
+                    //                    }
+                    
+                    g.addRequest({
+                        c: g.get('drop').callMethod('getContent')
+                    });
+                    g.addRequest({
+                        d: g.get('drag').callMethod('getContent')
+                    });
+                    
+                    var r = g.submit();
+                    
+                    if (dragWid.reload) {
+                        dragWid.content = r.get('d');
+                        dragWid.collection = r.get('drag');
+                        dragWid.reload(false);
+                        //dragWid.reload(true);
+                    }
+                    
+                    updateDesktop();
+                    
+                    // Temporary Debug
+                    dragSel.context = dContext;
+                    
+                    return true;
                 }
                 else {
                     if (source.dragData.node.attributes.collection) {
                         //console.log('Drop from Tree on Desktop');
                         var treedrop = true;
                         var document = context.getDocument({
-							id: source.dragData.node.attributes.collection,
-							useCache: true
-						});
+                            id: source.dragData.node.attributes.collection,
+                            useCache: true
+                        });
                     }
                 }
             }
             
             document.moveTo({
                 fromFolderId: fromId,
-                folderId: Fdl.getDesktopFolder().id
+                folderId: context.getDesktopFolder().id
             });
             if (source.dragData.grid) {
                 if (source.dragData.grid.ownerCt && source.dragData.grid.ownerCt.collectionView) {
@@ -935,7 +1072,7 @@ ecm.getOnefamGrid = function(appid){
         }),
         //root: family_node,
         enableDD: false,
-        ddGroup: 'documentDD'
+        ddGroup: 'docDD'
     });
     
     return tree;
