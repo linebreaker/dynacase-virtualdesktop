@@ -1129,8 +1129,13 @@ ecm.getOnefamSearches = function(searches){
                 listeners: {
                     click: function(n, e){
                         Fdl.ApplicationManager.displaySearch('', {
-                            famid: n.attributes.documentId,
-                            filter: "state='" + n.attributes.documentState + "'"
+                            family: n.attributes.documentId,
+                            criteria: [{
+                                operator: '=',
+                                left: 'state',
+                                right: n.attributes.documentState
+                            }]
+                            //                            filter: "state='" + n.attributes.documentState + "'"
                         }, {
                             windowName: 'worflow' + n.attributes.documentId + n.attributes.documentState,
                             windowTitle: n.attributes.documentTitle + ' ' + n.text
@@ -1150,7 +1155,7 @@ ecm.getOnefamSearches = function(searches){
             listeners: {
                 click: function(n, e){
                     Fdl.ApplicationManager.displaySearch('', {
-                        famid: n.attributes.documentId
+                        family: n.attributes.documentId
                     }, {
                         windowName: 'family' + n.attributes.documentId,
                         windowTitle: n.attributes.documentTitle

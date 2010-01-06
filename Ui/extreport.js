@@ -18,36 +18,16 @@ Ext.fdl.FormDocumentReport = {
     
         var form = this.getForm().getEl().dom;
         
-        if (this.tmpDocument == null) {
+        var me = this;
         
-            //this.document.save();
-            
-            this.tmpDocument = this.document.cloneDocument({
-                temporary: true
-            });
-            
-        }
-        
-//        var me = this;
-                
-		console.log('Document Before Save',this.tmpDocument);
-				
         this.tmpDocument.save({
             form: form,
             callback: function(doc){
-            
-                console.log('Document After Save',doc);
-                
                 me.tmpDocument = doc;
-                
-                Fdl.ApplicationManager.closeDocument(doc.id);
-                Fdl.ApplicationManager.displayDocument(doc.id, 'view', null, {
-                    viewToolbar: false
-                });
-                
+                me.gridCollection.reload();
             }
         });
-    
+        
     },
     
     renderEditToolbar: function(){
@@ -65,20 +45,12 @@ Ext.fdl.FormDocumentReport = {
                 scope: this,
                 handler: function(){
                 
-                    var panel = this;
-                    
                     var form = this.getForm().getEl().dom;
                     
                     this.document.save({
                         form: form,
                         callback: function(doc){
-                        
-                            if (panel.tmpDocument) {
-                                Fdl.ApplicationManager.closeDocument(panel.tmpDocument.id);
-                            }
-                            
                             Fdl.ApplicationManager.notifyDocument(doc);
-                            
                         }
                     })
                 }
@@ -96,10 +68,8 @@ Ext.fdl.FormDocumentReport = {
                 text: 'Annuler',
                 scope: this,
                 handler: function(){
-                
                     Fdl.ApplicationManager.windows[this.document.id].mode = 'view';
                     Fdl.ApplicationManager.windows[this.document.id].updateDocument(this.document.id);
-                    
                 }
             }));
             
@@ -286,12 +256,55 @@ Ext.fdl.FormDocumentReport = {
         
         //this.add(this.getHeader());
         
-        this.add(this.renderEditToolbar());
+        var panel = new Ext.Panel({
+            layout: 'vbox',
+            layoutConfig: {
+                align: 'stretch',
+                pack: 'start',
+            },
+			anchor: '100% 100%'
+        });
+		
+//		var subpanel = new Ext.Panel({
+//			layout: 'vbox',
+//            layoutConfig: {
+//                align: 'stretch',
+//                pack: 'start',
+//            },
+//			border: false,
+//			flex: 1,
+//			anchor: '100% 100%'
+//		});
         
-        var panel = new Ext.fdl.Requester({
-            document: this.document
+        var requester = new Ext.fdl.Requester({
+            document: this.document,
+			flex: 1
         });
         
+        this.tmpDocument = this.document.cloneDocument({
+            temporary: true
+        });
+        
+        this.gridCollection = new Ext.fdl.GridCollection({
+            collection: this.tmpDocument,
+            tBar: false
+        });
+        
+        var evaluatePanel = this.gridCollection.display();
+		
+		evaluatePanel.flex = 1 ;
+		
+        this.add(panel);
+		
+		panel.add(this.renderEditToolbar());
+//		panel.add(subpanel);
+//		
+//		subpanel.add(requester);
+//		subpanel.add(evaluatePanel);
+
+		panel.add(requester);
+		panel.add(evaluatePanel);
+				
         //        var tabPanel = new Ext.TabPanel({
         //        
         //            border: false,
@@ -425,7 +438,12 @@ Ext.fdl.FormDocumentReport = {
         //            //            })
         //        }));
         
-        this.add(panel);
+		
+		//this.doLayout();
+        
+        //this.evaluatePanel.setHeight(300);
+        
+        //this.add(this.evaluatePanel);
     }
     
 }
