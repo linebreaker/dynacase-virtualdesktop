@@ -8,25 +8,31 @@ Ext.fdl.DocumentReport = {
 
 Ext.fdl.FormDocumentReport = {
 
-    key: this.document.getValue('se_key') ? this.document.getValue('se_key') : (this.config && this.config.key) ? this.config.key : '',
+    //key: this.document.getValue('se_key') ? this.document.getValue('se_key') : (this.config && this.config.key) ? this.config.key : '',
     
-    familyIdList: this.document.getValue('se_famid') ? this.document.getValue('se_famid') : new Array(),
+    //familyIdList: this.document.getValue('se_famid') ? this.document.getValue('se_famid') : new Array(),
     
     tmpDocument: null,
     
     displayEvaluate: function(){
     
-        var form = this.getForm().getEl().dom;
+        //var form = this.getForm().getEl().dom;
         
-        var me = this;
+        //var me = this;
         
-        this.tmpDocument.save({
-            form: form,
-            callback: function(doc){
-                me.tmpDocument = doc;
-                me.gridCollection.reload();
-            }
-        });
+		this.requester.setDocument(this.tmpDocument);
+		
+		this.requester.save();
+		
+		this.gridCollection.reload();
+		
+//        this.tmpDocument.save({
+//            form: form,
+//            callback: function(doc){
+//                me.tmpDocument = doc;
+//                me.gridCollection.reload();
+//            }
+//        });
         
     },
     
@@ -45,14 +51,20 @@ Ext.fdl.FormDocumentReport = {
                 scope: this,
                 handler: function(){
                 
-                    var form = this.getForm().getEl().dom;
+                    //var form = this.getForm().getEl().dom;
+					
+					this.requester.setDocument(this.document);
+					
+					this.requester.save();
+					
+					Fdl.ApplicationManager.notifyDocument(this.document);
                     
-                    this.document.save({
-                        form: form,
-                        callback: function(doc){
-                            Fdl.ApplicationManager.notifyDocument(doc);
-                        }
-                    })
+//                    this.document.save({
+//                        form: form,
+//                        callback: function(doc){
+//                            Fdl.ApplicationManager.notifyDocument(doc);
+//                        }
+//                    });
                 }
             }));
             
@@ -69,7 +81,7 @@ Ext.fdl.FormDocumentReport = {
                 scope: this,
                 handler: function(){
                     Fdl.ApplicationManager.windows[this.document.id].mode = 'view';
-                    Fdl.ApplicationManager.windows[this.document.id].updateDocument(this.document.id);
+                    Fdl.ApplicationManager.windows[this.document.id].updateDocumentId(this.document.id);
                 }
             }));
             
@@ -86,6 +98,8 @@ Ext.fdl.FormDocumentReport = {
                 
                     Ext.Msg.prompt('Mémoriser', 'Donner un titre au rapport', function(id, value){
                     
+						// TODO No more use for form here
+					
                         var form = this.getForm();
                         
                         this.add(new Ext.form.Hidden({
@@ -95,6 +109,10 @@ Ext.fdl.FormDocumentReport = {
                         
                         this.doLayout(); // Needs to be done in order for the hidden field to be included in html
                         var domform = form.getEl().dom;
+						
+						this.requester.setDocument(this.document);
+					
+						this.requester.save();
                         
                         this.document.save();
                         
@@ -105,9 +123,8 @@ Ext.fdl.FormDocumentReport = {
                                 c.insertDocument({
                                     id: doc.getProperty('id')
                                 });
-                                
-                                
-                                Fdl.ApplicationManager.displayDocument(doc.id);
+
+                                Fdl.ApplicationManager.displayDocument(doc.id,'view');
                                 
                             }
                         });
@@ -276,13 +293,61 @@ Ext.fdl.FormDocumentReport = {
 //			anchor: '100% 100%'
 //		});
         
-        var requester = new Ext.fdl.Requester({
-            document: this.document,
-			flex: 1
-        });
-        
-        this.tmpDocument = this.document.cloneDocument({
-            temporary: true
+		if (mode == 'create') {
+			
+			console.log('CONFIG',this.config);
+			
+			this.tmpDocument = this.document.context.createDocument({
+				familyId: this.document.getProperty('fromid'),
+				temporary: true
+			});
+						
+			if(this.config && this.config.search && this.config.search.filter){
+
+			//	console.log('Add Filter', this.tmpDocument, this.config.search.filter);
+			
+//				if(!this.config.search.filter.criteria){
+//					this.config.search.filter.criteria = [];
+//				}
+
+				// TODO Correct problem here in case there is no criteria
+
+				//this.tmpDocument.addFilter(this.config.search.filter);
+
+                var filter1 = new Fdl.DocumentFilter({
+                            family: 'DIR'
+                        });
+						
+						        var filter2 = new Fdl.DocumentFilter({
+                    family: 'DIR',
+                    criteria: [{
+                        operator: '~*',
+                        left: 'ba_title',
+                        right: 'Test'
+                    }]
+                
+                });
+						
+						this.tmpDocument.addFilter(filter2);
+
+				console.log('Add filter',filter2);
+
+				this.tmpDocument.save();
+				
+				console.log('After add filter', this.tmpDocument.getContent(), this.tmpDocument.getFilters());
+				
+			}
+			
+		} else {
+			this.tmpDocument = this.document.cloneDocument({
+				temporary: true
+			});
+		}
+		
+		this.requester = new Ext.fdl.Requester({
+            document: this.tmpDocument,
+			flex: 1,
+			border: false
         });
         
         this.gridCollection = new Ext.fdl.GridCollection({
@@ -302,7 +367,7 @@ Ext.fdl.FormDocumentReport = {
 //		subpanel.add(requester);
 //		subpanel.add(evaluatePanel);
 
-		panel.add(requester);
+		panel.add(this.requester);
 		panel.add(evaluatePanel);
 				
         //        var tabPanel = new Ext.TabPanel({
