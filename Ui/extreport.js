@@ -312,25 +312,25 @@ Ext.fdl.FormDocumentReport = {
 
 				// TODO Correct problem here in case there is no criteria
 
-				//this.tmpDocument.addFilter(this.config.search.filter);
+				this.tmpDocument.addFilter(this.config.search.filter);
 
-                var filter1 = new Fdl.DocumentFilter({
-                            family: 'DIR'
-                        });
+//                var filter1 = new Fdl.DocumentFilter({
+//                            family: 'DIR'
+//                        });
+//						
+//						        var filter2 = new Fdl.DocumentFilter({
+//                    family: 'DIR',
+//                    criteria: [{
+//                        operator: '~*',
+//                        left: 'ba_title',
+//                        right: 'Test'
+//                    }]
+//                
+//                });
 						
-						        var filter2 = new Fdl.DocumentFilter({
-                    family: 'DIR',
-                    criteria: [{
-                        operator: '~*',
-                        left: 'ba_title',
-                        right: 'Test'
-                    }]
-                
-                });
-						
-						this.tmpDocument.addFilter(filter2);
+//						this.tmpDocument.addFilter(filter2);
 
-				console.log('Add filter',filter2);
+				console.log('Add filter',this.config.search.filter);
 
 				this.tmpDocument.save();
 				
