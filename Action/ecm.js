@@ -8,7 +8,6 @@ var context = new Fdl.Context({
 //		Ext.Msg.alert('Javascript Error', '<b>Message : </b>' + msg + '<br/>' + '<b>Url : </b>' + url + '<br/>' + '<b>Line : </b>' + line);
 //	};
 
-
 Ext.onReady(function(){
 
     // Necessary to Ext
@@ -26,8 +25,103 @@ Ext.onReady(function(){
         mouseOffset: [15, -30]
     });
     
-    // Store documents id contained in the docBar
-    docBar = [];
+    // Fdl.ApplicationManager will represent global ecm application behaviour
+    // TODO Rename more appropriately
+    Fdl.ApplicationManager = new Ext.fdl.Application({
+        context: context,
+        // These are ecm new specific properties to handle window positioning
+        windows: {},
+        windowX: 0,
+        windowY: 0
+    });
+    
+    // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
+    Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
+    
+        console.log('onOpen', id, config);
+        
+        if (!this.windows[id]) {
+        
+            var win = new Ext.fdl.Window({
+                mode: mode,
+                context: this.context,
+                
+                x: this.windowX % 100 + 25,
+                y: this.windowY % 100 + 25,
+                
+                mode: mode,
+                config: config,
+                
+                renderTo: Ext.getCmp('center').body,
+                
+                listeners: {
+                    show: function(win){
+                        win.updateDocumentId(id);
+                    },
+                    close: function(win){
+                        win.publish('closedocument', id);
+                    },
+                    afterlayout: function(win, layout){
+                    
+                        // Adjust maximum size to container size
+                        var container = Ext.getCmp('center');
+                        var max = container.getHeight();
+                        if (win.getHeight() + win.getPosition(true)[1] > max) {
+                            win.setHeight(max - win.getPosition(true)[1]);
+                        }
+                    }
+                }
+            });
+            
+            win.show();
+            
+            this.windowX = this.windowX + 25;
+            this.windowY = this.windowY + 25;
+            
+            
+            
+            this.windows[id] = win;
+            
+            var doc = win.document;
+            
+            // Attributes set to be used when rendering the taskbar button
+            win.taskIcon = doc.getIcon({
+                width: 18
+            });
+            win.taskTitle = doc.getTitle();
+            
+            if (!docBar[id]) {
+                docBar[id] = taskBar.addTaskButton(win);
+                if (doc.getProperty('id')) {
+                    docBar[id].setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
+                    '<br/>auteur : ' +
+                    doc.getProperty('ownername') +
+                    '<br/>famille : ' +
+                    doc.getProperty('fromtitle') +
+                    '<br/>dernière modif. : ' +
+                    doc.getProperty('mdate'));
+                }
+                
+            }
+            
+        }
+        
+    };
+    
+    Fdl.ApplicationManager.onCloseDocument = function(id){
+    
+        console.log('onClose', id, docBar);
+        
+        if (docBar[id]) {
+            taskBar.removeTaskButton(docBar[id]);
+            docBar[id] = null;
+        }
+        this.windows[id] = null;
+        
+        
+    }, // Store documents id contained in the docBar
+
+	docBar = {};
     
     // Tree node expanding (cache folders)
     var expandFolder = function(n){
@@ -432,16 +526,18 @@ Ext.onReady(function(){
         var rfam = [];
         if (sfam) {
             for (var i = 0; i < sfam.length; i++) {
+				
+				var fam = context.getDocument({
+                        id: sfam[i],
+						useCache: true
+                    });
+				
                 rfam.push({
                     id: sfam[i],
-                    img: context.getDocument({
-                        id: sfam[i]
-                    }).getIcon({
+                    img: fam.getIcon({
                         width: 32
                     }),
-                    title: context.getDocument({
-                        id: sfam[i]
-                    }).getTitle()
+                    title: fam.getTitle()
                 });
             }
             
@@ -569,8 +665,9 @@ Ext.onReady(function(){
                     this.body.on({
                         click: {
                             delegate: 'div.clickable',
-                            stopEvent: true,
+                            //stopEvent: true,
                             fn: function(e, t){
+                                console.log('CLIC');
                                 Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
                             }
                         }
