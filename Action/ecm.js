@@ -9,7 +9,7 @@ var context = new Fdl.Context({
 //	};
 
 Ext.onReady(function(){
-
+	
     // Necessary to Ext
     Ext.BLANK_IMAGE_URL = 'lib/ext/resources/images/default/s.gif';
     
@@ -37,8 +37,6 @@ Ext.onReady(function(){
     
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
     Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
-    
-        console.log('onOpen', id, config);
         
         if (!this.windows[id]) {
         
@@ -109,9 +107,7 @@ Ext.onReady(function(){
     };
     
     Fdl.ApplicationManager.onCloseDocument = function(id){
-    
-        console.log('onClose', id, docBar);
-        
+            
         if (docBar[id]) {
             taskBar.removeTaskButton(docBar[id]);
             docBar[id] = null;
@@ -119,8 +115,9 @@ Ext.onReady(function(){
         this.windows[id] = null;
         
         
-    }, // Store documents id contained in the docBar
-
+    },
+	
+	// Store documents id contained in the docBar
 	docBar = {};
     
     // Tree node expanding (cache folders)
