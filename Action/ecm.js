@@ -9,7 +9,7 @@ var context = new Fdl.Context({
 //	};
 
 Ext.onReady(function(){
-	
+
     // Necessary to Ext
     Ext.BLANK_IMAGE_URL = 'lib/ext/resources/images/default/s.gif';
     
@@ -37,7 +37,7 @@ Ext.onReady(function(){
     
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
     Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
-        
+    
         if (!this.windows[id]) {
         
             var win = new Ext.fdl.Window({
@@ -107,7 +107,7 @@ Ext.onReady(function(){
     };
     
     Fdl.ApplicationManager.onCloseDocument = function(id){
-            
+    
         if (docBar[id]) {
             taskBar.removeTaskButton(docBar[id]);
             docBar[id] = null;
@@ -115,10 +115,8 @@ Ext.onReady(function(){
         this.windows[id] = null;
         
         
-    },
-	
-	// Store documents id contained in the docBar
-	docBar = {};
+    },    // Store documents id contained in the docBar
+    docBar = {};
     
     // Tree node expanding (cache folders)
     var expandFolder = function(n){
@@ -523,12 +521,12 @@ Ext.onReady(function(){
         var rfam = [];
         if (sfam) {
             for (var i = 0; i < sfam.length; i++) {
-				
-				var fam = context.getDocument({
-                        id: sfam[i],
-						useCache: true
-                    });
-				
+            
+                var fam = context.getDocument({
+                    id: sfam[i],
+                    useCache: true
+                });
+                
                 rfam.push({
                     id: sfam[i],
                     img: fam.getIcon({
@@ -595,10 +593,14 @@ Ext.onReady(function(){
                             
                             this.hasSearch = true;
                             this.triggers[0].show();
-                            
-                            Fdl.ApplicationManager.displaySearch(v, null, {
-                                windowName: 'simplesearch'
-                            });
+                            if (v != '') {
+                                Fdl.ApplicationManager.displaySearch(v, null, {
+                                    windowName: 'simplesearch'
+                                });
+                            }
+                            else {
+                                Fdl.ApplicationManager.displayDocument('REPORT', 'create');
+                            }
                         }
                     })]
                 }, {
