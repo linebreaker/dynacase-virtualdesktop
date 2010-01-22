@@ -26,13 +26,17 @@ Ext.onReady(function(){
     });
     
     // Fdl.ApplicationManager will represent global ecm application behaviour
-    // TODO Rename more appropriately
+    // TODO Rename more appropriately but take care because Fdl.ApplicationManager was used in many places
     Fdl.ApplicationManager = new Ext.fdl.Application({
         context: context,
         // These are ecm new specific properties to handle window positioning
         windows: {},
         windowX: 0,
-        windowY: 0
+        windowY: 0,
+		
+		// Store documents id contained in the docBar
+    	docBar: {}
+		
     });
     
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
@@ -50,7 +54,7 @@ Ext.onReady(function(){
                 mode: mode,
                 config: config,
                 
-                renderTo: Ext.getCmp('center').body,
+                renderTo: Fdl.ApplicationManager.desktopPanel.body,
                 
                 listeners: {
                     show: function(win){
@@ -60,10 +64,8 @@ Ext.onReady(function(){
                         win.publish('closedocument', id);
                     },
                     afterlayout: function(win, layout){
-                    
                         // Adjust maximum size to container size
-                        var container = Ext.getCmp('center');
-                        var max = container.getHeight();
+                        var max = Fdl.ApplicationManager.desktopPanel.getHeight();
                         if (win.getHeight() + win.getPosition(true)[1] > max) {
                             win.setHeight(max - win.getPosition(true)[1]);
                         }
@@ -76,8 +78,6 @@ Ext.onReady(function(){
             this.windowX = this.windowX + 25;
             this.windowY = this.windowY + 25;
             
-            
-            
             this.windows[id] = win;
             
             var doc = win.document;
@@ -88,10 +88,10 @@ Ext.onReady(function(){
             });
             win.taskTitle = doc.getTitle();
             
-            if (!docBar[id]) {
-                docBar[id] = taskBar.addTaskButton(win);
+            if (!this.docBar[id]) {
+                this.docBar[id] = taskBar.addTaskButton(win);
                 if (doc.getProperty('id')) {
-                    docBar[id].setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
+                    this.docBar[id].setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
                     '<br/>auteur : ' +
                     doc.getProperty('ownername') +
                     '<br/>famille : ' +
@@ -108,76 +108,135 @@ Ext.onReady(function(){
     
     Fdl.ApplicationManager.onCloseDocument = function(id){
     
-        if (docBar[id]) {
-            taskBar.removeTaskButton(docBar[id]);
-            docBar[id] = null;
+        if (this.docBar[id]) {
+            taskBar.removeTaskButton(this.docBar[id]);
+            this.docBar[id] = null;
         }
         this.windows[id] = null;
         
-        
-    },    // Store documents id contained in the docBar
-    docBar = {};
-    
-    // Tree node expanding (cache folders)
-    var expandFolder = function(n){
-        if (!n.hasChildNodes()) {
-            var c = context.getDocument({
-                id: n.attributes.collection
-            }); // TODO n.attributes.collectionId would be less confusive
-            if (c.isAlive()) {
-                var sf = c.getSubCollections();
-                for (var i = 0; i < sf.length; i++) {
-                    var doc = sf[i];
-                    n.appendChild(createTreeNode(doc, false));
-                }
-            }
-            else {
-                var t = 'ERROR:' + Fdl.getLastErrorMessage();
-            }
-        }
     };
+	
+	/**
+     * DisplaySearch
+     * @param {String} key
+     * @param {Object} searchConfig
+     * @param {Object} widgetConfig {pageSize,windowTitle,windowName}
+     */
+	Fdl.ApplicationManager.displaySearch = function(key, searchConfig, widgetConfig){
     
-    // Tree node updating (reload folders)
-    updateNode = function(n){
-        while (n.firstChild) {
-            n.removeChild(n.firstChild);
-        }
-        var c = context.getDocument({
-            id: n.attributes.collection
+        var d = context.getSearchDocument();
+        
+        var filter = new Fdl.DocumentFilter({
+            key: key
         });
-        if (c.isAlive()) {
-            var sf = c.getSubCollections();
-            for (var i = 0; i < sf.length; i++) {
-                var doc = sf[i];
-                n.appendChild(createTreeNode(doc, false));
-            }
+        
+        if (searchConfig) {
+            filter = Ext.apply(filter, searchConfig);
+        }
+        
+        d.filter = filter;
+        
+        if (!widgetConfig || !widgetConfig.pageSize) {
+            var pageSize = 10;
         }
         else {
-            var t = 'ERROR:' + Fdl.getLastErrorMessage();
+            var pageSize = widgetConfig.pageSize;
         }
-        return n;
-    };
-    
-    // Create an Ext TreeNode from Fdl.Collection 
-    var createTreeNode = function(collection, isRoot){
-        return new Ext.tree.TreeNode({
-            collection: collection.id,
-            text: collection.getTitle(),
-            expandable: collection.getProperty('haschildfolder'),
-            expanded: isRoot,
-            icon: collection.getIcon({
-                width: 20
-            }),
-            draggable: !isRoot,
+        
+        if (!widgetConfig || !widgetConfig.windowTitle) {
+            var windowTitle = 'Recherche : ' + key;
+        }
+        else {
+            var windowTitle = widgetConfig.windowTitle;
+        }
+        
+        if (!widgetConfig || !widgetConfig.windowName) {
+            var windowName = null;
+        }
+        else {
+            var windowName = widgetConfig.windowName;
+        }
+        
+        if (windowName && this.searchWindows[windowName]) {
+        
+            var _x = this.searchWindows[windowName].getPosition(true)[0];
+            var _y = this.searchWindows[windowName].getPosition(true)[1];
+            
+            this.searchWindows[windowName].close();
+            this.searchWindows[windowName] = null;
+        }
+        else {
+            var _x = this.windowX % 100 + 25;
+            var _y = this.windowY % 100 + 25;
+            
+            this.windowX = this.windowX + 25;
+            this.windowY = this.windowY + 25;
+        }
+        
+        var window = new Ext.fdl.Window({
+            x: _x,
+            y: _y,
+            title: windowTitle,
+            
+            width: 440,
+            height: 560,
+            
+            autoScroll: true,
+            
+            renderTo: Fdl.ApplicationManager.desktopPanel.body,
             listeners: {
-                expand: function(n){
-                    expandFolder(n);
+                show: function(){
+                
+                    window.updateDocument(d);
+                    
+                    // Adjust maximum size to container size
+                    var container =  Fdl.ApplicationManager.desktopPanel.body;
+                    var max = container.getHeight();
+                    if (this.getHeight() > max) {
+                        this.setHeight(max)
+                    }
+                    
                 },
-                click: function(n, e){
-                    Fdl.ApplicationManager.displayDocument(n.attributes.collection, 'view', e);
-                }
+                afterrender: function(win){
+                
+                    // Adjust maximum size to container size
+                    var container =  Fdl.ApplicationManager.desktopPanel.body;
+                    var max = container.getHeight();
+                    if (win.getHeight() + win.getPosition(true)[1] > max) {
+                        win.setHeight(max - win.getPosition(true)[1]);
+                    }
+                    
+                    win.mask = new Ext.LoadMask(win.body, {
+                        msg: "En cours de chargement..."
+                    });
+                    win.mask.show();
+                    
+                //			panel.viewNotes();
+                //			setTimeout(function () {panel.viewNotes();},1000);
+                },
             }
         });
+        
+        if (windowName) {
+            this.searchWindows[windowName] = window;
+        }
+        
+        // Note for later
+        // Highlights were implemented like this in previous versions of ecm
+        //            // customize view config
+        //            viewConfig: {
+        //                forceFit: true,
+        //                enableRowBody: true,
+        //                getRowClass: function(record, rowIndex, p, store){
+        //                    (searchConfig.withHighlight) ? p.body = '<p style="margin:3px;">' + record.data.highlight + '</p>' : null;
+        //                    return 'x-grid3-row-expanded';
+        //                    
+        //                }
+        //                
+        //            },
+        
+        window.show();
+        
     };
     
     // Create workspace by getting first returned workspace from search
@@ -195,298 +254,85 @@ Ext.onReady(function(){
         Ext.Msg.alert('freedom ecm', 'No workspace');
     };
     
-    // Set a tree to be able to receive document drops
-    function installDocumentDropOnTree(tree){
-    
-        tree.dropZone.onNodeDrop = function(nodedata, source, e, data){
-        
-            var n = nodedata.node;
-            
-            var targetId = n.attributes.collection;
-            if (source.dragData.documentId) {
-                //console.log('Drop from Desktop on Tree');
-                var desktopdrop = true;
-                var document = context.getDocument({
-                    id: source.dragData.documentId,
-                    useCache: true
-                });
-            }
-            else {
-                if (source.dragData.selections) {
-                    //console.log('Drop from Grid on Tree');
-                    var document = context.getDocument({
-                        id: source.dragData.selections[0].data.id,
-                        useCache: true
-                    });
-                    
-                    //var ret = efc.notifyDocumentDrop(data.component, efc.collection, data.selection, dropDoc, data.component.pKey);
-                    
-                    //notifyDocumentDrop: function(dragWid, dropCol, dragSel, dropDoc, pKey){
-                    
-                    var dragWid = source.dragData.component;
-                    
-                    var targetCol = context.getDesktopFolder();
-                    
-                    var g = context.createGroupRequest();
-                    
-                    var dragSel = source.dragData.selection;
-                    
-                    g.addRequest({
-                        drop: g.getDocument({
-                            id: targetCol.id
-                        })
-                    });
-                    
-                    g.addRequest({
-                        drag: g.getDocument({
-                            id: dragSel.collectionId
-                        })
-                    });
-                    
-                    // Temporary Debug (problem on JSON.stringify if recursion, and there are many recursion in context
-                    var dContext = dragSel.context;
-                    dragSel.context = null;
-                    
-                    // If SHIFT is pressed.
-                    //                    if (pKey.indexOf(16) != -1) {
-                    //                        g.addRequest({
-                    //                            a: g.get('drop').callMethod('insertDocuments', {
-                    //                                selection: dragSel
-                    //                            })
-                    //                        });
-                    //                    }
-                    //                    else {
-                    g.addRequest({
-                        a: g.get('drag').callMethod('moveDocuments', {
-                            selection: dragSel,
-                            targetIdentificator: targetCol.id
-                        })
-                    });
-                    //                    }
-                    
-                    g.addRequest({
-                        c: g.get('drop').callMethod('getContent')
-                    });
-                    g.addRequest({
-                        d: g.get('drag').callMethod('getContent')
-                    });
-                    
-                    var r = g.submit();
-                    
-                    if (dragWid.reload) {
-                        dragWid.content = r.get('d');
-                        dragWid.collection = r.get('drag');
-                        dragWid.reload(false);
-                        //dragWid.reload(true);
-                    }
-                    
-                    // Actualize to where we drop
-                    if (n.ownerTree) {
-                        updateNode(n).expand();
-                    }
-                    
-                    // Temporary Debug
-                    dragSel.context = dContext;
-                    
-                    return true;
-                    
-                    
-                }
-                else {
-                    if (source.dragData.node.attributes.collection) {
-                        //console.log('Drop from Tree on Tree');
-                        var treedrop = true;
-                        var document = context.getDocument({
-                            id: source.dragData.node.attributes.collection,
-                            useCache: true
-                        });
-                    }
-                }
-            }
-            
-            document.moveTo({
-                folderId: targetId
-            });
-            
-            if (treedrop) {
-                // Actualize from where we drop
-                if (source.dragData.node && source.dragData.node.parentNode && source.dragData.node.getOwnerTree()) {
-                    updateNode(source.dragData.node.parentNode).expand();
-                }
-            }
-            
-            if (desktopdrop) {
-                updateDesktop();
-            }
-            
-            // Actualize to where we drop
-            if (n.ownerTree) {
-                updateNode(n).expand();
-            }
-            
-            return true;
-            
-        };
-    };
-    
-    // Init the tree folder	
+    // Home TreePanel
     var home = context.getHomeFolder();
-    
-    if (home.isAlive()) {
-        var home_node = createTreeNode(home, true);
-        expandFolder(home_node);
-    }
-    else {
-        var t = 'ERROR:' + Fdl.getLastErrorMessage();
-    }
-    
-    var homeTree = new Ext.tree.TreePanel({
+    var homeTreeCollection = new Ext.fdl.TreeCollection({
         title: 'Personnel',
-        loader: new Ext.tree.TreeLoader(),
-        //rootVisible: false,
-        lines: false,
-        autoScroll: true,
-        root: home_node,
-        enableDrop: true,
-        ddGroup: 'docDD'
+        collection: home
+    });
+    var homeTree = homeTreeCollection.display();
+    // EO Home TreePanel
+    
+    Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
+        collection: context.getDesktopFolder(),
+        bodyStyle: {
+            "background-image": "url(" + context.url + "ECM/Images/our.desktop.jpg" + ")"
+        }
     });
     
-    // Handle search expanding and tree content
-    expandSearch = function(n){
-    
-        while (n.firstChild) {
-            n.removeChild(n.firstChild);
-        }
-        
-        if (!n.hasChildNodes()) {
-            var s = context.getSearchDocument();
-            var sr = s.search({
-                famid: 'REPORT',
-                filter: 'owner=' + context.getUser().id
-            });
-            for (var i = 0; i < sr.length; i++) {
-                var search = sr[i];
-                n.appendChild(new Ext.tree.TreeNode({
-                    collection: search.getProperty('id'),
-                    text: search.getTitle(),
-                    icon: search.getIcon({
-                        width: 20
-                    }),
-                    expandable: search.getProperty('haschildfolder'), // Expandable only if has child
-                    listeners: {
-                        expand: function(n){
-                            expandFolder(n);
-                        },
-                        click: function(n, e){
-                            // Handle display of a folder content
-                            Fdl.ApplicationManager.displayDocument(n.attributes.collection, 'view', e);
-                        }
-                    }
-                }));
-            }
-        }
-    };
+    Fdl.ApplicationManager.desktopPanel = Fdl.ApplicationManager.desktopCollection.display();
+    Fdl.ApplicationManager.desktopPanel.region = 'center';
     
     // Reload desktop content and display
     updateDesktop = function(){
     
-        // Get desktop document
-        var c = context.getDesktopFolder();
-        var p = c.getContent();
+        Fdl.ApplicationManager.desktopCollection.reload();
         
-        var data = new Array();
-        
-        for (var i = 0; i < p.length; i++) {
-            var doc = p[i];
-            data.push([doc.getProperty('id'), doc.getTitle(), Ext.util.Format.ellipsis(doc.getTitle(), 15), doc.getIcon({
-                width: 32
-            }), doc.getProperty('ownername'), doc.getProperty('fromtitle'), doc.getProperty('mdate')]);
-        }
-        
-        var store = new Ext.data.Store({
-            data: data,
-            reader: new Ext.data.ArrayReader({
-                id: 'id'
-            }, ['id', 'title', 'shorttitle', 'icon', 'ownername', 'fromtitle', 'mdate'])
-        });
-        
-        // Set up icons view
-        var iconView = new Ext.DataView({
-            itemSelector: 'div.icon-wrap',
-            style: 'overflow:auto;',
-            height: '100%',
-            multiSelect: true,
-            store: store,
-            tpl: new Ext.XTemplate('<tpl for=".">', '<div class="icon-wrap" id="{id}">', '<div class="icon"><img ext:qtip="<b>titre : {title}</b>' +
-            '<br/>auteur : {ownername}<br/>famille : {fromtitle}' +
-            '<br/>dernière modif. : {mdate}' +
-            '" src="{icon}" class="icon-img"></div>', '<span style="color:silver;">{shorttitle}</span></div>', '</tpl>'),
-            listeners: {
-                dblclick: function(dataview, index, node, e){
-                    Fdl.ApplicationManager.displayDocument(node.id, 'view', node);
-                }
-            }
-        });
-        
-        // Generate utils shortcuts, for now only trash
-        var utilData = new Array();
-        
-        var myTrash = context.getDocument({
-            id: 'OUR_MYTRASH'
-        });
-        
-        utilData.push([myTrash.getProperty('name'), myTrash.getProperty('id'), myTrash.getProperty('title'), myTrash.getIcon({
-            width: 32
-        })]);
-        
-        // Set up shortcuts view
-        var utilView = new Ext.DataView({
-            itemSelector: 'div.util-wrap',
-            style: 'overflow:auto;position:absolute;bottom:0;right:0;',
-            store: new Ext.data.Store({
-                data: utilData,
-                reader: new Ext.data.ArrayReader({
-                    id: 'id'
-                }, ['name', 'id', 'title', 'icon'])
-            }),
-            tpl: new Ext.XTemplate('<tpl for=".">', '<div class="util-wrap" id="{name}">', '<div class="icon"><img ext:qtip="<b>titre : {title}</b>" src="{icon}" class="icon-img" style="width:32px;"></div>', '<span style="color:silver;">{title}</span></div>', '</tpl>'),
-            listeners: {
-                dblclick: function(dataview, index, node, e){
-                    switch (node.id) {
-                        case 'OUR_MYTRASH':
-                            Fdl.ApplicationManager.displayDocument('OUR_MYTRASH', 'view', e);
-                            break;
-                    }
-                    
-                }
-            }
-        });
-        
-        var center = Ext.getCmp('center');
-        center.removeAll();
-        center.add(iconView);
-        center.add(utilView);
-        center.doLayout();
-        
-        var dropTarget = new Ext.dd.DropTarget(Ext.get('OUR_MYTRASH'), {
-            ddGroup: 'docDD',
-            notifyDrop: function(ddSource, e, data){
-                var document = context.getDocument({
-                    id: ddSource.dragData.documentId,
-                    useCache: true
-                });
-                document.remove();
-                // TODO Update open window if applicable                                 
-                updateDesktop();
-                return (true);
-            }
-        });
-        
-        var dragZone = new DocumentDragZone(iconView, {
-            containerScroll: true,
-            ddGroup: 'docDD'
-        });
-        
+        //        // Generate utils shortcuts, for now only trash
+        //        var utilData = new Array();
+        //        
+        //        var myTrash = context.getDocument({
+        //            id: 'OUR_MYTRASH'
+        //        });
+        //        
+        //        utilData.push([myTrash.getProperty('name'), myTrash.getProperty('id'), myTrash.getProperty('title'), myTrash.getIcon({
+        //            width: 32
+        //        })]);
+        //        
+        //        // Set up shortcuts view
+        //        var utilView = new Ext.DataView({
+        //            itemSelector: 'div.util-wrap',
+        //            style: 'overflow:auto;position:absolute;bottom:0;right:0;',
+        //            store: new Ext.data.Store({
+        //                data: utilData,
+        //                reader: new Ext.data.ArrayReader({
+        //                    id: 'id'
+        //                }, ['name', 'id', 'title', 'icon'])
+        //            }),
+        //            tpl: new Ext.XTemplate('<tpl for=".">', '<div class="util-wrap" id="{name}">', '<div class="icon"><img ext:qtip="<b>titre : {title}</b>" src="{icon}" class="icon-img" style="width:32px;"></div>', '<span style="color:silver;">{title}</span></div>', '</tpl>'),
+        //            listeners: {
+        //                dblclick: function(dataview, index, node, e){
+        //                    switch (node.id) {
+        //                        case 'OUR_MYTRASH':
+        //                            Fdl.ApplicationManager.displayDocument('OUR_MYTRASH', 'view', e);
+        //                            break;
+        //                    }
+        //                    
+        //                }
+        //            }
+        //        });
+        //      
+    
+        //        var center = Ext.getCmp('center');
+        //        center.removeAll();
+        //        center.add(iconView);
+        //        center.add(utilView);
+        //        center.doLayout();
+    
+        //        var dropTarget = new Ext.dd.DropTarget(Ext.get('OUR_MYTRASH'), {
+        //            ddGroup: 'docDD',
+        //            notifyDrop: function(ddSource, e, data){
+        //                var document = context.getDocument({
+        //                    id: ddSource.dragData.documentId,
+        //                    useCache: true
+        //                });
+        //                document.remove();
+        //                // TODO Update open window if applicable                                 
+        //                updateDesktop();
+        //                return (true);
+        //            }
+        //        });
+    
     }
     
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
@@ -609,12 +455,9 @@ Ext.onReady(function(){
                     border: false,
                     margins: '5 5 0 5',
                     layout: 'accordion',
-                    
                     listeners: {
                         afterrender: function(panel){
-                        
                             treePanel = panel;
-                            
                         }
                     }
                 }, {
@@ -631,14 +474,7 @@ Ext.onReady(function(){
                     }, offlineTab()]
                 
                 }]
-            }, {
-                region: 'center',
-                bodyStyle: 'background:url(ECM/Images/our.desktop.jpg);z-index:0;', /* Assign z-index to center desktop panel for z-index drop patch to work. Patch is in extjs/user/override.js. */
-                anchor: '100% 100%',
-                id: 'center',
-                items: [],
-                border: false
-            }, {
+            }, Fdl.ApplicationManager.desktopPanel, {
                 region: 'east',
                 xtype: 'panel',
                 id: 'create-document',
@@ -749,8 +585,6 @@ Ext.onReady(function(){
         items: tab
     });
     
-    Ext.get('loading').remove();
-    
     var viewport = new Ext.Viewport({
         layout: 'border',
         renderTo: Ext.getBody(),
@@ -770,14 +604,7 @@ Ext.onReady(function(){
     
     addTreeToPanel(treePanel);
     
-    updateDesktop();
-    
     function addTreeToPanel(panel){
-    
-        var mask = new Ext.LoadMask(panel.body, {
-            msg: 'Chargement...'
-        });
-        mask.show();
         
         var workspaceTree = new Ext.Panel({
             title: 'Plan de classement',
@@ -785,310 +612,55 @@ Ext.onReady(function(){
             html: "<p>Vous n'avez aucun espace de travail défini.</p>"
         });
         
-        if (workspace) {
-        
-            var workspace_node = createTreeNode(workspace, true);
-            expandFolder(workspace_node);
-            
-            workspaceTree = new Ext.tree.TreePanel({
+        if (workspace) {        
+            var workspaceTreeCollection = new Ext.fdl.TreeCollection({
                 title: 'Plan de classement',
-                loader: new Ext.tree.TreeLoader(),
-                lines: false,
-                autoScroll: true,
-                root: workspace_node,
-                enableDD: true,
-                ddGroup: 'docDD',
-                listeners: {
-                    afterrender: function(panel){
-                        installDocumentDropOnTree(panel);
-                    }
-                }
-            });
-            
+                collection: workspace
+            });            
+            var workspaceTree = workspaceTreeCollection.display();            
         }
         
         panel.add(workspaceTree);
         
-        search_node = new Ext.tree.TreeNode({
-            text: 'Rapports',
-            expandable: true,
-            expanded: true,
-            listeners: {
-                expand: function(n){
-                    expandSearch(n);
-                },
-                click: function(n, e){
-                    Fdl.ApplicationManager.displayDocument(n.attributes.collection, 'view', e);
-                }
-            }
+        // Search TreePanel
+        var search = context.getSearchDocument({
+			filter: new Fdl.DocumentFilter({
+				family: 'REPORT',
+				criteria: [{
+					operator: '=',
+					left: 'owner',
+					right: context.getUser().id
+				}]
+			})
         });
-        
-        expandSearch(search_node);
+        var searchTreeCollection = new Ext.fdl.TreeCollection({
+            title: 'Rapports',
+			rootVisible: false,
+            search: search
+        });
+        var searchTree = searchTreeCollection.display();        
+        // EO Search TreePanel
         
         updateSearch = function(){
-            expandSearch(search_node);
+			searchTreeCollection.reload();
         };
-        
-        panel.add(new Ext.tree.TreePanel({
-            title: 'Rapports',
-            loader: new Ext.tree.TreeLoader(),
-            rootVisible: false,
-            lines: false,
-            autoScroll: true,
-            root: search_node
-        }));
-        
-        // Create families tree
-        var ourfam = context.getDocument({
-            id: 'OUR_FAMILIES'
-        });
-        if (ourfam.isAlive()) {
-            var family_node = createTreeNode(ourfam, true);
-            expandFolder(family_node);
-        }
-        var familyTree = new Ext.tree.TreePanel({
-            title: 'Par famille',
-            loader: new Ext.tree.TreeLoader(),
-            rootVisible: false,
-            lines: false,
-            autoScroll: true,
-            
-            root: family_node,
-            enableDD: false,
-            ddGroup: 'docDD'
-        });
+		
+		panel.add(searchTree);
         
         panel.add(ecm.getOnefamGrid("ONEFAM"));
-        //       panel.add(familyTree);
+        
         panel.doLayout();
-        
-        mask.hide();
+
     }
-    
-    
-    
-    var dropTarget = new Ext.dd.DropTarget(Ext.getCmp('center').body, {
-        ddGroup: 'docDD',
-        notifyDrop: function(source, e, data){
-        
-            if (source.dragData.documentId) {
-                // Drop from Desktop on Desktop
-                var document = context.getDocument({
-                    id: source.dragData.documentId,
-                    useCache: true
-                });
-                return true;
-            }
-            else {
-                if (source.dragData.selections) {
-                    console.log('Drop from Grid on Desktop');
-                    // Drop from Grid on Desktop
-                    
-                    //var ret = efc.notifyDocumentDrop(data.component, efc.collection, data.selection, dropDoc, data.component.pKey);
-                    
-                    //notifyDocumentDrop: function(dragWid, dropCol, dragSel, dropDoc, pKey){
-                    
-                    var dragWid = source.dragData.component;
-                    
-                    var targetCol = context.getDesktopFolder();
-                    
-                    var g = context.createGroupRequest();
-                    
-                    var dragSel = source.dragData.selection;
-                    
-                    g.addRequest({
-                        drop: g.getDocument({
-                            id: targetCol.id
-                        })
-                    });
-                    
-                    g.addRequest({
-                        drag: g.getDocument({
-                            id: dragSel.collectionId
-                        })
-                    });
-                    
-                    // Temporary Debug (problem on JSON.stringify if recursion, and there are many recursion in context
-                    var dContext = dragSel.context;
-                    dragSel.context = null;
-                    
-                    // If SHIFT is pressed.
-                    //                    if (pKey.indexOf(16) != -1) {
-                    //                        g.addRequest({
-                    //                            a: g.get('drop').callMethod('insertDocuments', {
-                    //                                selection: dragSel
-                    //                            })
-                    //                        });
-                    //                    }
-                    //                    else {
-                    g.addRequest({
-                        a: g.get('drag').callMethod('moveDocuments', {
-                            selection: dragSel,
-                            targetIdentificator: targetCol.id
-                        })
-                    });
-                    //                    }
-                    
-                    g.addRequest({
-                        c: g.get('drop').callMethod('getContent')
-                    });
-                    g.addRequest({
-                        d: g.get('drag').callMethod('getContent')
-                    });
-                    
-                    var r = g.submit();
-                    
-                    if (dragWid.reload) {
-                        dragWid.content = r.get('d');
-                        dragWid.collection = r.get('drag');
-                        dragWid.reload(false);
-                        //dragWid.reload(true);
-                    }
-                    
-                    updateDesktop();
-                    
-                    // Temporary Debug
-                    dragSel.context = dContext;
-                    
-                    return true;
-                }
-                else {
-                    if (source.dragData.node.attributes.collection) {
-                        //console.log('Drop from Tree on Desktop');
-                        var treedrop = true;
-                        var document = context.getDocument({
-                            id: source.dragData.node.attributes.collection,
-                            useCache: true
-                        });
-                    }
-                }
-            }
-            
-            document.moveTo({
-                fromFolderId: fromId,
-                folderId: context.getDesktopFolder().id
-            });
-            if (source.dragData.grid) {
-                if (source.dragData.grid.ownerCt && source.dragData.grid.ownerCt.collectionView) {
-                    source.dragData.grid.ownerCt.collectionView.update();
-                }
-            }
-            
-            if (treedrop) {
-                // Actualize from where we drop
-                if (source.dragData.node && source.dragData.node.parentNode && source.dragData.node.getOwnerTree()) {
-                    updateNode(source.dragData.node.parentNode).expand();
-                }
-            }
-            
-            updateDesktop();
-            
-            return (true);
-            
-        },
-        notifyEnter: function(source, e, data){
-            //console.log('Notify Enter');            
-            if (e.ctrlKey) {
-                //console.log('Ctrl Key down on enter');
-            }
-        },
-        notifyOut: function(source, e, data){
-            //console.log('Notify Out');
-        }
-    });
-    
-    installDocumentDropOnTree(homeTree);
     
     taskBar = new Ext.ux.TaskBar({});
     ecm.initializeGadgets();
-});
-
-// Drag and Drop behaviour
-DocumentDragZone = function(view, config){
-    this.view = view;
-    DocumentDragZone.superclass.constructor.call(this, view.getEl(), config);
-};
-
-Ext.extend(DocumentDragZone, Ext.dd.DragZone, {
-    // Override dragData
-    getDragData: function(e){
-        var target = e.getTarget('.icon-wrap');
-        if (target) {
-            var view = this.view;
-            if (!view.isSelected(target)) {
-                view.select(target);
-                //view.select(target, true);
-                //view.onClick(e);
-            }
-            var selNodes = view.getSelectedNodes();
-            var dragData = {
-                nodes: selNodes
-            };
-            if (selNodes.length == 1) {
-                dragData.ddel = target;
-                dragData.single = true;
-                dragData.documentId = target.id;
-            }
-            // Multiple selection handler
-            //            else {
-            //                dragData.documentId = [];
-            //                var div = document.createElement('div'); // create the multi element drag "ghost"
-            //                div.className = 'multi-proxy';
-            //                for (var i = 0, len = selNodes.length; i < len; i++) {
-            //                    div.appendChild(selNodes[i].firstChild.firstChild.cloneNode(true)); // image nodes only
-            //                    if ((i + 1) % 3 == 0) {
-            //                        div.appendChild(document.createElement('br'));
-            //                    }
-            //                    
-            //                    dragData.documentId.push(selNodes[i].id);
-            //                    
-            //                }
-            //                var count = document.createElement('div'); // selected image count
-            //                count.innerHTML = i + ' documents sélectionnés';
-            //                div.appendChild(count);
-            //                
-            //                dragData.ddel = div;
-            //                dragData.multi = true;
-            //            }
-            
-            return dragData;
-        }
-        return false;
-    },
     
-    // the default action is to "highlight" after a bad drop
-    // but since an image can't be highlighted, let's frame it 
-    afterRepair: function(){
-        for (var i = 0, len = this.dragData.nodes.length; i < len; i++) {
-            Ext.fly(this.dragData.nodes[i]).frame('#8db2e3', 1);
-        }
-        this.dragging = false;
-    },
+    Ext.get('loading').remove();
     
-    // override the default repairXY with one offset for the margins and padding
-    getRepairXY: function(e){
-        if (!this.dragData.multi) {
-            var xy = Ext.Element.fly(this.dragData.ddel).getXY();
-            xy[0] += 3;
-            xy[1] += 3;
-            return xy;
-        }
-        return false;
-    }
 });
 
-GridDocumentDragZone = function(grid, config){
-    GridDocumentDragZone.superclass.constructor.call(this, grid, config);
-};
-Ext.extend(GridDocumentDragZone, Ext.grid.GridDragZone, {
-    getDragData: function(e){
-        var retval = GridDocumentDragZone.superclass.getDragData.call(this, e);
-        retval.documentId = 'Extra Drag Data';
-        return retval;
-    }
-});
-
-/*
+/**
  * Test if Drag Drog Upload Plugin for Firefox is installed.
  * Documentation for Plugin : http://www.teslacore.it/wiki/index.php?title=DragDropUpload
  */
@@ -1129,33 +701,6 @@ ecm.getOnefamGrid = function(appid){
         appid: appid
     });
     console.log(famsearches);
-    var children = [{
-        text: 'First Level Child 1',
-        children: [{
-            text: 'Second Level Child 1',
-            leaf: true,
-            listeners: {
-            
-                click: function(n, e){
-                    alert('9');
-                }
-            }
-        }, {
-            text: 'Second Level Child 2',
-            leaf: true
-        }]
-    }, {
-        text: 'First Level Child 2',
-        children: [{
-            text: 'Second Level Child 1',
-            leaf: true
-        }, {
-            text: 'Second Level Child 2',
-            leaf: true
-        }]
-    
-    }];
-    
     
     var afamilies = ecm.getOnefamSearches(famsearches.admin);
     var ufamilies = ecm.getOnefamSearches(famsearches.user);

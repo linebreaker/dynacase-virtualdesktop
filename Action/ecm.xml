@@ -4,12 +4,12 @@
         <title>
             Ecm
         </title>
-		
-		<!-- Handle console without Firebug -->
+        
+        <!-- Handle console without Firebug -->
         <script>
             if (!("console" in window)) {window.console = {'log': function(s) {}}}
         </script>
-		
+        
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
         <!--<link rel="stylesheet" type="text/css" href="lib/ext/resources/css/xtheme-slate.css"/>-->
@@ -17,11 +17,11 @@
         </script>
         <script type="text/javascript" src="lib/ext/ext-all-debug.js">
         </script>
-		
-		<!--<script src="lib/ext/source/locale/ext-lang-fr.js">
+        
+        <!--<script src="lib/ext/source/locale/ext-lang-fr.js">
         </script>-->
-		
-		<!-- Ext User Extensions -->
+        
+        <!-- Ext User Extensions -->
         <link rel="stylesheet" type="text/css" href="lib/user/ext-user.css"/>
         <script type="text/javascript" src="lib/user/ext-user.js">
         </script>
@@ -30,21 +30,21 @@
         <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]">
         </script>
         <script type="text/javascript" src="lib/data/json2.js">
-        </script>        
-		
-		<!-- Freedom Widget Library -->
-		<link rel="stylesheet" type="text/css" href="lib/ui/widget.css"/>
+        </script>
+        
+        <!-- Freedom Widget Library -->
+        <link rel="stylesheet" type="text/css" href="lib/ui/widget.css"/>
         <script type="text/javascript" src="lib/ui/wfdl.js?v=[WVERSION]">
-        </script>        
+        </script>
         
         <link rel="stylesheet" type="text/css" href="lib/ui/widget-services.css"/>
         <link rel="stylesheet" type="text/css" href="lib/ui/widget-notes.css"/>
         
         <script src="lib/ext/examples/ux/RowExpander.js">
-        </script>        
+        </script>
         
         <!-- Ecm Offline -->
-		<link rel="stylesheet" type="text/css" href="ECM/Layout/ecmOffline.css"/>
+        <link rel="stylesheet" type="text/css" href="ECM/Layout/ecmOffline.css"/>
         <script type="text/javascript" src="ECM/Layout/ecmOffline.js?v=[WVERSION]">
         </script>
         
@@ -53,7 +53,7 @@
         </script>
         <script language="javascript" src="ECM/Layout/ecm_gadget.js?v=[WVERSION]">
         </script>
-		        
+        
         
         <style>
             /*
@@ -186,29 +186,10 @@
             }
             
             /* Style for icon in the center panel */
-            .icon-wrap {
-            float:left;
-            margin:10px;
-            padding:5px;
-            width: 100px;
-            height: 50px;
-            }
-            
-            .icon{
-            margin-left: auto;
-            margin-right: auto;
-            width: 32px;
-            padding: 5px;
-            }
-            
-            .icon-wrap span {
-            display:block;
-            overflow:hidden;
-            text-align:center;
-            }
-            .x-view-selected .icon {
-            background:#8DB2E3 none repeat scroll 0 0;
-            }
+            .freedom-icon-text {
+				color: silver ;
+			}
+			
             /* Style for shortcuts(trash) in the center panel */
             .util-wrap {
             float:right;
@@ -295,25 +276,27 @@
             margin-left: 20px;
             }*/
             
-			
+            
             /* CSS to remove default margin of ExtJS for displayField */
             /*.x-form-item {
             margin-bottom:0px;
-			font-weight: inherit;
-			font-size:inherit;
+            font-weight: inherit;
+            font-size:inherit;
             }*/
-			
+            
             .x-form-item {
-			font-size:11px;
+            font-size:11px;
             }
-			
+            
         </style>
         
     </head>
     <body>
         
-        <div id="loading" style="position:absolute;left:40%;top:45%;font-weight:bold;font-size:large;">
-            <img src="ECM/Images/large-loading.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>Chargement de freedom-ecm 3.0 ...
+        <div id="loading" style="position:absolute;z-index:100000;height:100%;width:100%;background-color:white;">
+            <div style="position:absolute;left:40%;top:45%;font-weight:bold;font-size:large;">
+                <img src="ECM/Images/large-loading.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>Chargement de freedom-ecm 3.0 ...
+            </div>
         </div>
         
         <iframe name='download_frame' style='display:none;'>
