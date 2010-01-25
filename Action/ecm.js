@@ -27,16 +27,16 @@ Ext.onReady(function(){
     
     // Fdl.ApplicationManager will represent global ecm application behaviour
     // TODO Rename more appropriately but take care because Fdl.ApplicationManager was used in many places
-    Fdl.ApplicationManager = new Ext.fdl.Application({
+    Fdl.ApplicationManager = new Ext.fdl.Interface({
         context: context,
         // These are ecm new specific properties to handle window positioning
         windows: {},
         windowX: 0,
         windowY: 0,
-		
-		// Store documents id contained in the docBar
-    	docBar: {}
-		
+        
+        // Store documents id contained in the docBar
+        docBar: {}
+    
     });
     
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
@@ -115,14 +115,14 @@ Ext.onReady(function(){
         this.windows[id] = null;
         
     };
-	
-	/**
+    
+    /**
      * DisplaySearch
      * @param {String} key
      * @param {Object} searchConfig
      * @param {Object} widgetConfig {pageSize,windowTitle,windowName}
      */
-	Fdl.ApplicationManager.displaySearch = function(key, searchConfig, widgetConfig){
+    Fdl.ApplicationManager.displaySearch = function(key, searchConfig, widgetConfig){
     
         var d = context.getSearchDocument();
         
@@ -190,7 +190,7 @@ Ext.onReady(function(){
                     window.updateDocument(d);
                     
                     // Adjust maximum size to container size
-                    var container =  Fdl.ApplicationManager.desktopPanel.body;
+                    var container = Fdl.ApplicationManager.desktopPanel.body;
                     var max = container.getHeight();
                     if (this.getHeight() > max) {
                         this.setHeight(max)
@@ -200,7 +200,7 @@ Ext.onReady(function(){
                 afterrender: function(win){
                 
                     // Adjust maximum size to container size
-                    var container =  Fdl.ApplicationManager.desktopPanel.body;
+                    var container = Fdl.ApplicationManager.desktopPanel.body;
                     var max = container.getHeight();
                     if (win.getHeight() + win.getPosition(true)[1] > max) {
                         win.setHeight(max - win.getPosition(true)[1]);
@@ -265,6 +265,9 @@ Ext.onReady(function(){
     
     Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
         collection: context.getDesktopFolder(),
+        useTrash: context.getDocument({
+            id: 'OUR_MYTRASH'
+        }),
         bodyStyle: {
             "background-image": "url(" + context.url + "ECM/Images/our.desktop.jpg" + ")"
         }
@@ -274,66 +277,9 @@ Ext.onReady(function(){
     Fdl.ApplicationManager.desktopPanel.region = 'center';
     
     // Reload desktop content and display
-    updateDesktop = function(){
-    
-        Fdl.ApplicationManager.desktopCollection.reload();
-        
-        //        // Generate utils shortcuts, for now only trash
-        //        var utilData = new Array();
-        //        
-        //        var myTrash = context.getDocument({
-        //            id: 'OUR_MYTRASH'
-        //        });
-        //        
-        //        utilData.push([myTrash.getProperty('name'), myTrash.getProperty('id'), myTrash.getProperty('title'), myTrash.getIcon({
-        //            width: 32
-        //        })]);
-        //        
-        //        // Set up shortcuts view
-        //        var utilView = new Ext.DataView({
-        //            itemSelector: 'div.util-wrap',
-        //            style: 'overflow:auto;position:absolute;bottom:0;right:0;',
-        //            store: new Ext.data.Store({
-        //                data: utilData,
-        //                reader: new Ext.data.ArrayReader({
-        //                    id: 'id'
-        //                }, ['name', 'id', 'title', 'icon'])
-        //            }),
-        //            tpl: new Ext.XTemplate('<tpl for=".">', '<div class="util-wrap" id="{name}">', '<div class="icon"><img ext:qtip="<b>titre : {title}</b>" src="{icon}" class="icon-img" style="width:32px;"></div>', '<span style="color:silver;">{title}</span></div>', '</tpl>'),
-        //            listeners: {
-        //                dblclick: function(dataview, index, node, e){
-        //                    switch (node.id) {
-        //                        case 'OUR_MYTRASH':
-        //                            Fdl.ApplicationManager.displayDocument('OUR_MYTRASH', 'view', e);
-        //                            break;
-        //                    }
-        //                    
-        //                }
-        //            }
-        //        });
-        //      
-    
-        //        var center = Ext.getCmp('center');
-        //        center.removeAll();
-        //        center.add(iconView);
-        //        center.add(utilView);
-        //        center.doLayout();
-    
-        //        var dropTarget = new Ext.dd.DropTarget(Ext.get('OUR_MYTRASH'), {
-        //            ddGroup: 'docDD',
-        //            notifyDrop: function(ddSource, e, data){
-        //                var document = context.getDocument({
-        //                    id: ddSource.dragData.documentId,
-        //                    useCache: true
-        //                });
-        //                document.remove();
-        //                // TODO Update open window if applicable                                 
-        //                updateDesktop();
-        //                return (true);
-        //            }
-        //        });
-    
-    }
+    updateDesktop = function(){    
+        Fdl.ApplicationManager.desktopCollection.reload();    
+    };
     
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
     createSimpleFile = function(){
@@ -570,7 +516,7 @@ Ext.onReady(function(){
                 icon: 'ECM/Images/our.identity.png',
                 text: context.getUser().getDisplayName(),
                 handler: function(){
-                    //Ext.Msg.alert('Utilisateur', 'Pas encore implémenté');
+                //Ext.Msg.alert('Utilisateur', 'Pas encore implémenté');
                 }
             }, {
                 xtype: 'tbbutton',
@@ -605,52 +551,52 @@ Ext.onReady(function(){
     addTreeToPanel(treePanel);
     
     function addTreeToPanel(panel){
-        
+    
         var workspaceTree = new Ext.Panel({
             title: 'Plan de classement',
             bodyStyle: 'padding:10px;',
             html: "<p>Vous n'avez aucun espace de travail défini.</p>"
         });
         
-        if (workspace) {        
+        if (workspace) {
             var workspaceTreeCollection = new Ext.fdl.TreeCollection({
                 title: 'Plan de classement',
                 collection: workspace
-            });            
-            var workspaceTree = workspaceTreeCollection.display();            
+            });
+            var workspaceTree = workspaceTreeCollection.display();
         }
         
         panel.add(workspaceTree);
         
         // Search TreePanel
         var search = context.getSearchDocument({
-			filter: new Fdl.DocumentFilter({
-				family: 'REPORT',
-				criteria: [{
-					operator: '=',
-					left: 'owner',
-					right: context.getUser().id
-				}]
-			})
+            filter: new Fdl.DocumentFilter({
+                family: 'REPORT',
+                criteria: [{
+                    operator: '=',
+                    left: 'owner',
+                    right: context.getUser().id
+                }]
+            })
         });
         var searchTreeCollection = new Ext.fdl.TreeCollection({
             title: 'Rapports',
-			rootVisible: false,
+            rootVisible: false,
             search: search
         });
-        var searchTree = searchTreeCollection.display();        
+        var searchTree = searchTreeCollection.display();
         // EO Search TreePanel
         
         updateSearch = function(){
-			searchTreeCollection.reload();
+            searchTreeCollection.reload();
         };
-		
-		panel.add(searchTree);
+        
+        panel.add(searchTree);
         
         panel.add(ecm.getOnefamGrid("ONEFAM"));
         
         panel.doLayout();
-
+        
     }
     
     taskBar = new Ext.ux.TaskBar({});
@@ -776,7 +722,7 @@ ecm.getOnefamSearches = function(searches){
                                 left: 'state',
                                 right: n.attributes.documentState
                             }]
-                            //                            filter: "state='" + n.attributes.documentState + "'"
+                        //                            filter: "state='" + n.attributes.documentState + "'"
                         }, {
                             windowName: 'worflow' + n.attributes.documentId + n.attributes.documentState,
                             windowTitle: n.attributes.documentTitle + ' ' + n.text
