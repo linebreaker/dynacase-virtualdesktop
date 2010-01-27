@@ -97,10 +97,10 @@ Ext.fdl.DocumentPhoto = {
                 text: 'Modifier',
                 scope: this,
                 handler: function(){
-                    var url = this.document.getAttribute('photo_file').getDavUrl();
+                    var url = this.document.getDisplayValue('photo_file',{url:true, dav: true });
                     open(url, 'download_frame');
                 },
-                disabled: !this.document.getAttribute('photo_file').getDavUrl()
+                disabled: !this.document.getDisplayValue('photo_file',{url:true, dav: true })
             }, {
                 xtype: 'menuitem',
                 text: 'Google Maps',

@@ -188,10 +188,12 @@ Ext.fdl.DocumentSimpleFile = {
                 text: 'Modifier',
                 scope: this,
                 handler: function(){
-                    var url = this.document.getAttribute('sfi_file').getDavUrl();
+                    var url = this.document.getDisplayValue('sfi_file',{url:true,
+                        dav: true
+                    });
                     open(url, 'download_frame');
                 },
-                disabled: !this.document.getAttribute('sfi_file').getDavUrl()
+                disabled: !this.document.getDisplayValue('sfi_file',{url:true, dav: true })
             }, {
                 xtype: 'menuitem',
                 text: 'PDF',
