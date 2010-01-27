@@ -7,6 +7,9 @@ Ext.fdl.DocumentPhoto = {
         url = this.document.getAttribute('photo_file').getUrl({
             type: 'original'
         });
+		
+		console.log('URL',url);
+		
         var mediaType = 'PNG';
         
         // Generate the text to display for version
