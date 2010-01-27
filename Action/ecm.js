@@ -252,7 +252,7 @@ Ext.onReady(function(){
     var sd = context.getSearchDocument();
     wr = sd.search({
         famid: 'WORKSPACE'
-    });
+    }).getDocuments();
     
     workspace = null;
     
@@ -619,8 +619,8 @@ Ext.onReady(function(){
 	// Code to measure execution time
 	end = new Date() ;
 	
-	//console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
-	Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+	console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+	//Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
     
 });
 
