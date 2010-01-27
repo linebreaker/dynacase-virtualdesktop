@@ -4,7 +4,7 @@ Ext.fdl.DocumentPhoto = {
  
     display: function(){
 		
-        url = this.document.getAttribute('photo_file').getUrl({
+        url = this.document.getDisplayValue('photo_file',{url:true,
             type: 'original'
         });
 		
@@ -85,7 +85,7 @@ Ext.fdl.DocumentPhoto = {
                 text: 'Télécharger',
                 scope: this,
                 handler: function(){
-                    var url = this.document.getAttribute('photo_file').getUrl({
+                    var url = this.document.getDisplayValue('photo_file',{url:true,
                         inline: false
                     });
                     open(url, 'download_frame');
@@ -95,10 +95,10 @@ Ext.fdl.DocumentPhoto = {
                 text: 'Modifier',
                 scope: this,
                 handler: function(){
-                    var url = this.document.getAttribute('photo_file').getDavUrl();
+                    var url = this.document.getDisplayValue('photo_file',{url:true, dav: true });
                     open(url, 'download_frame');
                 },
-                disabled: !this.document.getAttribute('photo_file').getDavUrl()
+                disabled: !this.document.getDisplayValue('photo_file',{url:true, dav: true })
             }, {
                 xtype: 'menuitem',
                 text: 'Google Maps',
@@ -114,7 +114,7 @@ Ext.fdl.DocumentPhoto = {
                         height: 450 + 25,
                         resizable: true,
                         maximizable: true,
-                        renderTo: Ext.getCmp('center').body,
+                        renderTo: Fdl.ApplicationManager.desktopPanel.body,
                         constrain: true,
                         html: '<iframe style="width:100%;height:100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.fr/?ie=UTF8&amp;ll=' + this.document.getValue('photo_gpslatitudedecimal') + ',' + this.document.getValue('photo_gpslongitudedecimal') + '&amp;z=15&amp;output=embed&q=' + this.document.getValue('photo_gpslatitudedecimal') + ',' + this.document.getValue('photo_gpslongitudedecimal') + '(' + encodeURI(this.document.getTitle()) + ')></iframe>'
                     
@@ -149,4 +149,4 @@ Ext.fdl.FormDocumentPhoto = {
 	
 	display: Ext.fdl.DocumentDefaultEdit.display
 	
-}
+};
