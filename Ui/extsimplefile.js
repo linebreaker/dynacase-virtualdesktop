@@ -5,12 +5,14 @@ Ext.fdl.DocumentSimpleFile = {
     uxm: null,
     display: function(){
         var file = this.document.getAttribute('sfi_file');
+        var pdffile = this.document.getValue(file.getOption('pdffile'));
         var url = null;
         
         var style = null;
         
         if (this.document.getValue('sfi_mimesys').indexOf('image/', 0) == 0) {
-            url = this.document.getAttribute('sfi_file').getUrl({
+            url = this.document.getDisplayValue('sfi_file',{
+            	url:true,
                 type: 'original'
             });
             var mediaType = 'PNG';
@@ -20,13 +22,13 @@ Ext.fdl.DocumentSimpleFile = {
         }
         else {
         
-            if (file.hasPDF()) {
+            if (pdffile) {
             
-                url = file.getUrl({
+                url = this.document.getDisplayValue('sfi_file',{url:true,
                     type: 'png',
                     width: this.getInnerWidth() - 20 // 20 scrollbar
                 });
-                url = "Images/loading.gif";
+                
                 mediaType = 'PNG';
                 style = {
                     width: '100%'
@@ -44,13 +46,14 @@ Ext.fdl.DocumentSimpleFile = {
                     var check = function(v){
                     
                         v.document.reload();
-                        
-                        if ((!v.document.hasWaitingFiles()) || (v.document.getAttribute('sfi_file').hasPDF())) {
+                        var file = v.document.getAttribute('sfi_file');
+                        var pdffile = v.document.getValue(file.getOption('pdffile'));
+                        if ((!v.document.hasWaitingFiles()) || pdffile) {
                             v.switchMode(v.mode);
                             v.doLayout();
                             clearInterval(intervalId);
                         }
-                    }
+                    };
                     
                     var docview = this;
                     var intervalId = setInterval(function(){
@@ -91,9 +94,9 @@ Ext.fdl.DocumentSimpleFile = {
                 bodyresize: function(p, w, h){
                     var uxm = this.items.itemAt(1);
                     if (this.uxm) {
-                        if (file.hasPDF()) {
+                        if (pdffile) {
                         
-                            url = file.getUrl({
+                            url = this.document.getDisplayValue('sfi_file',{url:true,
                                 type: 'png',
                                 page: this.cpage,
                                 width: this.getInnerWidth() - 20
@@ -158,6 +161,7 @@ Ext.fdl.DocumentSimpleFile = {
     renderToolbar: function(){
     
         var file = this.document.getAttribute('sfi_file');
+        var pdffile = this.document.getValue(file.getOption('pdffile'));
         var toolbar = new Ext.Toolbar({
             x: 0,
             y: 0,
@@ -174,7 +178,7 @@ Ext.fdl.DocumentSimpleFile = {
                 text: 'Télécharger',
                 scope: this,
                 handler: function(){
-                    var url = this.document.getAttribute('sfi_file').getUrl({
+                    var url = this.document.getDisplayValue('sfi_file',{url:true,
                         inline: false
                     });
                     open(url, 'download_frame');
@@ -193,18 +197,18 @@ Ext.fdl.DocumentSimpleFile = {
                 text: 'PDF',
                 scope: this,
                 handler: function(){
-                    var url = this.document.getAttribute('sfi_file').getUrl({
+                    var url = this.document.getDisplayValue('sfi_file',{url:true,
                         inline: false,
                         type: 'pdf'
                     });
                     open(url, 'download_frame');
                 },
-                disabled: !this.document.getAttribute('sfi_file').hasPDF()
+                disabled: !pdffile
             }]
         });
         
         toolbar.add(new Ext.Toolbar.Fill());
-        if (file.hasPDF()) {
+        if (pdffile) {
             var prev = new Ext.Button({
                 tooltip: 'Page précédente',
                 scope: this,
@@ -224,7 +228,7 @@ Ext.fdl.DocumentSimpleFile = {
                     else 
                         next.disable();
                     numbers.setValue(this.cpage + 1);
-                    url = file.getUrl({
+                    url = this.document.getDisplayValue('sfi_file',{url:true,
                         type: 'png',
                         page: this.cpage,
                         width: this.getInnerWidth() - 20
@@ -252,7 +256,7 @@ Ext.fdl.DocumentSimpleFile = {
                         if (this.cpage > o.maxValue) 
                             this.cpage = o.maxValue - 1;
                         o.setValue(this.cpage + 1);
-                        url = file.getUrl({
+                        url = this.document.getDisplayValue('sfi_file',{url:true,
                             type: 'png',
                             page: this.cpage,
                             width: this.getInnerWidth() - 20
@@ -277,7 +281,7 @@ Ext.fdl.DocumentSimpleFile = {
                             if (this.cpage > o.maxValue) 
                                 this.cpage = o.maxValue - 1;
                             o.setValue(this.cpage + 1);
-                            url = file.getUrl({
+                            url = this.document.getDisplayValue('sfi_file',{url:true,
                                 type: 'png',
                                 page: this.cpage,
                                 width: this.getInnerWidth() - 20
@@ -317,7 +321,7 @@ Ext.fdl.DocumentSimpleFile = {
                         prev.enable();
                     numbers.setValue(this.cpage + 1);
                     
-                    url = file.getUrl({
+                    url = this.document.getDisplayValue('sfi_file',{url:true,
                         type: 'png',
                         page: this.cpage,
                         width: this.getInnerWidth() - 20
@@ -355,4 +359,4 @@ Ext.fdl.FormDocumentSimpleFile = {
     
     display: Ext.fdl.DocumentDefaultEdit.display
 
-}
+};
