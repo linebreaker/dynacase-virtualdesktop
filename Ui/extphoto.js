@@ -8,8 +8,6 @@ Ext.fdl.DocumentPhoto = {
             type: 'original'
         });
 		
-		console.log('URL',url);
-		
         var mediaType = 'PNG';
         
         // Generate the text to display for version

@@ -119,10 +119,9 @@ Ext.onReady(function(){
         
     };
     
-	Fdl.ApplicationManager.onOpenSearch = function(filter,config){
-		
-		
-		
+	Fdl.ApplicationManager.onOpenSearch = function(wid,filter,config){
+		console.log('FILTER',filter);
+		Fdl.ApplicationManager.displaySearch(null,filter,config);		
 	}
 	
     /**
