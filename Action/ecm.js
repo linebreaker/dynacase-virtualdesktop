@@ -1,3 +1,6 @@
+// Code to measure execution time
+start = new Date();
+
 // Data connection
 var context = new Fdl.Context({
     url: window.location.pathname
@@ -116,6 +119,12 @@ Ext.onReady(function(){
         
     };
     
+	Fdl.ApplicationManager.onOpenSearch = function(filter,config){
+		
+		
+		
+	}
+	
     /**
      * DisplaySearch
      * @param {String} key
@@ -284,7 +293,7 @@ Ext.onReady(function(){
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
     createSimpleFile = function(){
         var form = Ext.getDom('create_simple_file');
-        var document = Fdl.createDocument({
+        var document = context.createDocument({
             familyId: 'SIMPLEFILE'
         });
         
@@ -293,7 +302,7 @@ Ext.onReady(function(){
         document.save({
             form: form,
             callback: function(doc){
-                var c = new Fdl.getDesktopFolder();
+                var c = context.getDesktopFolder();
                 c.insertDocument({
                     id: doc.getProperty('id')
                 });
@@ -593,7 +602,10 @@ Ext.onReady(function(){
         
         panel.add(searchTree);
         
-        panel.add(ecm.getOnefamGrid("ONEFAM"));
+        //panel.add(ecm.getOnefamGrid("ONEFAM"));
+		panel.add(new Ext.fdl.FamilyTreePanel({
+			context: context
+		}));
         
         panel.doLayout();
         
@@ -603,6 +615,12 @@ Ext.onReady(function(){
     ecm.initializeGadgets();
     
     Ext.get('loading').remove();
+	
+	// Code to measure execution time
+	end = new Date() ;
+	
+	//console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+	Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
     
 });
 
@@ -753,3 +771,34 @@ ecm.getOnefamSearches = function(searches){
     }
     return families;
 }
+
+Ext.Info = function(){
+    var msgCt;
+    
+    function createBox(t, s){
+        return ['<div class="msg">', '<div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>', '<div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc"><h3>', t, '</h3>', s, '</div></div></div>', '<div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>', '</div>'].join('');
+    }
+    return {
+        msg: function(title, format){
+            if (!msgCt) {
+                msgCt = Ext.DomHelper.insertFirst(Fdl.ApplicationManager.desktopPanel.body, {
+                    id: 'msg-div'
+                }, true);
+            }
+            msgCt.alignTo(Ext.getCmp('center').body, 't-t', [0, 5]);
+            var s = String.format.apply(String, Array.prototype.slice.call(arguments, 1));
+            var m = Ext.DomHelper.append(msgCt, {
+                html: createBox(title, s)
+            }, true);
+            //            m.on('click', function(e,t,o){
+            //				console.log('click');
+            //                t.ghost("t", {
+            //                    remove: true
+            //                });
+            //            });
+            m.slideIn('t').pause(3).ghost("t", {
+                remove: true
+            });
+        }
+    };
+}();

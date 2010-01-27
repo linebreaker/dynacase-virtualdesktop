@@ -119,7 +119,7 @@ Ext.fdl.FormDocumentReport = {
                         this.document.save({
                             form: domform,
                             callback: function(doc){
-                                var c = context.getDesktopFolder();
+                                var c = this.context.getDesktopFolder();
                                 c.insertDocument({
                                     id: doc.getProperty('id')
                                 });
@@ -172,7 +172,7 @@ Ext.fdl.FormDocumentReport = {
             return this.columnPanel;
         }
         
-        var familyDocument = context.getDocument({
+        var familyDocument = this.context.getDocument({
             id: id
         });
         

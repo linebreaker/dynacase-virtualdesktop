@@ -20,7 +20,7 @@ Ext.fdl.DocumentMinuteMeeting = {
             },
             items: [{
                 html: "<img src=" +
-                context.resizeImage(context.getParameter({
+                this.context.resizeImage(this.context.getParameter({
                     id: 'CORE_LOGOCLIENT'
                 }), 80) +
                 " style='margin-left:10px;width:80px;' />",
