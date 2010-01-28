@@ -152,11 +152,12 @@ Ext.onReady(function(){
         }
         
         if (!widgetConfig || !widgetConfig.windowTitle) {
-			if (key) {
-				var windowTitle = 'Recherche : ' + key;
-			} else {
-				var windowTitle = 'Recherche' ;
-			}
+            if (key) {
+                var windowTitle = 'Recherche : ' + key;
+            }
+            else {
+                var windowTitle = 'Recherche';
+            }
         }
         else {
             var windowTitle = widgetConfig.windowTitle;
@@ -267,16 +268,19 @@ Ext.onReady(function(){
     };
     
     // Home TreePanel
-    var home = context.getHomeFolder();
     var homeTreeCollection = new Ext.fdl.TreeCollection({
         title: 'Personnel',
-        collection: home
+        collection: context.getHomeFolder({
+            contentStore: true
+        })
     });
     var homeTree = homeTreeCollection.display();
     // EO Home TreePanel
     
     Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
-        collection: context.getDesktopFolder(),
+        collection: context.getDesktopFolder({
+            contentStore: true
+        }),
         useTrash: context.getDocument({
             id: 'OUR_MYTRASH'
         }),
