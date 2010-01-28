@@ -1,3 +1,9 @@
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
 var URL_FREEDOM = window.location.pathname;
 URL_FREEDOM = URL_FREEDOM.substring(0,URL_FREEDOM.lastIndexOf("/"));
 var URL_INSTALL_XPI = URL_FREEDOM + "/offline/Apps/freedomOffline.xpi "
