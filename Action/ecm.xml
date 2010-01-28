@@ -13,10 +13,19 @@
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
         <!--<link rel="stylesheet" type="text/css" href="lib/ext/resources/css/xtheme-slate.css"/>-->
-        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js">
+        [IF DEBUG]
+	    <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js">
+	    </script>
+		<script type="text/javascript" src="lib/ext/ext-all-debug.js">
         </script>
-        <script type="text/javascript" src="lib/ext/ext-all-debug.js">
+        [ENDIF DEBUG]
+	    [IFNOT DEBUG]
+        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js">
         </script>
+		<script type="text/javascript" src="lib/ext/ext-all.js">
+        </script>
+	    [ENDIF DEBUG]
+        
         
         <!--<script src="lib/ext/source/locale/ext-lang-fr.js">
         </script>-->

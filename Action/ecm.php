@@ -16,6 +16,14 @@
 include_once("FDL/Class.Doc.php");
 
 function ecm(&$action)  {
+	
+    if( $action->getParam('ECM_DEBUG') == 'yes' || (isset($_REQUEST['ecm_debug']) && $_REQUEST['ecm_debug'] == 'yes') ) {
+      $action->lay->set('DEBUG', true);
+	  error_log('ECM DEBUG TRUE');
+    } else {
+      $action->lay->set('DEBUG', false);
+	  error_log('ECM DEBUG FALSE');
+    }
   
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $desktop=getTDoc($dbaccess,'FLDDESKTOP_'.$action->user->id);
