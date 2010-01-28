@@ -1,4 +1,10 @@
 
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+
 ecm._iGoogleGadget=new Object();
 ecm._iGoogleGadget={userPref:{url:'http://www.gmodules.com/ig/ifr?url=http://www.efattal.fr/google/circulation/module.html&amp;up_city=caen&amp;up_lastMsg=&amp;up_guid=&amp;up_pseudo=&amp;synd=open&amp;w=320&amp;h=270&amp;title=Conditions+de+la+circulation&amp;border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;output=js',
 				  title:'Circulation de Caen'},
