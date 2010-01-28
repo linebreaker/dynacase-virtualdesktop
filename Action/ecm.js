@@ -408,14 +408,14 @@ Ext.onReady(function(){
                             this.hasSearch = true;
                             this.triggers[0].show();
                             if (v != '') {
-                                Fdl.ApplicationManager.displaySearch(v, new Fdl.DocumentFilter({
+                                Fdl.ApplicationManager.displaySearch(v, {
                                     criteria: [{
                                         operator: '~*',
                                         left: 'svalues',
                                         right: v
                                     }]
                                 
-                                }), {
+                                }, {
                                     windowName: 'simplesearch'
                                 });
                             }
