@@ -225,7 +225,7 @@ ecm.listGadgets=function () {
             height: 150 + 25,
             resizable: true,
             plain: true,
-            renderTo: Ext.getCmp('center').body,
+            renderTo: Fdl.ApplicationManager.desktopPanel.body,
             constrain: true,
 //	    cls:'x-fdl-service',
 	    items:[grid],

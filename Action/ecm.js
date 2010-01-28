@@ -119,11 +119,11 @@ Ext.onReady(function(){
         
     };
     
-	Fdl.ApplicationManager.onOpenSearch = function(wid,filter,config){
-		console.log('FILTER',filter);
-		Fdl.ApplicationManager.displaySearch(null,filter,config);		
-	}
-	
+    Fdl.ApplicationManager.onOpenSearch = function(wid, filter, config){
+        console.log('FILTER', filter);
+        Fdl.ApplicationManager.displaySearch(null, filter, config);
+    }
+    
     /**
      * DisplaySearch
      * @param {String} key
@@ -152,7 +152,11 @@ Ext.onReady(function(){
         }
         
         if (!widgetConfig || !widgetConfig.windowTitle) {
-            var windowTitle = 'Recherche : ' + key;
+			if (key) {
+				var windowTitle = 'Recherche : ' + key;
+			} else {
+				var windowTitle = 'Recherche' ;
+			}
         }
         else {
             var windowTitle = widgetConfig.windowTitle;
@@ -285,8 +289,8 @@ Ext.onReady(function(){
     Fdl.ApplicationManager.desktopPanel.region = 'center';
     
     // Reload desktop content and display
-    updateDesktop = function(){    
-        Fdl.ApplicationManager.desktopCollection.reload();    
+    updateDesktop = function(){
+        Fdl.ApplicationManager.desktopCollection.reload();
     };
     
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
@@ -394,7 +398,14 @@ Ext.onReady(function(){
                             this.hasSearch = true;
                             this.triggers[0].show();
                             if (v != '') {
-                                Fdl.ApplicationManager.displaySearch(v, null, {
+                                Fdl.ApplicationManager.displaySearch(v, new Fdl.DocumentFilter({
+                                    criteria: [{
+                                        operator: '~*',
+                                        left: 'svalues',
+                                        right: v
+                                    }]
+                                
+                                }), {
                                     windowName: 'simplesearch'
                                 });
                             }
@@ -602,9 +613,9 @@ Ext.onReady(function(){
         panel.add(searchTree);
         
         //panel.add(ecm.getOnefamGrid("ONEFAM"));
-		panel.add(new Ext.fdl.FamilyTreePanel({
-			context: context
-		}));
+        panel.add(new Ext.fdl.FamilyTreePanel({
+            context: context
+        }));
         
         panel.doLayout();
         
@@ -614,13 +625,13 @@ Ext.onReady(function(){
     ecm.initializeGadgets();
     
     Ext.get('loading').remove();
-	
-	// Code to measure execution time
-	end = new Date() ;
-	
-	console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
-	//Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
     
+    // Code to measure execution time
+    end = new Date();
+    
+    console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+    //Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+
 });
 
 /**
@@ -784,7 +795,7 @@ Ext.Info = function(){
                     id: 'msg-div'
                 }, true);
             }
-            msgCt.alignTo(Ext.getCmp('center').body, 't-t', [0, 5]);
+            msgCt.alignTo(Fdl.ApplicationManager.desktopPanel.body, 't-t', [0, 5]);
             var s = String.format.apply(String, Array.prototype.slice.call(arguments, 1));
             var m = Ext.DomHelper.append(msgCt, {
                 html: createBox(title, s)

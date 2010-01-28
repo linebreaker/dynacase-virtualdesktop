@@ -4,7 +4,7 @@ Ext.fdl.SimpleNote = {
     
     display: function(){
 	
-	var text = this.document.getValue('note_text');
+	var text = this.document.getValue('note_text') || '';
         
 	var color='yellow';
 	var nocolor=this.document.getValue('note_color');
@@ -39,8 +39,8 @@ Ext.fdl.SimpleNote = {
 			     var pp=p.ownerCt;
 			     if (!pp) return;
 			     pp.blursoon=true;
-			     setTimeout(function() {			     
-				 pp.items.itemAt(0).body.update('<h2><pre style="min-height:50px;white-space:pre-wrap;">'+note.getValue('note_text')+'</pre></h2>');
+			     setTimeout(function() {	
+				 pp.items.itemAt(0).body.update('<h2><pre style="min-height:50px;white-space:pre-wrap;">'+(note.getValue('note_text') || '')+'</pre></h2>');
 				 pp.items.itemAt(0).setVisible(true);
 				 pp.items.itemAt(1).setVisible(false);
 				 pp.items.itemAt(2).setVisible(false);
