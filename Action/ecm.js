@@ -457,27 +457,43 @@ Ext.onReady(function(){
                 resizable: false,
                 layout: 'fit',
                 frame: true,
-                items: [new Ext.app.SearchField({
-                    width: 140
-                })],
-                docs: getFamilyCreation(),
+//                items: [new Ext.app.SearchField({
+//                    width: 140
+//                })],
                 tpl: new Ext.XTemplate('<tpl for="docs">', '<div id="{id}" class="fav clickable" style="height:60px;width:160px;"><div><img src={img} style="float:left;margin: 5px;" /></div><div style="line-height:30px;text-transform:capitalize;font-weight:bold;">{title}</div></div>', '</tpl>'),
                 
                 afterRender: function(){
                     Ext.Window.prototype.afterRender.apply(this, arguments);
-                    this.tpl.overwrite(this.body, this);
-                    this.body.on({
-                        click: {
-                            delegate: 'div.clickable',
-                            //stopEvent: true,
-                            fn: function(e, t){
-                                console.log('CLIC');
-                                Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
-                            }
-                        }
-                    });
-                }
+                },
                 
+                listeners: {
+                    expand: function(me){
+						
+						(function(){
+						if (!me.loaded) {
+						
+							me.docs = getFamilyCreation();
+							
+							me.tpl.overwrite(me.body, me);
+							me.body.on({
+								click: {
+									delegate: 'div.clickable',
+									//stopEvent: true,
+									fn: function(e, t){
+										Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
+									}
+								}
+							});
+							
+						}
+						
+						me.loaded = true;
+						
+						}).defer(10);
+                        
+                    }
+                }
+            
             }]
         });
     }
