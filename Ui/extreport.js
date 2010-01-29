@@ -189,7 +189,7 @@ Ext.fdl.FormDocumentReport = {
         
         var columns = this.document.getAttribute('rep_tcols');
         
-        var values = columns.getArrayValues();
+        var values = this.document.getArrayValues('rep_tcols');
         
         var columnCheck = new Array();
         
