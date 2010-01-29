@@ -66,7 +66,10 @@ Ext.onReady(function(){
                 
                 listeners: {
                     show: function(win){
-                        win.updateDocumentId(id);
+                        if (!win.loaded) {
+                            win.updateDocumentId(id);
+                        }
+                        win.loaded = true;
                     },
                     close: function(win){
                         win.publish('closedocument', id);
@@ -77,6 +80,9 @@ Ext.onReady(function(){
                         if (win.getHeight() + win.getPosition(true)[1] > max) {
                             win.setHeight(max - win.getPosition(true)[1]);
                         }
+                    },
+                    minimize: function(win){
+                        win.hide();
                     }
                 }
             });
@@ -100,7 +106,7 @@ Ext.onReady(function(){
                 this.docBar[id] = taskBar.addTaskButton(win);
                 if (doc.getProperty('id')) {
                     this.docBar[id].setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
-                    '<br/>auteur : ' +
+                    '<br/>propriétaire : ' +
                     doc.getProperty('ownername') +
                     '<br/>famille : ' +
                     doc.getProperty('fromtitle') +
@@ -161,7 +167,15 @@ Ext.onReady(function(){
                 var windowTitle = 'Recherche : ' + key;
             }
             else {
-                var windowTitle = 'Recherche';
+                if (searchConfig.family) {
+                    var windowTitle = 'Recherche : ' +
+                    this.context.getDocument({
+                        id: searchConfig.family
+                    }).getTitle();
+                }
+                else {
+                    var windowTitle = 'Recherche';
+                }
             }
         }
         else {
@@ -205,6 +219,10 @@ Ext.onReady(function(){
             listeners: {
                 show: function(){
                 
+                    if (!Fdl.ApplicationManager.docBar[window.id]) {
+                        Fdl.ApplicationManager.docBar[window.id] = taskBar.addTaskButton(window);
+                    }
+                    
                     window.updateDocument(d);
                     
                     // Adjust maximum size to container size
@@ -214,6 +232,14 @@ Ext.onReady(function(){
                         this.setHeight(max)
                     }
                     
+                },
+                close: function(){
+                    if (Fdl.ApplicationManager.docBar[window.id]) {
+                        taskBar.removeTaskButton(Fdl.ApplicationManager.docBar[window.id]);
+                    }
+                },
+                minimize: function(){
+                    window.hide();
                 },
                 afterrender: function(win){
                 
@@ -252,6 +278,9 @@ Ext.onReady(function(){
         //                }
         //                
         //            },
+		
+		// Attributes set to be used when rendering the taskbar button
+        window.taskTitle = windowTitle;
         
         window.show();
         
@@ -276,7 +305,10 @@ Ext.onReady(function(){
     var homeTreeCollection = new Ext.fdl.TreeCollection({
         title: 'Personnel',
         collection: context.getHomeFolder({
-            contentStore: true
+            contentStore: true,
+            contentConfig: {
+                slice: 'ALL'
+            }
         })
     });
     var homeTree = homeTreeCollection.display();
@@ -284,7 +316,10 @@ Ext.onReady(function(){
     
     Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
         collection: context.getDesktopFolder({
-            contentStore: true
+            contentStore: true,
+            contentConfig: {
+                slice: 'ALL'
+            }
         }),
         useTrash: context.getDocument({
             id: 'OUR_MYTRASH'
@@ -632,13 +667,13 @@ Ext.onReady(function(){
                             });
                             
                             if (workspace) {
-                                var workspaceTreeCollection = new Ext.fdl.TreeCollection({
+                                me.workspaceTreeCollection = new Ext.fdl.TreeCollection({
                                     collection: workspace
                                 });
-                                var workspaceTree = workspaceTreeCollection.display();
+                                var workspaceTree = me.workspaceTreeCollection.display();
                             }
-							
-							workspaceTree.border = false ;
+                            
+                            workspaceTree.border = false;
                             
                             me.add(workspaceTree);
                             
@@ -652,7 +687,17 @@ Ext.onReady(function(){
                     me.loaded = true;
                     
                 }
-            }
+            },
+            tools: [{
+                id: 'refresh',
+                handler: function(e, el, panel){
+                    if (panel.loaded) {
+                        panel.loadMask.show();
+                        panel.workspaceTreeCollection.reload();
+                        panel.loadMask.hide();
+                    }
+                }
+            }]
         });
         
         panel.add(workPanel);
@@ -686,14 +731,14 @@ Ext.onReady(function(){
                                     }]
                                 })
                             });
-                            var searchTreeCollection = new Ext.fdl.TreeCollection({
+                            me.searchTreeCollection = new Ext.fdl.TreeCollection({
                                 rootVisible: false,
                                 search: search
                             });
-                            var searchTree = searchTreeCollection.display();
+                            var searchTree = me.searchTreeCollection.display();
                             // EO Search TreePanel
-							
-							searchTree.border = false ;
+                            
+                            searchTree.border = false;
                             
                             updateSearch = function(){
                                 searchTreeCollection.reload();
@@ -711,55 +756,71 @@ Ext.onReady(function(){
                     me.loaded = true;
                     
                 }
-            }
+            },
+            tools: [{
+                id: 'refresh',
+                handler: function(e, el, panel){
+                    if (panel.loaded) {
+                        panel.loadMask.show();
+                        panel.searchTreeCollection.reload();
+                        panel.loadMask.hide();
+                    }
+                }
+            }]
         });
         
         panel.add(searchPanel);
         
-       
+        
         //panel.add(ecm.getOnefamGrid("ONEFAM"));
         
         var familyPanel = new Ext.Panel({
             layout: 'fit',
             title: 'Gestion par famille',
-			collapsed: true,
+            collapsed: true,
             listeners: {
                 expand: function(me){
-					
-					 if (!me.loaded) {
-					 
-					 	(function(){
-					 	
-					 		if (!me.loadMask) {
-					 			me.loadMask = new Ext.LoadMask(me.body, {
-					 				msg: 'Chargement...'
-					 			});
-					 		}
-					 		me.loadMask.show();
-							
-							var famPanel = new Ext.fdl.FamilyTreePanel({
-					 			context: context
-					 		});
-							
-							famPanel.border = false;
-												 		
-					 		me.add(famPanel);
-							
-							me.doLayout();
-					 		
-					 		me.loadMask.hide();
-							
-					 	}).defer(1);
-					 	
-					 }
-					 
-					 me.loaded = true;
+                
+                    if (!me.loaded) {
+                    
+                        (function(){
+                        
+                            if (!me.loadMask) {
+                                me.loadMask = new Ext.LoadMask(me.body, {
+                                    msg: 'Chargement...'
+                                });
+                            }
+                            me.loadMask.show();
+                            
+                            var famPanel = new Ext.fdl.FamilyTreePanel({
+                                context: context
+                            });
+                            famPanel.border = false;
+                            
+                            me.add(famPanel);
+                            me.doLayout();
+                            
+                            me.loadMask.hide();
+                            
+                        }).defer(1);
+                        
+                    }
+                    
+                    me.loaded = true;
                     
                 }
-            }
+            },
+            tools: [{
+                id: 'refresh',
+                handler: function(e, el, panel){
+                    panel.removeAll();
+                    panel.loaded = false;
+                    panel.fireEvent('expand', panel);
+                }
+            }]
         });
-		
-		panel.add(familyPanel);
+        
+        panel.add(familyPanel);
         
         panel.doLayout();
         
