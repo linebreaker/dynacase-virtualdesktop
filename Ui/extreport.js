@@ -275,6 +275,8 @@ Ext.fdl.FormDocumentReport = {
     
     display: function(){
     
+		console.log('DOCUMENT', this.document);
+	
         var mode = this.document.getProperty('id') ? 'edit' : 'create';
         
         //this.add(this.getHeader());
@@ -306,7 +308,7 @@ Ext.fdl.FormDocumentReport = {
 			this.tmpDocument = this.document.context.createDocument({
 				familyId: this.document.getProperty('fromid'),
 				temporary: true
-			});
+			});			
 						
 			if(this.config && this.config.search && this.config.search.filter){
 
@@ -336,13 +338,15 @@ Ext.fdl.FormDocumentReport = {
 						
 //						this.tmpDocument.addFilter(filter2);
 
-				console.log('Add filter',this.config.search.filter);
-
-				this.tmpDocument.save();
+				console.log('Add filter',this.config.search.filter);			
 				
 				console.log('After add filter', this.tmpDocument.getContent(), this.tmpDocument.getFilters());
 				
 			}
+			
+			this.tmpDocument.save();
+			
+			console.log('THIS TMPDOCUMENT',this.tmpDocument);
 			
 		} else {
 			this.tmpDocument = this.document.cloneDocument({

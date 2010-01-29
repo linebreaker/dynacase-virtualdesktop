@@ -429,6 +429,7 @@ Ext.onReady(function(){
                     border: false,
                     margins: '5 5 0 5',
                     layout: 'accordion',
+                    bodyStyle: 'background-color:#DFE8F6',
                     listeners: {
                         afterrender: function(panel){
                             treePanel = panel;
@@ -606,63 +607,108 @@ Ext.onReady(function(){
     
     function addTreeToPanel(panel){
     
-        var workspaceTree = new Ext.Panel({
+        var workPanel = new Ext.Panel({
+        
+            layout: 'fit',
             title: 'Plan de classement',
-            bodyStyle: 'padding:10px;',
-            html: "<p>Vous n'avez aucun espace de travail défini.</p>"
+            collapsed: true,
+            listeners: {
+                expand: function(me){
+                
+                    if (!me.loaded) {
+                    
+                        (function(){
+                        
+                            if (!me.loadMask) {
+                                me.loadMask = new Ext.LoadMask(me.body, {
+                                    msg: 'Chargement...'
+                                });
+                            }
+                            me.loadMask.show();
+                            
+                            var workspaceTree = new Ext.Panel({
+                                bodyStyle: 'padding:10px;',
+                                html: "<p>Vous n'avez aucun espace de travail défini.</p>"
+                            });
+                            
+                            if (workspace) {
+                                var workspaceTreeCollection = new Ext.fdl.TreeCollection({
+                                    collection: workspace
+                                });
+                                var workspaceTree = workspaceTreeCollection.display();
+                            }
+							
+							workspaceTree.border = false ;
+                            
+                            me.add(workspaceTree);
+                            
+                            me.doLayout();
+                            
+                            me.loadMask.hide();
+                        }).defer(1);
+                        
+                    }
+                    
+                    me.loaded = true;
+                    
+                }
+            }
         });
         
-        if (workspace) {
-            var workspaceTreeCollection = new Ext.fdl.TreeCollection({
-                title: 'Plan de classement',
-                collection: workspace
-            });
-            var workspaceTree = workspaceTreeCollection.display();
-        }
-        
-        panel.add(workspaceTree);
-        
+        panel.add(workPanel);
         
         var searchPanel = new Ext.Panel({
             layout: 'fit',
             title: 'Rapports',
+            collapsed: true,
             listeners: {
                 expand: function(me){
                 
-                    if (!me.loadMask) {
-                        me.loadMask = new Ext.LoadMask(me.body, {
-                            msg: 'Chargement...'
-                        });
-                    }
-                    me.loadMask.show();
+                    if (!me.loaded) {
                     
-                    (function(){
-                        // Search TreePanel
-                        var search = context.getSearchDocument({
-                            filter: new Fdl.DocumentFilter({
-                                family: 'REPORT',
-                                criteria: [{
-                                    operator: '=',
-                                    left: 'owner',
-                                    right: context.getUser().id
-                                }]
-                            })
-                        });
-                        var searchTreeCollection = new Ext.fdl.TreeCollection({
-                            rootVisible: false,
-                            search: search
-                        });
-                        var searchTree = searchTreeCollection.display();
-                        // EO Search TreePanel
+                        (function(){
                         
-                        updateSearch = function(){
-                            searchTreeCollection.reload();
-                        };
+                            if (!me.loadMask) {
+                                me.loadMask = new Ext.LoadMask(me.body, {
+                                    msg: 'Chargement...'
+                                });
+                            }
+                            me.loadMask.show();
+                            
+                            // Search TreePanel
+                            var search = context.getSearchDocument({
+                                filter: new Fdl.DocumentFilter({
+                                    family: 'REPORT',
+                                    criteria: [{
+                                        operator: '=',
+                                        left: 'owner',
+                                        right: context.getUser().id
+                                    }]
+                                })
+                            });
+                            var searchTreeCollection = new Ext.fdl.TreeCollection({
+                                rootVisible: false,
+                                search: search
+                            });
+                            var searchTree = searchTreeCollection.display();
+                            // EO Search TreePanel
+							
+							searchTree.border = false ;
+                            
+                            updateSearch = function(){
+                                searchTreeCollection.reload();
+                            };
+                            
+                            me.add(searchTree);
+                            
+                            me.doLayout();
+                            
+                            me.loadMask.hide();
+                        }).defer(1);
                         
-                        me.add(searchTree);
-                        
-                        me.loadMask.hide();
-                    }).defer(10);
+                    }
+                    
+                    me.loaded = true;
                     
                 }
             }
@@ -670,37 +716,50 @@ Ext.onReady(function(){
         
         panel.add(searchPanel);
         
-        //        panel.add(searchTree);
-        
+       
         //panel.add(ecm.getOnefamGrid("ONEFAM"));
         
-//        var famPanel = new Ext.Panel({
-//            layout: 'fit',
-//            titre: 'Gestion par famille',
-//            listeners: {
-//                expand: function(me){
-//                
-//                    if (!me.loadMask) {
-//                        me.loadMask = new Ext.LoadMask(me.body, {
-//                            msg: 'Chargement...'
-//                        });
-//                    }
-//                    me.loadMask.show();
-//                    
-//                    (function(){
-//                    
-//                        me.add(new Ext.fdl.FamilyTreePanel({
-//                            context: context
-//                        }));
-//                        
-//                        me.loadMask.hide();
-//                    }).defer(10);
-//                    
-//                }
-//            }
-//        });
-//		
-//		panel.add(famPanel);
+        var familyPanel = new Ext.Panel({
+            layout: 'fit',
+            title: 'Gestion par famille',
+			collapsed: true,
+            listeners: {
+                expand: function(me){
+					
+					 if (!me.loaded) {
+					 
+					 	(function(){
+					 	
+					 		if (!me.loadMask) {
+					 			me.loadMask = new Ext.LoadMask(me.body, {
+					 				msg: 'Chargement...'
+					 			});
+					 		}
+					 		me.loadMask.show();
+							
+							var famPanel = new Ext.fdl.FamilyTreePanel({
+					 			context: context
+					 		});
+							
+							famPanel.border = false;
+												 		
+					 		me.add(famPanel);
+							
+							me.doLayout();
+					 		
+					 		me.loadMask.hide();
+							
+					 	}).defer(1);
+					 	
+					 }
+					 
+					 me.loaded = true;
+                    
+                }
+            }
+        });
+		
+		panel.add(familyPanel);
         
         panel.doLayout();
         
