@@ -257,7 +257,7 @@ Ext.onReady(function(){
                     
                 //			panel.viewNotes();
                 //			setTimeout(function () {panel.viewNotes();},1000);
-                },
+                }
             }
         });
         
