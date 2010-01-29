@@ -3,7 +3,6 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
-
 // Code to measure execution time
 start = new Date();
 
@@ -457,12 +456,13 @@ Ext.onReady(function(){
                 collapsible: true,
                 collapsed: true,
                 animCollapse: false,
+                floatable: false,
                 width: 180,
                 minSize: 180,
                 closable: false,
                 resizable: false,
                 layout: 'fit',
-                frame: true,
+                //frame: true,
                 //                items: [new Ext.app.SearchField({
                 //                    width: 140
                 //                })],
@@ -622,35 +622,85 @@ Ext.onReady(function(){
         
         panel.add(workspaceTree);
         
-        // Search TreePanel
-        var search = context.getSearchDocument({
-            filter: new Fdl.DocumentFilter({
-                family: 'REPORT',
-                criteria: [{
-                    operator: '=',
-                    left: 'owner',
-                    right: context.getUser().id
-                }]
-            })
-        });
-        var searchTreeCollection = new Ext.fdl.TreeCollection({
+        
+        var searchPanel = new Ext.Panel({
+            layout: 'fit',
             title: 'Rapports',
-            rootVisible: false,
-            search: search
+            listeners: {
+                expand: function(me){
+                
+                    if (!me.loadMask) {
+                        me.loadMask = new Ext.LoadMask(me.body, {
+                            msg: 'Chargement...'
+                        });
+                    }
+                    me.loadMask.show();
+                    
+                    (function(){
+                        // Search TreePanel
+                        var search = context.getSearchDocument({
+                            filter: new Fdl.DocumentFilter({
+                                family: 'REPORT',
+                                criteria: [{
+                                    operator: '=',
+                                    left: 'owner',
+                                    right: context.getUser().id
+                                }]
+                            })
+                        });
+                        var searchTreeCollection = new Ext.fdl.TreeCollection({
+                            rootVisible: false,
+                            search: search
+                        });
+                        var searchTree = searchTreeCollection.display();
+                        // EO Search TreePanel
+                        
+                        updateSearch = function(){
+                            searchTreeCollection.reload();
+                        };
+                        
+                        me.add(searchTree);
+                        
+                        me.loadMask.hide();
+                    }).defer(10);
+                    
+                }
+            }
         });
-        var searchTree = searchTreeCollection.display();
-        // EO Search TreePanel
         
-        updateSearch = function(){
-            searchTreeCollection.reload();
-        };
+        panel.add(searchPanel);
         
-        panel.add(searchTree);
+        //        panel.add(searchTree);
         
         //panel.add(ecm.getOnefamGrid("ONEFAM"));
-        panel.add(new Ext.fdl.FamilyTreePanel({
-            context: context
-        }));
+        
+//        var famPanel = new Ext.Panel({
+//            layout: 'fit',
+//            titre: 'Gestion par famille',
+//            listeners: {
+//                expand: function(me){
+//                
+//                    if (!me.loadMask) {
+//                        me.loadMask = new Ext.LoadMask(me.body, {
+//                            msg: 'Chargement...'
+//                        });
+//                    }
+//                    me.loadMask.show();
+//                    
+//                    (function(){
+//                    
+//                        me.add(new Ext.fdl.FamilyTreePanel({
+//                            context: context
+//                        }));
+//                        
+//                        me.loadMask.hide();
+//                    }).defer(10);
+//                    
+//                }
+//            }
+//        });
+//		
+//		panel.add(famPanel);
         
         panel.doLayout();
         
