@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WORKSPACE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-24 10:34+0200\n"
+"POT-Creation-Date: 2010-01-28 19:03+0100\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -46,22 +46,13 @@ msgstr ""
 msgid "detach note %s"
 msgstr ""
 
-msgid "Ouranos"
-msgstr ""
-
-msgid "Simple interface to manipulate documents"
-msgstr ""
-
-msgid "Access to ouranos"
-msgstr ""
-
-msgid "main interface"
-msgstr ""
-
 msgid "defaut family use to create"
 msgstr ""
 
-msgid "ouranos session data"
+msgid "ecm session data"
+msgstr ""
+
+msgid "ecm debug mode"
 msgstr ""
 
 msgid "Desktop"
@@ -76,4 +67,22 @@ msgstr ""
 
 #, c-format
 msgid "Offline folder of %s"
+msgstr ""
+
+msgid "first workspace"
+msgstr ""
+
+msgid "Ecm"
+msgstr ""
+
+msgid "Rich interface to manipulate documents"
+msgstr ""
+
+msgid "Access to ecm"
+msgstr ""
+
+msgid "main interface"
+msgstr ""
+
+msgid "retrieve all searched use in onefam applications"
 msgstr ""
