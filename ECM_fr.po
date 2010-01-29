@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NetworkUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-24 10:34+0200\n"
-"PO-Revision-Date: 2009-06-25 19:09+0200\n"
+"POT-Creation-Date: 2010-01-28 19:03+0100\n"
+"PO-Revision-Date: 2010-01-28 19:04+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -45,23 +45,14 @@ msgstr "Pose d'une nouvelle note"
 msgid "detach note %s"
 msgstr "Suppression de la note '%s'"
 
-msgid "Ouranos"
-msgstr ""
-
-msgid "Simple interface to manipulate documents"
-msgstr "Interface simple pour manipuler les documents"
-
-msgid "Access to ouranos"
-msgstr "Accès à ouranos"
-
-msgid "main interface"
-msgstr "Interface principale"
-
 msgid "defaut family use to create"
 msgstr "Famille utilisée pour la création"
 
-msgid "ouranos session data"
-msgstr "Données de sessions"
+msgid "ecm session data"
+msgstr ""
+
+msgid "ecm debug mode"
+msgstr ""
 
 msgid "Desktop"
 msgstr "Bureau"
@@ -76,6 +67,33 @@ msgstr "Offline"
 #, c-format
 msgid "Offline folder of %s"
 msgstr "Dossier de synchronisation de %s"
+
+msgid "first workspace"
+msgstr "Premier espace"
+
+msgid "Ecm"
+msgstr ""
+
+msgid "Rich interface to manipulate documents"
+msgstr ""
+
+msgid "Access to ecm"
+msgstr "Accès à ECM"
+
+msgid "main interface"
+msgstr "Interface principale"
+
+msgid "retrieve all searched use in onefam applications"
+msgstr ""
+
+#~ msgid "Simple interface to manipulate documents"
+#~ msgstr "Interface simple pour manipuler les documents"
+
+#~ msgid "Access to ouranos"
+#~ msgstr "Accès à ouranos"
+
+#~ msgid "ouranos session data"
+#~ msgstr "Données de sessions"
 
 #~ msgid "crredacted"
 #~ msgstr "rédigé"

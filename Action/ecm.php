@@ -14,6 +14,8 @@
 
 
 include_once("FDL/Class.Doc.php");
+include_once("FDL/Class.SearchDoc.php");
+
 
 function ecm(&$action)  {
 	
@@ -54,4 +56,20 @@ function ecm(&$action)  {
     $home=$desktop->getHome();
     $home->addFile($desktop->initid);
   }
+  
+   // create first worksapce automatically
+   $s=new SearchDoc($dbaccess,"WORKSPACE");
+   $count=$s->onlyCount();
+   if ($count==0) {
+       $w=createDoc($dbaccess,"WORKSPACE",true);
+       if ($w) {
+           $w->setTitle(_("first workspace"));
+           $err=$w->add();
+           if ($err=="") {
+               $w->postModify();
+               $w->refresh();
+           }
+       }
+   
+   }
 }
