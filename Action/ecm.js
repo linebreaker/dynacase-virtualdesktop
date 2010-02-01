@@ -316,6 +316,7 @@ Ext.onReady(function(){
     // EO Home TreePanel
     
     Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
+		id: 'ecm-center',
         collection: context.getDesktopFolder({
             contentStore: true,
             contentConfig: {

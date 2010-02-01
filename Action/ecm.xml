@@ -195,15 +195,25 @@
             }
             
             /* Style for icon in the center panel */
-            .freedom-icon-text {
+            #ecm-center .freedom-icon-text {
 				color: silver ;
 			}
 			
-			.x-view-selected.freedom-icon-wrap {
-			    background-image: url(Images/op20.png) !important;
-				background-color: transparent !important;
-				background-repeat: repeat !important;
+			#ecm-center .x-view-selected.freedom-icon-wrap {
+			    background-image: url(Images/op20.png);
+				background-color: transparent;
+				background-repeat: repeat;
 			}
+			
+			.x-window .freedom-icon-text {
+				color: black !important;
+			}
+			
+			.x-window .x-view-selected.freedom-icon-wrap {
+			    background: #DFE8F6 none repeat scroll 0 0 !important;
+			}
+			
+			
 			
             /* Style for shortcuts(trash) in the center panel */
             .util-wrap {
