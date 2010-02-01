@@ -72,4 +72,31 @@ function ecm(&$action)  {
        }
    
    }
+   
+   // create first read me
+   
+  $readme=getTDoc($dbaccess,'ECM_README');
+  
+  if (! $readme) {
+      $readme = createDoc($dbaccess,"SIMPLEFILE");  
+      $readme->setTitle(_("ecm::readme"));
+      $err=$readme->add();
+      if ($err=="") {
+          $readme->setLogicalIdentificator('ECM_README');
+          $err=$readme->storeFile('SFI_FILE',sprintf("%s/ECM/Docs/LISEZ_MOI.pdf",DEFAULT_PUBDIR));
+          if ($err=="") {
+              
+          $readme->postModify();
+          $readme->refresh();
+          $desktop=new_Doc($dbaccess,'FLDDESKTOP_'.$action->user->id);
+          if ($desktop->isAlive()) {
+              $desktop->addFile($readme->initid);
+              
+          }
+          }
+      }
+  }
+  
+  
+  
 }
