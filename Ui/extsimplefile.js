@@ -88,7 +88,7 @@ Ext.fdl.DocumentSimpleFile = {
         else {
             var version = '<p>Version non affectée</p>';
         }
-        
+		
         var panel = new Ext.Panel({
             layout: 'absolute',
             style: 'height: 500px',
@@ -133,6 +133,19 @@ Ext.fdl.DocumentSimpleFile = {
             }
         });
         panel.add(this.uxm);
+		
+		var te_activate = this.document.context.getParameter({
+			id: 'TE_ACTIVATE'
+		});
+		
+		if(te_activate != 'yes'){
+			panel.add(new Ext.Panel({
+				html: "<i>Rendu indisponible. Le serveur de transformation n'est pas configuré.</i>",
+				border: false,
+				x: 225,
+				y: 200
+			}));
+		}
         
         panel.add(new Ext.Panel({
             xtype: 'panel',
@@ -323,10 +336,12 @@ Ext.fdl.DocumentSimpleFile = {
                     else 
                         o.enable();
                     
-                    if (this.cpage == 0) 
-                        prev.disable();
-                    else 
-                        prev.enable();
+                    if (this.cpage == 0) {
+						prev.disable();
+					}
+					else {
+						prev.enable();
+					}
                     numbers.setValue(this.cpage + 1);
                     
                     url = this.document.getDisplayValue('sfi_file',{url:true,
