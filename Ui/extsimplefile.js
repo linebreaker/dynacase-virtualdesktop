@@ -12,6 +12,8 @@ Ext.fdl.DocumentSimpleFile = {
     display: function(){
         var file = this.document.getAttribute('sfi_file');
         var pdffile = this.document.getValue(file.getOption('pdffile'));
+        var haspdffile=false;
+        if (pdffile) haspdffile=(pdffile.indexOf('/pdf')>0);
         var url = null;
         
         var style = null;
@@ -28,7 +30,7 @@ Ext.fdl.DocumentSimpleFile = {
         }
         else {
         
-            if (pdffile) {
+            if (haspdffile) {
             
                 url = this.document.getDisplayValue('sfi_file',{url:true,
                     type: 'png',
@@ -100,7 +102,7 @@ Ext.fdl.DocumentSimpleFile = {
                 bodyresize: function(p, w, h){
                     var uxm = this.items.itemAt(1);
                     if (this.uxm) {
-                        if (pdffile) {
+                        if (haspdffile) {
                         
                             url = this.document.getDisplayValue('sfi_file',{url:true,
                                 type: 'png',
@@ -142,9 +144,25 @@ Ext.fdl.DocumentSimpleFile = {
 			panel.add(new Ext.Panel({
 				html: "<i>Rendu indisponible. Le serveur de transformation n'est pas configuré.</i>",
 				border: false,
-				x: 225,
+				anchor: '-20',
+				bodyStyle: 'text-align:center;background-color:transparent;background-image:url(' + this.document.context.url + 'Images/op75.png);',
+				x: 20,
 				y: 200
 			}));
+		} else if (pdffile && (! haspdffile)) {
+			url = this.document.getDisplayValue('sfi_file',{url:true,
+                type: 'png',
+                page: this.cpage,
+                width: this.getInnerWidth() - 20
+            });
+			panel.add(new Ext.Panel({
+			html: (url)?'<i ext:qtip="<img src='+"'"+url+"'"+'">Rendu non disponible.</i>':'<i>Rendu non disponible.</i>',
+			border: false,
+			anchor: '-20',
+			bodyStyle: 'text-align:center;background-color:transparent;background-image:url(' + this.document.context.url + 'Images/op75.png);',
+			x: 20,
+			y: 200
+		}));
 		}
         
         panel.add(new Ext.Panel({
@@ -181,6 +199,7 @@ Ext.fdl.DocumentSimpleFile = {
     
         var file = this.document.getAttribute('sfi_file');
         var pdffile = this.document.getValue(file.getOption('pdffile'));
+        if (pdffile) pdffile=pdffile.indexOf('/pdf')>0;
         var toolbar = new Ext.Toolbar({
             x: 0,
             y: 0,
