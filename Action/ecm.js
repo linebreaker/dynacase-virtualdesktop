@@ -37,11 +37,14 @@ Ext.onReady(function(){
     // Fdl.ApplicationManager will represent global ecm application behaviour
     // TODO Rename more appropriately but take care because Fdl.ApplicationManager was used in many places
     Fdl.ApplicationManager = new Ext.fdl.Interface({
-        context: context,
+        
+		context: context,
         // These are ecm new specific properties to handle window positioning
         windows: {},
         windowX: 0,
         windowY: 0,
+		    
+    	searchWindows: {},
         
         // Store documents id contained in the docBar
         docBar: {}
