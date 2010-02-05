@@ -223,7 +223,7 @@ ecm.listGadgets = function() {
 									userPref : {}
 								};
 								var up = document.getArrayValues('gad_t_parameters');
-								console.log('up=',up)
+								console.log('up=',up);
 								//var up = document.getAttribute('gad_t_parameters').getArrayValues();
 
 								for ( var i = 0; i < up.length; i++) {

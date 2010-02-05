@@ -285,7 +285,7 @@ Ext.fdl.FormDocumentReport = {
             layout: 'vbox',
             layoutConfig: {
                 align: 'stretch',
-                pack: 'start',
+                pack: 'start'
             },
 			anchor: '100% 100%'
         });
@@ -521,4 +521,4 @@ Ext.fdl.FormDocumentReport = {
         //this.add(this.evaluatePanel);
     }
     
-}
+};

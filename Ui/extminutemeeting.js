@@ -22,7 +22,7 @@ Ext.fdl.DocumentMinuteMeeting = {
             border: false,
             layoutConfig: {
                 align: 'stretch',
-                pack: 'start',
+                pack: 'start'
             },
             items: [{
                 html: "<img src=" +
@@ -54,7 +54,7 @@ Ext.fdl.DocumentMinuteMeeting = {
             border: false,
             layoutConfig: {
                 align: 'stretch',
-                pack: 'start',
+                pack: 'start'
             },
             items: [{
                 items: [this.getExtValue('sert_ref'), this.getExtValue('sert_catg'), this.getExtValue('sert_redact'), this.getExtValue('sert_client'), this.getExtValue('sert_controller')],
@@ -153,4 +153,4 @@ Ext.fdl.FormDocumentMinuteMeeting = {
 
     display: Ext.fdl.DocumentDefaultEdit.display
 
-}
+};

@@ -6,12 +6,12 @@
 
 var URL_FREEDOM = window.location.pathname;
 URL_FREEDOM = URL_FREEDOM.substring(0,URL_FREEDOM.lastIndexOf("/"));
-var URL_INSTALL_XPI = URL_FREEDOM + "/offline/Apps/freedomOffline.xpi "
-var URL_INSTALL_WinApps = URL_FREEDOM + "/offline/Apps/freedom_offline_windows.zip "
-var URL_INSTALL_LinApps = URL_FREEDOM + "/offline/Apps/freedom_offline_linux.zip "
+var URL_INSTALL_XPI = URL_FREEDOM + "/offline/Apps/freedomOffline.xpi ";
+var URL_INSTALL_WinApps = URL_FREEDOM + "/offline/Apps/freedom_offline_windows.zip ";
+var URL_INSTALL_LinApps = URL_FREEDOM + "/offline/Apps/freedom_offline_linux.zip ";
 var action;
-var fichierVersion = URL_FREEDOM + "/offline/Apps/VERSION"
-var fichierRelease = URL_FREEDOM + "/offline/Apps/RELEASE"
+var fichierVersion = URL_FREEDOM + "/offline/Apps/VERSION";
+var fichierRelease = URL_FREEDOM + "/offline/Apps/RELEASE";
 
 
 var offlineTab = function(){
@@ -57,8 +57,8 @@ var offlineTab = function(){
         	var westGridM = Ext.getCmp('westGridModif');
         	var downloadFreedomOff = Ext.getCmp('downloadFreedomOff');
         	var dragDropPanel = Ext.getCmp('dragDropPanel');
-        	console.log('grid'+ westGrid.hidden)
-        	console.log('panel'+ downloadFreedomOff.hidden + '  '+downloadFreedomOff.region )
+        	console.log('grid'+ westGrid.hidden);
+        	console.log('panel'+ downloadFreedomOff.hidden + '  '+downloadFreedomOff.region );
         	if (!westGrid.hidden || !dragDropPanel.hidden || !westGridM.hidden){
         		//downloadFreedomOff.region = 'center';
         		downloadFreedomOff.show();
@@ -150,7 +150,7 @@ var offlineTab = function(){
  				westGrid.store.loadData(dataGrid);
 			}
         }
-    }
+    };
     
     var btnErase = {
         xtype: 'tbbutton',
@@ -276,9 +276,9 @@ var offlineTab = function(){
 			    if (d.isAlive()) {
 		            var rs = d.unlinkDocument({
 		                id: docId
-		            })
+		            });
 		            if (!rs) {
-		                Ext.Msg.alert('Error',context.getLastErrorMessage())
+		                Ext.Msg.alert('Error',context.getLastErrorMessage());
 		            }
 					store.loadData([]);
 					var dataGrid = createDataGrid(context.getOfflineFolder());
@@ -584,10 +584,10 @@ var offlineTab = function(){
 	function verrou_img(val, x, store){
 		var image;
 		if (store.data.verrou == '1'){
-			image = '<div class="greenlock"></div>'
+			image = '<div class="greenlock"></div>';
 		}
 		else if (store.data.verrou == '2'){
-			image = '<div class="redlock"></div>'
+			image = '<div class="redlock"></div>';
 		}
 		
         return image;
@@ -596,7 +596,7 @@ var offlineTab = function(){
 
     
     return tab;
-}
+};
 
 
 
@@ -607,13 +607,13 @@ function addDoc(docId){
 //    Fdl.connect({
 //        url: URL_FREEDOM
 //    });
-    var d = context.getOfflineFolder()
+    var d = context.getOfflineFolder();
     if (d.isAlive()) {
         var rs = d.insertDocument({
             id: docId
-        })
+        });
         if (!rs) {
-            Ext.Msg.alert('Error',context.getLastErrorMessage())
+            Ext.Msg.alert('Error',context.getLastErrorMessage());
         }
         var westGrid = Ext.getCmp('westGrid');
         var dataGrid = createDataGrid(context.getOfflineFolder());
@@ -662,15 +662,15 @@ function createDataGrid(docIdContainer){
 			else if (lock !== 0 && myName == locker){
 				access = '1';
 				iconActionPath = "icon-unlock";
-				qtipAction = "déverrouiller"
+				qtipAction = "déverrouiller";
 			}else if (lock !== 0 && myName != locker){
 				access = '2';
 				iconActionPath = "icon-other-lock";
-				qtipAction = "impossible. Verrouillé par un autre utilisateur"
+				qtipAction = "impossible. Verrouillé par un autre utilisateur";
 			}
 			lineArray.push(doc.getIcon());
 	 		lineArray.push(doc.getTitle());
-			lineArray.push(access)
+			lineArray.push(access);
 			lineArray.push(doc.getProperties().id);
 			lineArray.push(iconActionPath);
 			lineArray.push(qtipAction);
@@ -687,7 +687,7 @@ function eraseAllOnServer(){
 //    Fdl.connect({
 //        url: URL_FREEDOM
 //    });
-    var d = context.getOfflineFolder()
+    var d = context.getOfflineFolder();
 
     if (d.isAlive()) {
         var p = d.getContent();
@@ -695,9 +695,9 @@ function eraseAllOnServer(){
             var doc = p[i];
             var rs = d.unlinkDocument({
                 id: doc.getProperties().id
-            })
+            });
             if (!rs) {
-                Ext.Msg.alert('Error',context.getLastErrorMessage())
+                Ext.Msg.alert('Error',context.getLastErrorMessage());
             }
             Ext.getCmp('westGrid').store.loadData([]);
         }

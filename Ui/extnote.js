@@ -97,7 +97,7 @@ Ext.fdl.SimpleNote = {
 			    p.items.itemAt(2).setVisible(true);
 			    p.items.itemAt(3).setVisible(true);
 
-			    setTimeout(function() {p.items.itemAt(1).focus()},50);
+			    setTimeout(function() {p.items.itemAt(1).focus();},50);
 			}
 			
 		    });		    

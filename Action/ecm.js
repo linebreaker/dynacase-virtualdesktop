@@ -137,7 +137,7 @@ Ext.onReady(function(){
     Fdl.ApplicationManager.onOpenSearch = function(wid, filter, config){
         console.log('FILTER', filter);
         Fdl.ApplicationManager.displaySearch(null, filter, config);
-    }
+    };
     
     /**
      * DisplaySearch
@@ -233,7 +233,7 @@ Ext.onReady(function(){
                     var container = Fdl.ApplicationManager.desktopPanel.body;
                     var max = container.getHeight();
                     if (this.getHeight() > max) {
-                        this.setHeight(max)
+                        this.setHeight(max);
                     }
                     
                 },
@@ -393,7 +393,7 @@ Ext.onReady(function(){
             
         }
         return rfam;
-    }
+    };
     
     createWorkspacePanel = function(workspace){
     
@@ -552,7 +552,7 @@ Ext.onReady(function(){
             
             }]
         });
-    }
+    };
     
     var workspacePanel = createWorkspacePanel(workspace);
     var tab = [];
@@ -563,7 +563,7 @@ Ext.onReady(function(){
             tab.push({
                 title: wr[i].getTitle(),
                 closable: true
-            })
+            });
         }
     }
     
@@ -873,7 +873,7 @@ ecm.getSession = function(config){
         }
     }
     return ecm.session;
-}
+};
 ecm.setSession = function(v){
     ecm.session = v;
     if (!context.setParameter({
@@ -883,7 +883,7 @@ ecm.setSession = function(v){
         Ext.Msg.alert('No ecm_session');
     }
     return ecm.session;
-}
+};
 
 ecm.getOnefamGrid = function(appid){
 
@@ -917,7 +917,7 @@ ecm.getOnefamGrid = function(appid){
     });
     
     return tree;
-}
+};
 
 
 ecm.getOnefamSearches = function(searches){
@@ -998,7 +998,7 @@ ecm.getOnefamSearches = function(searches){
         });
     }
     return families;
-}
+};
 
 Ext.Info = function(){
     var msgCt;
