@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NetworkUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-28 19:03+0100\n"
+"POT-Creation-Date: 2010-02-05 18:01+0100\n"
 "PO-Revision-Date: 2010-01-28 19:04+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -70,6 +70,9 @@ msgstr "Dossier de synchronisation de %s"
 
 msgid "first workspace"
 msgstr "Premier espace"
+
+msgid "ecm::readme"
+msgstr ""
 
 msgid "Ecm"
 msgstr ""
