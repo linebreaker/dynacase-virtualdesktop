@@ -255,7 +255,7 @@ Ext.onReady(function(){
                     }
                     
                     win.mask = new Ext.LoadMask(win.body, {
-                        msg: "En cours de chargement..."
+                        msg: Fdl.ApplicationManager.context._("ecm::Loading...")
                     });
                     win.mask.show();
                     
@@ -518,7 +518,7 @@ Ext.onReady(function(){
                     
                         if (!me.loadMask) {
                             me.loadMask = new Ext.LoadMask(me.body, {
-                                msg: 'Chargement...'
+                                msg: Fdl.ApplicationManager.context._("ecm::Loading...")
                             });
                         }
                         me.loadMask.show();
@@ -585,7 +585,7 @@ Ext.onReady(function(){
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: 'lib/ui/icon/arrow_refresh.png',
-                text: 'Actualiser le Bureau',
+                text: Fdl.ApplicationManager.context._("ecm::Refresh desktop"),
                 handler: function(){
                     updateDesktop();
                 }
@@ -601,7 +601,7 @@ Ext.onReady(function(){
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: 'ECM/Images/our.gadget.png',
-                text: 'Gadgets',
+                text: Fdl.ApplicationManager.context._("ecm::Gadgets"),
                 handler: function(){
                     ecm.listGadgets();
                 }
@@ -609,7 +609,7 @@ Ext.onReady(function(){
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: 'ECM/Images/our.help.png',
-                text: 'Aide',
+                text: Fdl.ApplicationManager.context._("ecm::Help"),
                 handler: function(){
                     open('?sole=Y&app=CORE&action=HELPVIEW&appname=FREEDOM', 'download_frame');
                 }
@@ -625,7 +625,7 @@ Ext.onReady(function(){
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: 'ECM/Images/our.logout.png',
-                text: 'Déconnexion',
+                text: Fdl.ApplicationManager.context._("ecm::Logout"),
                 handler: function(){
                     window.location.href = '?app=AUTHENT&action=LOGOUT&SeenBefore=1&logout=Y';
                 }
@@ -658,7 +658,7 @@ Ext.onReady(function(){
         var workPanel = new Ext.Panel({
         
             layout: 'fit',
-            title: 'Plan de classement',
+            title: Fdl.ApplicationManager.context._("ecm::folder tree"),
             collapsed: true,
             listeners: {
                 expand: function(me){
@@ -669,7 +669,7 @@ Ext.onReady(function(){
                         
                             if (!me.loadMask) {
                                 me.loadMask = new Ext.LoadMask(me.body, {
-                                    msg: 'Chargement...'
+                                    msg: Fdl.ApplicationManager.context._("ecm::Loading...")
                                 });
                             }
                             me.loadMask.show();
@@ -717,7 +717,7 @@ Ext.onReady(function(){
         
         var searchPanel = new Ext.Panel({
             layout: 'fit',
-            title: 'Rapports',
+            title: Fdl.ApplicationManager.context._("ecm::Searches"),
             collapsed: true,
             listeners: {
                 expand: function(me){
@@ -728,7 +728,7 @@ Ext.onReady(function(){
                         
                             if (!me.loadMask) {
                                 me.loadMask = new Ext.LoadMask(me.body, {
-                                    msg: 'Chargement...'
+                                    msg: Fdl.ApplicationManager.context._("ecm::Loading...")
                                 });
                             }
                             me.loadMask.show();
@@ -789,7 +789,7 @@ Ext.onReady(function(){
         
         var familyPanel = new Ext.Panel({
             layout: 'fit',
-            title: 'Gestion par famille',
+            title: Fdl.ApplicationManager.context._("ecm::family management"),
             collapsed: true,
             listeners: {
                 expand: function(me){
@@ -800,7 +800,7 @@ Ext.onReady(function(){
                         
                             if (!me.loadMask) {
                                 me.loadMask = new Ext.LoadMask(me.body, {
-                                    msg: 'Chargement...'
+                                    msg: Fdl.ApplicationManager.context._("ecm::Loading...")
                                 });
                             }
                             me.loadMask.show();

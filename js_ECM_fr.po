@@ -1,0 +1,40 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ECM\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-08 15:27+0100\n"
+"PO-Revision-Date: 2010-02-08 15:25+0100\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: french anakeen\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "ecm::Loading..."
+msgstr "Chargement..."
+
+msgid "ecm::Refresh desktop"
+msgstr "Actualiser le bureau"
+
+msgid "ecm::Gadgets"
+msgstr "Gadgets"
+
+msgid "ecm::Help"
+msgstr "Aide"
+
+msgid "ecm::Logout"
+msgstr "Déconnection"
+
+msgid "ecm::folder tree"
+msgstr "Plan de classement"
+
+msgid "ecm::Searches"
+msgstr "Recherches"
+
+msgid "ecm::family management"
+msgstr "Gestion par famille"
