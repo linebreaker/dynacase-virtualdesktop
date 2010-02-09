@@ -45,10 +45,10 @@ Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
                 fields: ['themeFile', {name:'themeName', type:'string'}]
                 ,data: [
                      ['lib/ext/resources/css/ext-all.css', this.themeDefault]
-                    ,['lib/ui/theme/anakeen1/css/xtheme-anakeentheme.css', this.themeAnakeen1]
-                    ,['lib/ui/theme/anakeen2/css/xtheme-anakeentheme.css', this.themeAnakeen2]
-                    ,['lib/ui/theme/anakeen3/css/xtheme-anakeen.css', this.themeAnakeen3]
-                    ,['lib/ui/theme/human/css/xtheme-human.css', this.themeUbuntu]
+                    ,['lib/ui/themes/anakeen1/css/xtheme-anakeentheme.css', this.themeAnakeen1]
+                    ,['lib/ui/themes/anakeen2/css/xtheme-anakeentheme.css', this.themeAnakeen2]
+                    ,['lib/ui/themes/anakeen3/css/xtheme-anakeen.css', this.themeAnakeen3]
+                    ,['lib/ui/themes/human/css/xtheme-human.css', this.themeUbuntu]
                 ]
             })
             ,valueField: 'themeFile'
@@ -663,6 +663,7 @@ Ext.onReady(function(){
     // Main Tab display
     var tabs = new Ext.ux.InlineToolbarTabPanel({
         region: 'center',
+        border: false,
         activeTab: 0,
         resizeTabs: true,
         minTabWidth: 120,
