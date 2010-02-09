@@ -4,6 +4,97 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
+
+// vim: ts=4:sw=4:nu:fdc=4:nospell
+/**
+ * Ext.ux.ThemeCombo - Combo pre-configured for themes selection
+ * 
+ * @author    Ing. Jozef Sakáloš <jsakalos@aariadne.com>
+ * @copyright (c) 2008, by Ing. Jozef Sakáloš
+ * @date      30. January 2008
+ * @version   $Id: Ext.ux.ThemeCombo.js 472 2009-01-22 23:24:56Z jozo $
+ *
+ * @license Ext.ux.ThemeCombo is licensed under the terms of
+ * the Open Source LGPL 3.0 license.  Commercial use is permitted to the extent
+ * that the code/component(s) do NOT become part of another Open Source or Commercially
+ * licensed development library or toolkit without explicit permission.
+ * 
+ * License details: http://www.gnu.org/licenses/lgpl.html
+ */
+
+/*global Ext */
+
+Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
+    // configurables
+     themeDefault: 'Ext Default'
+    ,themeAnakeen1: 'Anakeen 1'
+    ,themeAnakeen2: 'Anakeen 2'
+    ,themeAnakeen3: 'Anakeen 3'
+    ,themeUbuntu: 'Human Ubuntu'
+    ,themeVar:'theme'
+    ,selectThemeText: 'Select Theme'
+    ,lazyRender:true
+    ,lazyInit:true
+    ,cssPath: '' // mind the trailing slash
+
+    // {{{
+    ,initComponent:function() {
+
+        Ext.apply(this, {
+            store: new Ext.data.SimpleStore({
+                fields: ['themeFile', {name:'themeName', type:'string'}]
+                ,data: [
+                     ['lib/ext/resources/css/ext-all.css', this.themeDefault]
+                    ,['lib/ui/theme/anakeen1/css/xtheme-anakeentheme.css', this.themeAnakeen1]
+                    ,['lib/ui/theme/anakeen2/css/xtheme-anakeentheme.css', this.themeAnakeen2]
+                    ,['lib/ui/theme/anakeen3/css/xtheme-anakeen.css', this.themeAnakeen3]
+                    ,['lib/ui/theme/human/css/xtheme-human.css', this.themeUbuntu]
+                ]
+            })
+            ,valueField: 'themeFile'
+            ,displayField: 'themeName'
+            ,triggerAction:'all'
+            ,mode: 'local'
+            ,forceSelection:true
+            ,editable:false
+            ,fieldLabel: this.selectThemeText
+        }); // end of apply
+
+        this.store.sort('themeName');
+
+        // call parent
+        Ext.ux.ThemeCombo.superclass.initComponent.apply(this, arguments);
+
+        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
+            this.setValue(Ext.state.Manager.get(this.themeVar) || 'lib/ext/resources/css/ext-all.css');
+        }
+        else {
+            this.setValue('lib/ext/resources/css/ext-all.css');
+        }
+
+    } // end of function initComponent
+    // }}}
+    // {{{
+    ,setValue:function(val) {
+        Ext.ux.ThemeCombo.superclass.setValue.apply(this, arguments);
+
+        // set theme
+        Ext.util.CSS.swapStyleSheet(this.themeVar, this.cssPath + val);
+
+        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
+            Ext.state.Manager.set(this.themeVar, val);
+        }
+    } // eo function setValue
+    // }}}
+
+}); // end of extend
+
+// register xtype
+Ext.reg('themecombo', Ext.ux.ThemeCombo);
+
+// eof 
+
+
 // Code to measure execution time
 start = new Date();
 
@@ -469,7 +560,8 @@ Ext.onReady(function(){
                     border: false,
                     margins: '5 5 0 5',
                     layout: 'accordion',
-                    bodyStyle: 'background-color:#DFE8F6',
+                    bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
+                    //bodyStyle: 'background-color:#DFE8F6',
                     listeners: {
                         afterrender: function(panel){
                             treePanel = panel;
@@ -492,6 +584,7 @@ Ext.onReady(function(){
             }, Fdl.ApplicationManager.desktopPanel, {
                 region: 'east',
                 xtype: 'panel',
+                bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
                 id: 'create-document',
                 title: 'Créer',
                 collapsible: true,
@@ -581,6 +674,9 @@ Ext.onReady(function(){
         toolbar: {
             items: [{
                 xtype: 'tbfill'
+            }, {
+            	xtype: 'themecombo',
+            	width: 100
             }, {
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',

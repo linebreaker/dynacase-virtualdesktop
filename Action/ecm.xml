@@ -12,7 +12,7 @@
         
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
-        <!--<link rel="stylesheet" type="text/css" href="lib/ext/resources/css/xtheme-slate.css"/>-->       
+        <link rel="stylesheet" type="text/css" id="theme"/>
                 
         <!-- Ext User Extensions -->
         <link rel="stylesheet" type="text/css" href="lib/user/ext-user.css"/>
