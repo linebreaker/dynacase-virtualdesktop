@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-08 15:27+0100\n"
+"POT-Creation-Date: 2010-02-10 15:49+0100\n"
 "PO-Revision-Date: 2010-02-08 15:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: english anakeen\n"
@@ -18,8 +18,17 @@ msgstr ""
 msgid "ecm::Loading..."
 msgstr "Loading..."
 
+msgid "ecm::Desktop"
+msgstr "Desktop"
+
 msgid "ecm::Refresh desktop"
 msgstr "Refresh desktop"
+
+msgid "ecm::Select Theme"
+msgstr "Select theme"
+
+msgid "ecm::Select Background"
+msgstr "Select Background"
 
 msgid "ecm::Gadgets"
 msgstr "Gadgets"
@@ -38,3 +47,4 @@ msgstr "Searches"
 
 msgid "ecm::family management"
 msgstr "Families"
+

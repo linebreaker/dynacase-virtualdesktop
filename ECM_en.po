@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WORKSPACE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-08 15:27+0100\n"
+"POT-Creation-Date: 2010-02-10 15:49+0100\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -14,6 +14,45 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "\n"
+
+msgid "defaut family use to create"
+msgstr ""
+
+msgid "ecm session data"
+msgstr ""
+
+msgid "ecm debug mode"
+msgstr ""
+
+msgid "Loading freedom-ecm 3.0 ..."
+msgstr ""
+
+msgid "Desktop"
+msgstr ""
+
+#, c-format
+msgid "Desktop of %s"
+msgstr ""
+
+msgid "Offline"
+msgstr ""
+
+#, c-format
+msgid "Offline folder of %s"
+msgstr ""
+
+msgid "first workspace"
+msgstr ""
+
+msgid "ecm::readme"
+msgstr ""
+
+msgid "attach a new note"
+msgstr ""
+
+#, c-format
+msgid "detach note %s"
+msgstr ""
 
 msgid "cr_init"
 msgstr ""
@@ -39,45 +78,6 @@ msgstr ""
 msgid "Tcr_refused"
 msgstr ""
 
-msgid "attach a new note"
-msgstr ""
-
-#, c-format
-msgid "detach note %s"
-msgstr ""
-
-msgid "Loading freedom-ecm 3.0 ..."
-msgstr ""
-
-msgid "defaut family use to create"
-msgstr ""
-
-msgid "ecm session data"
-msgstr ""
-
-msgid "ecm debug mode"
-msgstr ""
-
-msgid "Desktop"
-msgstr ""
-
-#, c-format
-msgid "Desktop of %s"
-msgstr ""
-
-msgid "Offline"
-msgstr ""
-
-#, c-format
-msgid "Offline folder of %s"
-msgstr ""
-
-msgid "first workspace"
-msgstr ""
-
-msgid "ecm::readme"
-msgstr ""
-
 msgid "Ecm"
 msgstr ""
 
@@ -88,6 +88,9 @@ msgid "Access to ecm"
 msgstr ""
 
 msgid "main interface"
+msgstr ""
+
+msgid "get background images"
 msgstr ""
 
 msgid "retrieve all searched use in onefam applications"

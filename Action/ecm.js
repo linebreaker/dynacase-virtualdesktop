@@ -64,26 +64,37 @@ Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
 
         // call parent
         Ext.ux.ThemeCombo.superclass.initComponent.apply(this, arguments);
+        
+        var session  = ecm.getSession();
+        if(session.theme){
+        	this.setValue(session.theme);
+        }
 
-        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
-            this.setValue(Ext.state.Manager.get(this.themeVar) || 'lib/ext/resources/css/ext-all.css');
-        }
-        else {
-            this.setValue('lib/ext/resources/css/ext-all.css');
-        }
+//        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
+//            this.setValue(Ext.state.Manager.get(this.themeVar) || 'lib/ext/resources/css/ext-all.css');
+//        }
+//        else {
+//            this.setValue('lib/ext/resources/css/ext-all.css');
+//        }
 
     } // end of function initComponent
     // }}}
     // {{{
     ,setValue:function(val) {
-        Ext.ux.ThemeCombo.superclass.setValue.apply(this, arguments);
+    	Ext.ux.ThemeCombo.superclass.setValue.apply(this, arguments);
 
         // set theme
         Ext.util.CSS.swapStyleSheet(this.themeVar, this.cssPath + val);
-
-        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
-            Ext.state.Manager.set(this.themeVar, val);
+        
+        var session  = ecm.getSession();
+        if(session.theme != val){
+        	session.theme = val ;
+        	ecm.setSession(session);
         }
+
+//        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
+//            Ext.state.Manager.set(this.themeVar, val);
+//        }
     } // eo function setValue
     // }}}
 
@@ -94,6 +105,129 @@ Ext.reg('themecombo', Ext.ux.ThemeCombo);
 
 // eof 
 
+Ext.fdl.BackgroundComboBox = Ext.extend(Ext.form.ComboBox, {
+
+    valueField: 'url',
+    displayField: 'id',
+    
+    context: null,
+    
+    // Required to give simple select behaviour
+    editable: false,
+    forceSelection: true,
+    disableKeyFilter: true,
+    triggerAction: 'all',
+    mode: 'local',
+    
+    /**
+     * @cfg {String} filter Filtering expression to restrict family search on server. Defaults to null.
+     */
+    filter: null,
+    
+    tpl: '<tpl for="."><div style="background-image:url({purl});background-repeat:no-repeat;height:80px;" class="x-combo-list-item" ></div></tpl>',
+    
+    toString: function(){
+        return 'Ext.fdl.BackgroundComboBox';
+    },
+    
+    initComponent: function(){
+    
+        Ext.fdl.BackgroundComboBox.superclass.initComponent.call(this);
+        
+        if (!this.store) {
+        
+            var bg = ecm.getBackgrounds(130);
+            
+            delete bg.evalDebugTime ; //Clean this line when evalDebugTime is removed
+            
+            var data = [];
+                        
+            for (var i in bg) {
+                data.push({
+                    url: context.url + i,
+                    purl: bg[i],
+                    id: ''
+                });
+            }
+            
+            this.store = new Ext.data.JsonStore({
+                data: data,
+                fields: ['url', 'purl', 'id']
+            });
+            
+        }
+        
+        this.on({
+            render: {
+                scope: this,
+                fn: function(){
+                
+                }
+            },
+            select: {
+                fn: function(combo, record, index){
+                    this.backgroundSelect(record.get('url'));
+                }
+            }
+        
+        });
+        
+        var session  = ecm.getSession();
+        if(session.bg){
+        	this.backgroundSelect(session.bg);
+        }
+        
+    },
+    
+    backgroundSelect: function(url){
+        Fdl.ApplicationManager.desktopPanel.body.setStyle('background-image', 'url('+url+')');
+        var session  = ecm.getSession();
+        if(session.bg != url){
+        	session.bg = url ;
+        	ecm.setSession(session);
+        }
+    }
+    
+//    setIcon: function(){
+//        var fcb = this;
+//        var rec = this.store.queryBy(function(rec, id){
+//            return (rec.data[this.valueField] == this.getValue());
+//        }, fcb).itemAt(0);
+//        if (rec) {
+//            if (this.getEl()) {
+//                this.getEl().applyStyles({
+//                    'padding-left': '20px',
+//                    'background-image': 'url(' + rec.data.icon + ')',
+//                    'background-repeat': 'no-repeat'
+//                });
+//            }
+//        }
+//        else {
+//            if (this.getEl()) {
+//                this.getEl().applyStyles({
+//                    'padding-left': '0px',
+//                    'background-image': ''
+//                });
+//            }
+//        }
+//    },
+//    
+//    /**
+//     * setValue
+//     * Set selected family by id.
+//     * @param {String} id
+//     */
+//    setValue: function(value){
+//        Ext.fdl.FamilyComboBox.superclass.setValue.call(this, value);
+//        this.setIcon();
+//    }
+    
+});
+
+//register xtype
+Ext.reg('backgroundcombo', Ext.fdl.BackgroundComboBox);
+
+// eof 
 
 // Code to measure execution time
 start = new Date();
@@ -672,6 +806,36 @@ Ext.onReady(function(){
         }
     }
     
+    Ext.namespace('Ext.exampledata');
+    
+    Ext.exampledata.states = [
+                              ['AL', 'Alabama', 'The Heart of Dixie'],
+                              ['AK', 'Alaska', 'The Land of the Midnight Sun'],
+                              ['AZ', 'Arizona', 'The Grand Canyon State'],
+                              ['AR', 'Arkansas', 'The Natural State'],
+                              ['CA', 'California', 'The Golden State']];
+    
+    var store = new Ext.data.ArrayStore({
+        fields: ['abbr', 'state'],
+        data : Ext.exampledata.states // from states.js
+    });
+
+    var combo = new Ext.form.ComboBox({
+        store: store,
+        displayField: 'state',
+        typeAhead: true,
+        mode: 'local',
+        triggerAction: 'all',
+        emptyText: 'Select a state...',
+        selectOnFocus: true,
+        width: 135,
+        getListParent: function() {
+            return this.el.up('.x-menu');
+        },
+        iconCls: 'no-icon'
+    });
+
+    
     // Main Tab display
     var tabs = new Ext.ux.InlineToolbarTabPanel({
         region: 'center',
@@ -688,16 +852,40 @@ Ext.onReady(function(){
             items: [{
                 xtype: 'tbfill'
             }, {
-            	xtype: 'themecombo',
-            	width: 100
-            }, {
-                xtype: 'tbbutton',
-                cls: 'x-btn-text-icon',
-                icon: 'lib/ui/icon/arrow_refresh.png',
-                text: Fdl.ApplicationManager.context._("ecm::Refresh desktop"),
-                handler: function(){
-                    updateDesktop();
-                }
+                text: Fdl.ApplicationManager.context._("ecm::Desktop"),
+                icon: 'lib/ui/icon/application_edit.png',
+                menu: {
+	            	style: {
+		                overflow: 'visible'     // For the Combo popup
+		            },
+	            	items:[{
+	                    //xtype: 'tbbutton',
+	                    cls: 'x-btn-text-icon',
+	                    icon: 'lib/ui/icon/arrow_refresh.png',
+	                    text: Fdl.ApplicationManager.context._("ecm::Refresh desktop"),
+	                    handler: function(){
+	                        updateDesktop();
+	                    }
+	                }, {
+		            	xtype: 'themecombo',
+		            	iconCls: 'no-icon',
+		            	selectOnFocus: true,
+		                width: 135,
+		                getListParent: function() {
+		                    return this.el.up('.x-menu');
+		                },
+		                emptyText: Fdl.ApplicationManager.context._("ecm::Select Theme")
+		            }, {
+		            	xtype: 'backgroundcombo',
+		            	iconCls: 'no-icon',
+		            	selectOnFocus: true,
+		                width: 135,
+		                getListParent: function() {
+		                    return this.el.up('.x-menu');
+		                },
+		                emptyText: Fdl.ApplicationManager.context._("ecm::Select Background")
+		            }]
+            	}
             }, {
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
