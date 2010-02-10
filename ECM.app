@@ -47,6 +47,12 @@ $action_desc = array (
 			    "acl"		=>"NORMAL",
 			    "root"		=>"Y")
 		      ,
+		      array(
+                "name"      =>"ECM_BACKGROUND",
+                "short_name"    =>N_("get background images"),
+                "acl"       =>"NORMAL",
+                "root"      =>"N")
+              ,
 		      array( 
 			    "name"		=>"GETASSOCIATEDSEARCHES",
 			    "short_name"	=>N_("retrieve all searched use in onefam applications"),

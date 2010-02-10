@@ -52,6 +52,7 @@ function getassociatedsearches(&$action) {
 	     "user"=>$utfs,
 	     "admin"=>$tfs);
 
+    $action->lay->noparse=true; // no need to parse after - increase performances
   $action->lay->template= json_encode($out);
   
 }
