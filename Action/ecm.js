@@ -578,7 +578,19 @@ Ext.onReady(function(){
                         html: '<form id="create_simple_file" enctype="multipart/form-data" method="post" style="height:100%;width:100%;background-image:url(\'Images/our_import.png\');background-repeat:no-repeat;background-position:center;" ><input type="file" name="sfi_file" onchange="this.form.style.backgroundImage=\'url(Images/loading.gif)\';createSimpleFile();this.form.style.backgroundImage=\'url(Images/our_import.png)\';" onclick="event.stopPropagation();return false;" style="font-size:200pt;opacity:0;"/></form>',
                         disabled: !testDragDropUpload(),
                         tabTip: testDragDropUpload() ? 'Importez un fichier depuis votre système' : 'Installez le plugin firefox dragdropupload pour activer cette fonctionalité'
-                    }, offlineTab()]
+                    }, {
+                    	title: 'Offline',
+                    	layout: 'fit',
+                		tabTip: 'Après avoir téléchargé une des applications, travailler en mode déconnecté.',
+                    	listeners: {
+                    		activate: function(panel){
+                    			if(!panel.loaded){
+                    				panel.add(offlineTab());
+                    			}
+                    			panel.loaded = true;
+                    		}
+                    	}
+                    }]
                 
                 }]
             }, Fdl.ApplicationManager.desktopPanel, {

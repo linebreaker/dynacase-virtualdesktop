@@ -490,10 +490,8 @@ var offlineTab = function(){
 	}
 	
     var tab = new Ext.Panel({
-		title: 'Offline',
 		id: 'offlineTab',
 		layout: 'border',
-		tabTip: 'Après avoir téléchargé une des applications, travailler en mode déconnecté.',
 		border: false,
 		anchor: '100%',
 		items: [{
