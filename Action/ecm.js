@@ -994,6 +994,15 @@ ecm.setSession = function(v){
     return ecm.session;
 };
 
+ecm.getBackgrounds= function(size){
+    var bgs = context.retrieveData({
+        app: 'ECM',
+        action: 'ECM_BACKGROUND',
+        size:size
+    });
+    return bgs;
+};
+
 ecm.getOnefamGrid = function(appid){
 
     var famsearches = context.retrieveData({
