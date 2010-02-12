@@ -281,6 +281,8 @@ Ext.onReady(function(){
     
         if (!this.windows[id]) {
         
+        	if (!config) config={};
+        	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
             var win = new Ext.fdl.Window({
                 mode: mode,
                 context: this.context,
