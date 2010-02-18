@@ -276,6 +276,24 @@ Ext.onReady(function(){
     
     });
     
+    Fdl.ApplicationManager.openUrl= function(url,title) {
+    	var mapwin = new Ext.fdl.Window({
+            layout: 'fit',
+            title: title,
+            closeAction: 'hide',          
+            width: 400 + 17,
+            height: 450 + 25,
+            resizable: true,
+            maximizable: true,
+            renderTo: Fdl.ApplicationManager.desktopPanel.body,
+            constrain: true,
+            html: '<iframe style="width:100%;height:100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"   src="'+url+'")></iframe>'
+        });
+        
+        
+        mapwin.show();
+    };
+    
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
     Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
     
@@ -283,6 +301,7 @@ Ext.onReady(function(){
         
         	if (!config) config={};
         	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
+        	config.targetUrl='Fdl.ApplicationManager.openUrl("%V%","%L% : %TITLE%")';
             var win = new Ext.fdl.Window({
                 mode: mode,
                 context: this.context,
