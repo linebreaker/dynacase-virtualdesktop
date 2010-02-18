@@ -806,38 +806,9 @@ Ext.onReady(function(){
         }
     }
     
-    Ext.namespace('Ext.exampledata');
-    
-    Ext.exampledata.states = [
-                              ['AL', 'Alabama', 'The Heart of Dixie'],
-                              ['AK', 'Alaska', 'The Land of the Midnight Sun'],
-                              ['AZ', 'Arizona', 'The Grand Canyon State'],
-                              ['AR', 'Arkansas', 'The Natural State'],
-                              ['CA', 'California', 'The Golden State']];
-    
-    var store = new Ext.data.ArrayStore({
-        fields: ['abbr', 'state'],
-        data : Ext.exampledata.states // from states.js
-    });
-
-    var combo = new Ext.form.ComboBox({
-        store: store,
-        displayField: 'state',
-        typeAhead: true,
-        mode: 'local',
-        triggerAction: 'all',
-        emptyText: 'Select a state...',
-        selectOnFocus: true,
-        width: 135,
-        getListParent: function() {
-            return this.el.up('.x-menu');
-        },
-        iconCls: 'no-icon'
-    });
-
-    
     // Main Tab display
     var tabs = new Ext.ux.InlineToolbarTabPanel({
+    //var tabs = new Ext.TabPanel({
         region: 'center',
         border: false,
         activeTab: 0,
@@ -933,18 +904,13 @@ Ext.onReady(function(){
     
     var viewport = new Ext.Viewport({
         layout: 'border',
-        renderTo: Ext.getBody(),
         items: [tabs, {
             region: 'south',
             xtype: 'panel',
             height: 30,
             // Html to receive taskbar from markup
             html: '<div id="ux-taskbar"><div id="ux-taskbuttons-panel"></div><div class="x-clear"></div></div>'
-        }],
-        listeners: {
-            afterrender: function(vp){
-            }
-        }
+        }]
     
     });
     
@@ -1138,7 +1104,9 @@ Ext.onReady(function(){
     
     taskBar = new Ext.ux.TaskBar({});
     ecm.initializeGadgets();
-    
+        
+    viewport.render(Ext.getBody());
+       
     Ext.get('loading').remove();
     
     // Code to measure execution time

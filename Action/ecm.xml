@@ -281,7 +281,7 @@
     </head>
     <body>
         
-        <div id="loading" style="position:absolute;z-index:100000;height:100%;width:100%;background-color:white;">
+        <div id="loading" style="position:absolute;z-index:100000;height:100%;width:100%;background-color:white;top:0;left:0;">
             <div style="position:absolute;left:40%;top:45%;font-weight:bold;font-size:large;">
                 <img src="ECM/Images/large-loading.gif" style="margin-right:8px;width:32px;height:32px;" align="absmiddle"/>
                 [TEXT:Loading freedom-ecm 3.0 ...]
