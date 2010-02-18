@@ -96,7 +96,7 @@ function getFamilySearches($dbaccess,$fid) {
 	foreach ($w->getStates() as $c) {
 	  $to["workflow"][$c]=array("state"=>$c,
 					  "label"=>_($c),
-					  "activity"=>$w->getAction($c),
+					  "activity"=>$w->getActivity($c),
 					  "color"=>$w->getColor($c));
 	}
       }
