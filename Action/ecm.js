@@ -243,6 +243,10 @@ var context = new Fdl.Context({
 //	};
 
 Ext.onReady(function(){
+	
+	end = new Date();    
+    console.log('Execution when Ext.onReady() : ' + (end - start) + ' ms.');
+    start = new Date();
 
     // Necessary to Ext
     Ext.BLANK_IMAGE_URL = 'lib/ext/resources/images/default/s.gif';
@@ -551,6 +555,10 @@ Ext.onReady(function(){
         Ext.Msg.alert('freedom ecm', 'No workspace');
     };
     
+    end = new Date();    
+    console.log('Execution time before homeTreeCollection : ' + (end - start) + ' ms.');
+    start = new Date();
+    
     // Home TreePanel
     var homeTreeCollection = new Ext.fdl.TreeCollection({
         title: 'Personnel',
@@ -563,6 +571,10 @@ Ext.onReady(function(){
     });
     var homeTree = homeTreeCollection.display();
     // EO Home TreePanel
+    
+    end = new Date();    
+    console.log('Execution time before desktopCollection : ' + (end - start) + ' ms.');
+    start = new Date();
     
     Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
 		id: 'ecm-center',
@@ -580,6 +592,10 @@ Ext.onReady(function(){
         }
     });
     
+    end = new Date();    
+    console.log('Execution time before desktopPanel.display() : ' + (end - start) + ' ms.');
+    start = new Date();
+    
     Fdl.ApplicationManager.desktopPanel = Fdl.ApplicationManager.desktopCollection.display();
     Fdl.ApplicationManager.desktopPanel.region = 'center';
     
@@ -587,6 +603,10 @@ Ext.onReady(function(){
     updateDesktop = function(){
         Fdl.ApplicationManager.desktopCollection.reload();
     };
+    
+    end = new Date();    
+    console.log('Execution time after desktopPanel.display() : ' + (end - start) + ' ms.');
+    start = new Date();
     
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
     createSimpleFile = function(){
@@ -818,6 +838,10 @@ Ext.onReady(function(){
     var tab = [];
     tab.push(workspacePanel);
     
+    end = new Date();    
+    console.log('Execution time after createWorkspacePanel : ' + (end - start) + ' ms.');
+    start = new Date();
+    
     for (var i = 1; i < wr.length; i++) {
         if (wr[i]) {
             tab.push({
@@ -826,6 +850,10 @@ Ext.onReady(function(){
             });
         }
     }
+    
+    end = new Date();    
+    console.log('Execution time before tabs : ' + (end - start) + ' ms.');
+    start = new Date();
     
     // Main Tab display
     var tabs = new Ext.ux.InlineToolbarTabPanel({
@@ -923,6 +951,10 @@ Ext.onReady(function(){
         items: tab
     });
     
+    end = new Date();    
+    console.log('Execution time before viewport : ' + (end - start) + ' ms.');
+    start = new Date();
+    
     var viewport = new Ext.Viewport({
         layout: 'border',
         items: [tabs, {
@@ -935,7 +967,15 @@ Ext.onReady(function(){
     
     });
     
+    end = new Date();    
+    console.log('Execution time before addTreeToPanel() : ' + (end - start) + ' ms.');
+    start = new Date();
+    
     addTreeToPanel(treePanel);
+    
+    end = new Date();    
+    console.log('Execution time after addTreeToPanel() : ' + (end - start) + ' ms.');
+    start = new Date();
     
     function addTreeToPanel(panel){
     
@@ -1125,15 +1165,21 @@ Ext.onReady(function(){
     
     taskBar = new Ext.ux.TaskBar({});
     ecm.initializeGadgets();
+    
+    end = new Date();    
+    console.log('Execution time before viewport.render() : ' + (end - start) + ' ms.');
+    start = new Date();
         
     viewport.render(Ext.getBody());
        
-    Ext.get('loading').remove();
+    Ext.get('loading').fadeOut({
+    	remove:true
+    });
     
     // Code to measure execution time
-    end = new Date();
-    
+    end = new Date();    
     console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+    start = new Date();
     //Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
 
 });
