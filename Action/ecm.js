@@ -229,6 +229,10 @@ Ext.reg('backgroundcombo', Ext.fdl.BackgroundComboBox);
 
 // eof 
 
+
+// Code to measure execution time
+globalStart = new Date();
+
 // Code to measure execution time
 start = new Date();
 
@@ -1180,7 +1184,9 @@ Ext.onReady(function(){
     end = new Date();    
     console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
     start = new Date();
-    //Ext.Msg.alert('freedom ecm','Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+    
+    globalEnd = new Date();
+    console.log('freedom ecm','Execution time (ecm.js only) : ' + (globalEnd - globalStart) + ' ms.');
 
 });
 
