@@ -246,8 +246,18 @@ var context = new Fdl.Context({
 //		Ext.Msg.alert('Javascript Error', '<b>Message : </b>' + msg + '<br/>' + '<b>Url : </b>' + url + '<br/>' + '<b>Line : </b>' + line);
 //	};
 
+function logExtEvents() {
+    var o = Ext.util.Observable.prototype;
+    o.fireEvent = o.fireEvent.createInterceptor(function(evt) {
+        var a = arguments;
+        console.log(this, ' fired event ',evt,' with args ',Array.prototype.slice.call(a, 1, a.length));
+    });
+}
+
 Ext.onReady(function(){
 	
+//	logExtEvents();
+		
 	end = new Date();    
     console.log('Execution when Ext.onReady() : ' + (end - start) + ' ms.');
     start = new Date();

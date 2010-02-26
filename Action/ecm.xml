@@ -13,15 +13,9 @@
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
         <link rel="stylesheet" type="text/css" id="theme"/>
-                
-        <!-- Ext User Extensions -->
-        <link rel="stylesheet" type="text/css" href="lib/user/ext-user.css"/>
-                       
+                                       
         <!-- Freedom Widget Library -->
-        <link rel="stylesheet" type="text/css" href="lib/ui/widget.css"/>
-        
-        <link rel="stylesheet" type="text/css" href="lib/ui/widget-services.css"/>
-        <link rel="stylesheet" type="text/css" href="lib/ui/widget-notes.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/ui/freedom-extui.css"/>
         
         <!-- Ecm Offline -->
         <link rel="stylesheet" type="text/css" href="ECM/Layout/ecmOffline.css"/>
@@ -307,10 +301,6 @@
         <!--<script src="lib/ext/source/locale/ext-lang-fr.js">
         </script>-->
         
-        <!-- Ext User Extensions -->
-        <script type="text/javascript" src="lib/user/ext-user.js">
-        </script>
-        
         <!-- Freedom Data Library -->
         <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]">
         </script>
@@ -318,7 +308,7 @@
         </script>
         
         <!-- Freedom Widget Library -->
-        <script type="text/javascript" src="lib/ui/wfdl.js?v=[WVERSION]">
+        <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]">
         </script>
         
         <script src="lib/ext/examples/ux/RowExpander.js">
@@ -336,10 +326,7 @@
         
 		<!-- Frame used for harmonious downloading -->
         <iframe name='download_frame' style='display:none;'>
-        </iframe>
-		
-		
-		
+        </iframe>		
 		
     </body>
 </html>
