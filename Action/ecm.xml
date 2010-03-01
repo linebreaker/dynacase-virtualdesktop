@@ -311,9 +311,6 @@
         <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]">
         </script>
         
-        <!--<script src="lib/ext/examples/ux/RowExpander.js">
-        </script>-->
-        
         <!-- Ecm Offline -->
         <script type="text/javascript" src="ECM/Layout/ecmOffline.js?v=[WVERSION]">
         </script>
