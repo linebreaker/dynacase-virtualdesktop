@@ -15,7 +15,7 @@ Ext.fdl.DocumentMinuteMeeting = {
         this.alwaysDisplay = true;
         
         this.add(this.renderToolbar());
-        
+                
         this.add(new Ext.Panel({
             layout: 'hbox',
             height: 110,
@@ -47,7 +47,7 @@ Ext.fdl.DocumentMinuteMeeting = {
                 bodyStyle: 'overflow-y:auto;'
             }]
         }));
-        
+                
         this.add(new Ext.Panel({
             layout: 'hbox',
             height: 125,
@@ -70,7 +70,7 @@ Ext.fdl.DocumentMinuteMeeting = {
                 style: 'margin-left:20px;'
             }]
         }));
-        
+                
         this.add(new Ext.Panel({
             layout: 'form',
             border: false,
