@@ -651,6 +651,7 @@ Ext.onReady(function(){
         var sfam = context.getParameter({
             id: 'OUR_NEW_FAMILIES'
         });
+        
         var rfam = [];
         if (sfam) {
             for (var i = 0; i < sfam.length; i++) {
