@@ -281,6 +281,8 @@ Ext.onReady(function(){
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
     Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
     
+    	var me = this ;
+    	
         if (!this.windows[id]) {
         
         	if (!config) config={};
@@ -306,7 +308,7 @@ Ext.onReady(function(){
                         win.loaded = true;
                     },
                     close: function(win){
-                        win.publish('closedocument', id);
+                        win.publish('closedocument', win.fdlId);
                     },
                     afterlayout: function(win, layout){
                         // Adjust maximum size to container size
@@ -318,8 +320,41 @@ Ext.onReady(function(){
                     minimize: function(win){
                         win.hide();
                     }
+                },
+                
+                onDocumentModified: function(newDoc,prevId){
+                	
+                	console.log('DOCMOD',newDoc, me.docBar);
+                	
+                	var subId ;
+                	if(newDoc.id){
+                		subId = newDoc.id;
+                	} else {
+                		subId = newDoc.getProperty('fromid');
+                	}
+                	
+                	if(subId != prevId){
+                		
+                		console.log('ID CHANGED', subId, prevId);
+                		
+                		// Update window array
+                		me.windows[subId] = me.windows[prevId];
+	                	delete me.windows[prevId];	                	
+                		
+	                	// Update docbar array
+                		me.docBar[subId] = me.docBar[prevId];
+                		delete me.docBar[prevId];
+                		
+                	}
+                	me.docBar[subId].updateDocument(newDoc);
+                	
+                	win.fdlId = subId;
+                	
                 }
+                
             });
+            
+            win.fdlId = id ;
             
             win.show();
             
@@ -330,6 +365,8 @@ Ext.onReady(function(){
             
             var doc = win.document;
             
+            
+            
             // Attributes set to be used when rendering the taskbar button
             win.taskIcon = doc.getIcon({
                 width: 18
@@ -338,23 +375,27 @@ Ext.onReady(function(){
             
             if (!this.docBar[id]) {
             	var button = taskBar.addTaskButton(win);
-                this.docBar[id] = button;
+            	button.updateDocument = function(doc){
+            		if (doc.getProperty('id')) {
+            			button.setText(doc.getTitle());
+	                    button.setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
+	                    '<br/>propriétaire : ' +
+	                    doc.getProperty('ownername') +
+	                    '<br/>famille : ' +
+	                    doc.getProperty('fromtitle') +
+	                    '<br/>dernière modif. : ' +
+	                    doc.getProperty('mdate'));
+            		}
+                };                
                 button.subscribe('modifydocument',function(fdldoc){
                 	if(id == fdldoc.id){
-                		console.log('MODIFY BUTTON TITLE');
-                		button.setTitle(fdldoc.getTitle());
+                		button.updateDocument(fdldoc);
                 	}
                 });
-                if (doc.getProperty('id')) {
-                    this.docBar[id].setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
-                    '<br/>propriétaire : ' +
-                    doc.getProperty('ownername') +
-                    '<br/>famille : ' +
-                    doc.getProperty('fromtitle') +
-                    '<br/>dernière modif. : ' +
-                    doc.getProperty('mdate'));
-                }
+                button.updateDocument(doc);    
                 
+                this.docBar[id] = button;
+                console.log('DOCBAR SUBSCRIPT AT ID ', id, this.docBar);
             }
             
         }
