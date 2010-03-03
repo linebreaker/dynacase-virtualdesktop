@@ -188,40 +188,6 @@ Ext.fdl.BackgroundComboBox = Ext.extend(Ext.form.ComboBox, {
         }
     }
     
-//    setIcon: function(){
-//        var fcb = this;
-//        var rec = this.store.queryBy(function(rec, id){
-//            return (rec.data[this.valueField] == this.getValue());
-//        }, fcb).itemAt(0);
-//        if (rec) {
-//            if (this.getEl()) {
-//                this.getEl().applyStyles({
-//                    'padding-left': '20px',
-//                    'background-image': 'url(' + rec.data.icon + ')',
-//                    'background-repeat': 'no-repeat'
-//                });
-//            }
-//        }
-//        else {
-//            if (this.getEl()) {
-//                this.getEl().applyStyles({
-//                    'padding-left': '0px',
-//                    'background-image': ''
-//                });
-//            }
-//        }
-//    },
-//    
-//    /**
-//     * setValue
-//     * Set selected family by id.
-//     * @param {String} id
-//     */
-//    setValue: function(value){
-//        Ext.fdl.FamilyComboBox.superclass.setValue.call(this, value);
-//        this.setIcon();
-//    }
-    
 });
 
 //register xtype
@@ -371,7 +337,14 @@ Ext.onReady(function(){
             win.taskTitle = doc.getTitle();
             
             if (!this.docBar[id]) {
-                this.docBar[id] = taskBar.addTaskButton(win);
+            	var button = taskBar.addTaskButton(win);
+                this.docBar[id] = button;
+                button.subscribe('modifydocument',function(fdldoc){
+                	if(id == fdldoc.id){
+                		console.log('MODIFY BUTTON TITLE');
+                		button.setTitle(fdldoc.getTitle());
+                	}
+                });
                 if (doc.getProperty('id')) {
                     this.docBar[id].setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
                     '<br/>propriétaire : ' +
