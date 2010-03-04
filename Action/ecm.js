@@ -4,24 +4,6 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-
-// vim: ts=4:sw=4:nu:fdc=4:nospell
-/**
- * Ext.ux.ThemeCombo - Combo pre-configured for themes selection
- * 
- * @author    Ing. Jozef Sakáloš <jsakalos@aariadne.com>
- * @copyright (c) 2008, by Ing. Jozef Sakáloš
- * @date      30. January 2008
- * @version   $Id: Ext.ux.ThemeCombo.js 472 2009-01-22 23:24:56Z jozo $
- *
- * @license Ext.ux.ThemeCombo is licensed under the terms of
- * the Open Source LGPL 3.0 license.  Commercial use is permitted to the extent
- * that the code/component(s) do NOT become part of another Open Source or Commercially
- * licensed development library or toolkit without explicit permission.
- * 
- * License details: http://www.gnu.org/licenses/lgpl.html
- */
-
 /*global Ext */
 
 Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
@@ -35,9 +17,8 @@ Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
     ,selectThemeText: 'Select Theme'
     ,lazyRender:true
     ,lazyInit:true
-    ,cssPath: '' // mind the trailing slash
-
-    // {{{
+    ,cssPath: ''
+    
     ,initComponent:function() {
 
         Ext.apply(this, {
@@ -70,16 +51,8 @@ Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
         	this.setValue(session.theme);
         }
 
-//        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
-//            this.setValue(Ext.state.Manager.get(this.themeVar) || 'lib/ext/resources/css/ext-all.css');
-//        }
-//        else {
-//            this.setValue('lib/ext/resources/css/ext-all.css');
-//        }
-
     } // end of function initComponent
-    // }}}
-    // {{{
+    
     ,setValue:function(val) {
     	Ext.ux.ThemeCombo.superclass.setValue.apply(this, arguments);
 
@@ -92,18 +65,12 @@ Ext.ux.ThemeCombo = Ext.extend(Ext.form.ComboBox, {
         	ecm.setSession(session);
         }
 
-//        if(false !== this.stateful && Ext.state.Manager.getProvider()) {
-//            Ext.state.Manager.set(this.themeVar, val);
-//        }
     } // eo function setValue
-    // }}}
 
 }); // end of extend
 
 // register xtype
 Ext.reg('themecombo', Ext.ux.ThemeCombo);
-
-// eof 
 
 Ext.fdl.BackgroundComboBox = Ext.extend(Ext.form.ComboBox, {
 
@@ -324,7 +291,7 @@ Ext.onReady(function(){
                 
                 onDocumentModified: function(newDoc,prevId){
                 	
-                	console.log('DOCMOD',newDoc, me.docBar);
+                	//console.log('DOCMOD',newDoc, me.docBar);
                 	
                 	var subId ;
                 	if(newDoc.id){
@@ -335,7 +302,7 @@ Ext.onReady(function(){
                 	
                 	if(subId != prevId){
                 		
-                		console.log('ID CHANGED', subId, prevId);
+                		//console.log('ID CHANGED', subId, prevId);
                 		
                 		// Update window array
                 		me.windows[subId] = me.windows[prevId];
