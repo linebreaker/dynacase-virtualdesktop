@@ -633,22 +633,29 @@ Ext.onReady(function(){
             id: 'OUR_NEW_FAMILIES'
         });
         
+        console.log('SFAM',sfam);
+        
         var rfam = [];
         if (sfam) {
             for (var i = 0; i < sfam.length; i++) {
             
-                var fam = context.getDocument({
-                    id: sfam[i],
-                    useCache: true
-                });
+            	if(sfam[i]){
+            	
+	                var fam = context.getDocument({
+	                    id: sfam[i],
+	                    useCache: true
+	                });
+	                
+	                rfam.push({
+	                    id: sfam[i],
+	                    img: fam.getIcon({
+	                        width: 32
+	                    }),
+	                    title: fam.getTitle()
+	                });
                 
-                rfam.push({
-                    id: sfam[i],
-                    img: fam.getIcon({
-                        width: 32
-                    }),
-                    title: fam.getTitle()
-                });
+            	}
+                                
             }
             
             
@@ -767,6 +774,7 @@ Ext.onReady(function(){
             }, Fdl.ApplicationManager.desktopPanel, {
                 region: 'east',
                 xtype: 'panel',
+                bodyStyle: 'overflow:auto;',
                 bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
                 id: 'create-document',
                 title: 'Créer',
@@ -783,7 +791,7 @@ Ext.onReady(function(){
                 //                items: [new Ext.app.SearchField({
                 //                    width: 140
                 //                })],
-                tpl: new Ext.XTemplate('<tpl for="docs">', '<div id="{id}" class="fav clickable" style="height:60px;width:160px;"><div><img src={img} style="float:left;margin: 5px;" /></div><div style="line-height:30px;text-transform:capitalize;font-weight:bold;">{title}</div></div>', '</tpl>'),
+                tpl: new Ext.XTemplate('<tpl for="docs">', '<div id="{id}" class="fav clickable" style="height:42px;width:160px;"><div><img src={img} style="float:left;margin: 5px;" /></div><div style="line-height:30px;text-transform:capitalize;font-weight:bold;">{title}</div></div>', '</tpl>'),
                 
                 afterRender: function(){
                     Ext.Window.prototype.afterRender.apply(this, arguments);
@@ -803,6 +811,8 @@ Ext.onReady(function(){
                             if (!me.loaded) {
                             
                                 me.docs = getFamilyCreation();
+                                
+                                console.log('FAMILY',me.docs);
                                 
                                 me.tpl.overwrite(me.body, me);
                                 me.body.on({
