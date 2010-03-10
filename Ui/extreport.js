@@ -63,7 +63,7 @@ Ext.fdl.FormDocumentReport = {
 					
 					this.requester.save();
 					
-					Fdl.ApplicationManager.notifyDocument(this.document);
+					//Fdl.ApplicationManager.notifyDocument(this.document);
                     
 //                    this.document.save({
 //                        form: form,
