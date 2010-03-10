@@ -33,7 +33,7 @@ function ecm(&$action)  {
         $gapp->set($appid,$action->parent->parent);
         $mids=explode(",",$gapp->getParam("ONEFAM_MIDS"));
         $mids=array_merge($mids,explode(",",$gapp->getParam("ONEFAM_IDS")));
-
+        foreach ($mids as $k=>$v) if (!$v) unset($mids[$k]);
         if (count($mids) > 0)   $action->setParamU("OUR_NEW_FAMILIES",json_encode($mids));
     }
 
