@@ -287,7 +287,8 @@ Ext.fdl.FormDocumentReport = {
                 align: 'stretch',
                 pack: 'start'
             },
-			anchor: '100% 100%'
+			anchor: '100% 100%',
+			border: false
         });
 		
 //		var subpanel = new Ext.Panel({

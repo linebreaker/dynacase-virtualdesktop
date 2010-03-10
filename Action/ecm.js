@@ -573,6 +573,7 @@ Ext.onReady(function(){
     
     Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
 		id: 'ecm-center',
+		usePaging: false,
         collection: context.getDesktopFolder({
             contentStore: true,
             contentConfig: {
