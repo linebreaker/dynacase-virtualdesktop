@@ -252,6 +252,8 @@ Ext.onReady(function(){
     	
         if (!this.windows[id]) {
         
+        	console.log('TOTO CONFIG',config);
+        	
         	if (!config) config={};
         	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
         	config.targetUrl='Fdl.ApplicationManager.openUrl("%V%","%L% : %TITLE%")';
