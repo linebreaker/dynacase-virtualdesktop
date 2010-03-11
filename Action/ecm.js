@@ -368,6 +368,9 @@ Ext.onReady(function(){
                 console.log('DOCBAR SUBSCRIPT AT ID ', id, this.docBar);
             }
             
+        } else {
+        	this.windows[id].show();
+        	this.windows[id].toFront();
         }
         
     };
