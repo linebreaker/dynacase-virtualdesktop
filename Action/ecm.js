@@ -247,13 +247,11 @@ Ext.onReady(function(){
     
     // Override onOpenDocument method to give ecm appropriate behavior (handling of windows and docbar)
     Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
-    
+        	
     	var me = this ;
     	
         if (!this.windows[id]) {
-        
-        	console.log('TOTO CONFIG',config);
-        	
+                	
         	if (!config) config={};
         	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
         	config.targetUrl='Fdl.ApplicationManager.openUrl("%V%","%L% : %TITLE%")';
@@ -315,7 +313,10 @@ Ext.onReady(function(){
                 		delete me.docBar[prevId];
                 		
                 	}
-                	me.docBar[subId].updateDocument(newDoc);
+                	
+                	if(me.docBar[subId]){
+                		me.docBar[subId].updateDocument(newDoc);
+                	}
                 	
                 	win.fdlId = subId;
                 	
