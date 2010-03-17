@@ -30,7 +30,7 @@ Ext.fdl.FormDocumentReport = {
 		
 		this.requester.save();
 		
-		this.gridCollection.reload();
+		this.gridCollection.reload(true,true);
 		
 //        this.tmpDocument.save({
 //            form: form,
