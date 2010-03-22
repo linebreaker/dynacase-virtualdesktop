@@ -400,6 +400,11 @@ Ext.onReady(function(){
     
         var d = context.getSearchDocument();
         
+        d.key = key ;
+        if(d.key){
+        	d.withHighlight = true;
+        }
+        
         var filter = new Fdl.DocumentFilter({
             key: key
         });
@@ -728,8 +733,7 @@ Ext.onReady(function(){
                                         operator: '~*',
                                         left: 'svalues',
                                         right: v
-                                    }]
-                                
+                                    }]                                
                                 }, {
                                     windowName: 'simplesearch'
                                 });
