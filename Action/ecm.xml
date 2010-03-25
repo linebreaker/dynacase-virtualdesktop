@@ -19,7 +19,6 @@
         
         <!-- Ecm Offline -->
         <link rel="stylesheet" type="text/css" href="ECM/Layout/ecmOffline.css"/>
-        
 		        
         <style>
             /*
@@ -156,18 +155,19 @@
 				color: silver ;
 			}
 			
-			#ecm-center .x-view-selected.freedom-icon-wrap {
-			    background-image: url(Images/op20.png);
-				background-color: transparent;
-				background-repeat: repeat;
+			#ecm-center .x-view-selected .freedom-icon-wrap {
+			    background-image: url("Images/op20.png") !important;
+				background-color: transparent !important;
+				background-repeat: repeat !important;
 			}
 			
 			.x-window .freedom-icon-text {
 				color: black !important;
 			}
 			
-			.x-window .x-view-selected.freedom-icon-wrap {
+			.x-window .x-view-selected .freedom-icon-wrap {
 			    background: #DFE8F6 none repeat scroll 0 0 !important;
+				display: none;
 			}
 			
 			
