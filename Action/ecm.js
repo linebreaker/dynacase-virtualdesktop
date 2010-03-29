@@ -639,43 +639,43 @@ Ext.onReady(function(){
         form.reset();
     };
     
-    getFamilyCreation = function(){
-    
-        var sfam = context.getParameter({
-            //id: 'OUR_NEW_FAMILIES'
-        	id: 'ECM_NEW_FAMILIES'
-        });
-        
-        console.log('SFAM',sfam);
-        
-        var rfam = [];
-        if (sfam) {
-            for (var i = 0; i < sfam.length; i++) {
-            
-            	if(sfam[i]){
-            	
-	                var fam = context.getDocument({
-	                    id: sfam[i],
-	                    useCache: true
-	                });
-	                
-	                rfam.push({
-	                    id: sfam[i],
-	                    img: fam.getIcon({
-	                        width: 32
-	                    }),
-	                    title: fam.getTitle()
-	                });
-                
-            	}
-                                
-            }
-            
-            
-            
-        }
-        return rfam;
-    };
+//    getFamilyCreation = function(){
+//    
+//        var sfam = context.getParameter({
+//            //id: 'OUR_NEW_FAMILIES'
+//        	id: 'ECM_NEW_FAMILIES'
+//        });
+//        
+//        console.log('SFAM',sfam);
+//        
+//        var rfam = [];
+//        if (sfam) {
+//            for (var i = 0; i < sfam.length; i++) {
+//            
+//            	if(sfam[i]){
+//            	
+//	                var fam = context.getDocument({
+//	                    id: sfam[i],
+//	                    useCache: true
+//	                });
+//	                
+//	                rfam.push({
+//	                    id: sfam[i],
+//	                    img: fam.getIcon({
+//	                        width: 32
+//	                    }),
+//	                    title: fam.getTitle()
+//	                });
+//                
+//            	}
+//                                
+//            }
+//            
+//            
+//            
+//        }
+//        return rfam;
+//    };
     
     createWorkspacePanel = function(workspace){
     
@@ -912,18 +912,121 @@ Ext.onReady(function(){
 	            		familySelect: function(id){
 	            			this.publish('opendocument',null,id,'create');
 	            			this.reset();
-	            		},
-	            		getNewFamilies: function(){
-	            			var newFamilies = getFamilyCreation();
-	            			console.log('NEW FAMILIES',newFamilies);
-	            		},
-	            		listeners: {
-	            			afterrender: function(me){
-	            				me.getNewFamilies();
-	            			}
-	            		}
-	            	},'-']
-            	}            	
+	            		}	            		
+	            	},'-'],
+		          	removeNewFamilies: function(autoDestroy){
+	        			this.initItems();
+						var item, rem = [], items = [];
+						this.items.each(function(i){
+						   rem.push(i);
+						});
+						for (var i = 2, len = rem.length; i < len; ++i){
+						   item = rem[i];
+						   this.remove(item, autoDestroy);
+						   if(item.ownerCt !== this){
+						       items.push(item);
+						   }
+						}
+						return items;
+	        		}
+            	},
+            	getNewFamilies: function(){
+            		
+	            	var sfam = context.getParameter({
+			            //id: 'OUR_NEW_FAMILIES'
+			        	id: 'ECM_NEW_FAMILIES'
+			        });
+			        
+			        //console.log('SFAM',sfam);
+			        
+			        var rfam = [];
+			        if (sfam) {
+			            for (var i = 0; i < sfam.length; i++) {
+			            
+			            	if(sfam[i]){
+			            	
+				                var fam = context.getDocument({
+				                    id: sfam[i],
+				                    useCache: true
+				                });
+				                
+				                rfam.push({
+				                    id: sfam[i],
+				                    img: fam.getIcon({
+				                        width: 32
+				                    }),
+				                    title: fam.getTitle()
+				                });
+			                
+			            	}
+			                                
+			            }		            
+			            
+			        }
+			        
+			        console.log('FAM',rfam,sfam);
+			        
+			        return rfam;
+		
+		        },
+        		setNewFamilies: function(id){
+        			
+        			var newFamilies = context.getParameter({
+			            //id: 'OUR_NEW_FAMILIES'
+			        	id: 'ECM_NEW_FAMILIES'
+			        });
+			        
+			        newFamilies.push(id);
+			        if(newFamilies.length > 10){
+			        	newFamilies.shift();
+			        }
+        			
+        			if (!Fdl.ApplicationManager.context.setParameter({
+				        id: 'ECM_NEW_FAMILIES',
+				        value: JSON.stringify(newFamilies)
+				    })) {
+				        Ext.Msg.alert('Error on set families');
+				    }
+        		},
+        		updateMenu: function(){
+        			
+        			var button = this;
+        			
+        			(function(){
+        				
+//        				for( var i = 2, l = button.menu.items.getCount() ; i < l ; i++){
+//        					button.menu.items.removeAt(i);
+//        				}
+        				button.menu.removeNewFamilies();
+        				
+	        			var newFamilies = button.getNewFamilies();
+	        			for( var i = 0, l = newFamilies.length ; i < l ; i++ ){
+	        				var newFamily = newFamilies[i];
+	        				button.menu.add({
+	        					text: Ext.util.Format.capitalize(newFamily.title),
+	        					icon: newFamily.img,
+	        					_fdlid: newFamily.id,
+	        					handler: function(button){
+	        						button.publish('opendocument',null,button._fdlid,'create');
+	        					}
+	        				});
+	        			}
+        			}).defer(10);
+        		},
+        		listeners: {
+        			afterrender: function(button){
+        				this.subscribe('opendocument',function(wid,id,mode,config){
+        					button.setNewFamilies(id);
+        					button.updateMenu();
+        				});
+        			},
+        			menushow: function(button,menu){
+        				if(!button.loaded){
+        					button.updateMenu() ;
+        				}
+        				button.loaded = true;
+        			}
+        		}
             }, {
                 text: Fdl.ApplicationManager.context._("ecm::Desktop"),
                 icon: 'lib/ui/icon/application_edit.png',
