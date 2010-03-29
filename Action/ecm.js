@@ -642,7 +642,8 @@ Ext.onReady(function(){
     getFamilyCreation = function(){
     
         var sfam = context.getParameter({
-            id: 'OUR_NEW_FAMILIES'
+            //id: 'OUR_NEW_FAMILIES'
+        	id: 'ECM_NEW_FAMILIES'
         });
         
         console.log('SFAM',sfam);
@@ -782,72 +783,74 @@ Ext.onReady(function(){
                     }]
                 
                 }]
-            }, Fdl.ApplicationManager.desktopPanel, {
-                region: 'east',
-                xtype: 'panel',
-                bodyStyle: 'overflow:auto;',
-                bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
-                id: 'create-document',
-                title: 'Créer',
-                collapsible: true,
-                collapsed: true,
-                animCollapse: false,
-                floatable: false,
-                width: 180,
-                minSize: 180,
-                closable: false,
-                resizable: false,
-                layout: 'fit',
-                //frame: true,
-                //                items: [new Ext.app.SearchField({
-                //                    width: 140
-                //                })],
-                tpl: new Ext.XTemplate('<tpl for="docs">', '<div id="{id}" class="fav clickable" style="height:42px;width:160px;"><div><img src={img} style="float:left;margin: 5px;" /></div><div style="line-height:30px;text-transform:capitalize;font-weight:bold;">{title}</div></div>', '</tpl>'),
-                
-                afterRender: function(){
-                    Ext.Window.prototype.afterRender.apply(this, arguments);
-                },
-                
-                listeners: {
-                    expand: function(me){
-                    
-                        if (!me.loadMask) {
-                            me.loadMask = new Ext.LoadMask(me.body, {
-                                msg: Fdl.ApplicationManager.context._("ecm::Loading...")
-                            });
-                        }
-                        me.loadMask.show();
-                        
-                        (function(){
-                            if (!me.loaded) {
-                            
-                                me.docs = getFamilyCreation();
-                                
-                                console.log('FAMILY',me.docs);
-                                
-                                me.tpl.overwrite(me.body, me);
-                                me.body.on({
-                                    click: {
-                                        delegate: 'div.clickable',
-                                        //stopEvent: true,
-                                        fn: function(e, t){
-                                            Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
-                                        }
-                                    }
-                                });
-                                
-                            }
-                            
-                            me.loaded = true;
-                            
-                            me.loadMask.hide();
-                            
-                        }).defer(10);
-                        
-                    }
-                }
-            
-            }]
+            }, Fdl.ApplicationManager.desktopPanel//, 
+//            {
+//                region: 'east',
+//                xtype: 'panel',
+//                bodyStyle: 'overflow:auto;',
+//                bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
+//                id: 'create-document',
+//                title: 'Créer',
+//                collapsible: true,
+//                collapsed: true,
+//                animCollapse: false,
+//                floatable: false,
+//                width: 180,
+//                minSize: 180,
+//                closable: false,
+//                resizable: false,
+//                layout: 'fit',
+//                //frame: true,
+//                //                items: [new Ext.app.SearchField({
+//                //                    width: 140
+//                //                })],
+//                tpl: new Ext.XTemplate('<tpl for="docs">', '<div id="{id}" class="fav clickable" style="height:42px;width:160px;"><div><img src={img} style="float:left;margin: 5px;" /></div><div style="line-height:30px;text-transform:capitalize;font-weight:bold;">{title}</div></div>', '</tpl>'),
+//                
+//                afterRender: function(){
+//                    Ext.Window.prototype.afterRender.apply(this, arguments);
+//                },
+//                
+//                listeners: {
+//                    expand: function(me){
+//                    
+//                        if (!me.loadMask) {
+//                            me.loadMask = new Ext.LoadMask(me.body, {
+//                                msg: Fdl.ApplicationManager.context._("ecm::Loading...")
+//                            });
+//                        }
+//                        me.loadMask.show();
+//                        
+//                        (function(){
+//                            if (!me.loaded) {
+//                            
+//                                me.docs = getFamilyCreation();
+//                                
+//                                console.log('FAMILY',me.docs);
+//                                
+//                                me.tpl.overwrite(me.body, me);
+//                                me.body.on({
+//                                    click: {
+//                                        delegate: 'div.clickable',
+//                                        //stopEvent: true,
+//                                        fn: function(e, t){
+//                                            Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
+//                                        }
+//                                    }
+//                                });
+//                                
+//                            }
+//                            
+//                            me.loaded = true;
+//                            
+//                            me.loadMask.hide();
+//                            
+//                        }).defer(10);
+//                        
+//                    }
+//                }
+//            
+//            }
+            ]
         });
     };
     
@@ -898,6 +901,7 @@ Ext.onReady(function(){
 	            	items: [{
 	            		xtype: 'familycombobox',
 	            		allOption: false,
+	            		control: 'icreate',
 	            		iconCls: 'no-icon',
 	            		selectOnFocus: true,
 	            		width: 135,
@@ -908,9 +912,17 @@ Ext.onReady(function(){
 	            		familySelect: function(id){
 	            			this.publish('opendocument',null,id,'create');
 	            			this.reset();
-//	            			Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
+	            		},
+	            		getNewFamilies: function(){
+	            			var newFamilies = getFamilyCreation();
+	            			console.log('NEW FAMILIES',newFamilies);
+	            		},
+	            		listeners: {
+	            			afterrender: function(me){
+	            				me.getNewFamilies();
+	            			}
 	            		}
-	            	}]
+	            	},'-']
             	}            	
             }, {
                 text: Fdl.ApplicationManager.context._("ecm::Desktop"),
