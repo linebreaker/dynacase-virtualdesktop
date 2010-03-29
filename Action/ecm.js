@@ -889,7 +889,29 @@ Ext.onReady(function(){
             items: [{
                 xtype: 'tbfill'
             }, {
-            	text: Fdl.ApplicationManager.context._("ecm::New")
+            	text: Fdl.ApplicationManager.context._("ecm::New"),
+            	icon: 'lib/ui/icon/page_add.png',
+            	menu: {
+            		style: {
+            			overflow: 'visible' // For the Combo popup
+	            	},
+	            	items: [{
+	            		xtype: 'familycombobox',
+	            		allOption: false,
+	            		iconCls: 'no-icon',
+	            		selectOnFocus: true,
+	            		width: 135,
+	            		getListParent: function() {
+		                    return this.el.up('.x-menu');
+		                },
+	            		context: Fdl.ApplicationManager.context,
+	            		familySelect: function(id){
+	            			this.publish('opendocument',null,id,'create');
+	            			this.reset();
+//	            			Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
+	            		}
+	            	}]
+            	}            	
             }, {
                 text: Fdl.ApplicationManager.context._("ecm::Desktop"),
                 icon: 'lib/ui/icon/application_edit.png',
