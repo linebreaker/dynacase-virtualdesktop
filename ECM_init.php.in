@@ -15,7 +15,7 @@ global $app_const;
 $app_const= array(
 		  "INIT" => "yes",
 		  "VERSION" => "@VERSION@-@RELEASE@",
-		  "OUR_NEW_FAMILIES"    =>array("val"=>'["SIMPLEFILE","PHOTO","DIR","MINUTEMEETING"]',
+		  "ECM_NEW_FAMILIES"    =>array("val"=>'["SIMPLEFILE","DIR"]',
 						"descr"=>N_("defaut family use to create"),
 						"user"=>"Y",
 						"kind"=>"json",
