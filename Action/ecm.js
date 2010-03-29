@@ -889,6 +889,8 @@ Ext.onReady(function(){
             items: [{
                 xtype: 'tbfill'
             }, {
+            	text: Fdl.ApplicationManager.context._("ecm::New")
+            }, {
                 text: Fdl.ApplicationManager.context._("ecm::Desktop"),
                 icon: 'lib/ui/icon/application_edit.png',
                 menu: {
