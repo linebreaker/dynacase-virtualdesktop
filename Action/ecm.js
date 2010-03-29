@@ -912,8 +912,10 @@ Ext.onReady(function(){
 	            		familySelect: function(id){
 	            			this.publish('opendocument',null,id,'create');
 	            			this.reset();
-	            		}	            		
+	            			this.ownerCt.ownerCt.hideMenu();
+	            		}
 	            	},'-'],
+	            	// See removeAll in Ext JS API for reference.
 		          	removeNewFamilies: function(autoDestroy){
 	        			this.initItems();
 						var item, rem = [], items = [];
@@ -1013,6 +1015,10 @@ Ext.onReady(function(){
 	        			}
         			}).defer(10);
         		},
+        		focusFamilyComboBox: function(){
+        			console.log('FOCUS');
+        			this.menu.items.first().focus(true);
+        		},
         		listeners: {
         			afterrender: function(button){
         				this.subscribe('opendocument',function(wid,id,mode,config){
@@ -1025,6 +1031,7 @@ Ext.onReady(function(){
         					button.updateMenu() ;
         				}
         				button.loaded = true;
+        				button.focusFamilyComboBox();
         			}
         		}
             }, {
