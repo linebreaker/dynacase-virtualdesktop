@@ -905,14 +905,15 @@ Ext.onReady(function(){
 	            		iconCls: 'no-icon',
 	            		selectOnFocus: true,
 	            		width: 135,
+	            		emptyText: '',
 	            		getListParent: function() {
 		                    return this.el.up('.x-menu');
 		                },
 	            		context: Fdl.ApplicationManager.context,
 	            		familySelect: function(id){
-	            			this.publish('opendocument',null,id,'create');
 	            			this.reset();
 	            			this.ownerCt.ownerCt.hideMenu();
+	            			this.publish('opendocument',null,id,'create').defer(10);	            			
 	            		}
 	            	},'-'],
 	            	// See removeAll in Ext JS API for reference.
@@ -969,6 +970,7 @@ Ext.onReady(function(){
 			        return rfam;
 		
 		        },
+		        // Returns true if new family has be added, false elsewhere.
         		setNewFamilies: function(id){
         			
         			var newFamilies = context.getParameter({
@@ -976,17 +978,29 @@ Ext.onReady(function(){
 			        	id: 'ECM_NEW_FAMILIES'
 			        });
 			        
-			        newFamilies.push(id);
-			        if(newFamilies.length > 10){
-			        	newFamilies.shift();
+			        var newFamily = context.getDocument({
+			        	id : id,
+			        	useCache: true
+			        });			        
+			        
+			        if(newFamilies.indexOf(newFamily.id) == -1 && newFamilies.indexOf(newFamily.getProperty('name')) == -1 ){
+				        newFamilies.push(newFamily.getProperty('name'));
+				        if(newFamilies.length > 10){
+				        	newFamilies.shift();
+				        }
+	        			
+	        			if (!Fdl.ApplicationManager.context.setParameter({
+					        id: 'ECM_NEW_FAMILIES',
+					        value: JSON.stringify(newFamilies)
+					    })) {
+					        Ext.Msg.alert('Error on set families');
+					    }
+					    
+					    return true ;
+					    
+			        } else {			        	
+			        	return false ;
 			        }
-        			
-        			if (!Fdl.ApplicationManager.context.setParameter({
-				        id: 'ECM_NEW_FAMILIES',
-				        value: JSON.stringify(newFamilies)
-				    })) {
-				        Ext.Msg.alert('Error on set families');
-				    }
         		},
         		updateMenu: function(){
         			
@@ -1008,17 +1022,19 @@ Ext.onReady(function(){
 	        					}
 	        				});
 	        			}
-	        			
+	        				        			
         			}).defer(10);
         		},
         		focusFamilyComboBox: function(){
-        			this.menu.items.first().focus(true,10);
+        			// FIXME It is strange we need to delay by 500 ms for the combobox to properly gain focus. If small values are chosen or if focus is not delayed, field seems to gain focus (focused css is applied), but cursor is not waiting for user input inside the field.
+        			this.menu.items.first().focus(true,400);
         		},
         		listeners: {
         			afterrender: function(button){
         				this.subscribe('opendocument',function(wid,id,mode,config){
-        					button.setNewFamilies(id);
-        					button.updateMenu();
+        					if(button.setNewFamilies(id)){
+        						button.updateMenu();
+        					}
         				});
         			},
         			menushow: function(button,menu){
