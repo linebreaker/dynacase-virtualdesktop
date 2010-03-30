@@ -965,9 +965,7 @@ Ext.onReady(function(){
 			            }		            
 			            
 			        }
-			        
-			        console.log('FAM',rfam,sfam);
-			        
+			        			        
 			        return rfam;
 		
 		        },
@@ -996,9 +994,6 @@ Ext.onReady(function(){
         			
         			(function(){
         				
-//        				for( var i = 2, l = button.menu.items.getCount() ; i < l ; i++){
-//        					button.menu.items.removeAt(i);
-//        				}
         				button.menu.removeNewFamilies();
         				
 	        			var newFamilies = button.getNewFamilies();
@@ -1013,11 +1008,11 @@ Ext.onReady(function(){
 	        					}
 	        				});
 	        			}
+	        			
         			}).defer(10);
         		},
         		focusFamilyComboBox: function(){
-        			console.log('FOCUS');
-        			this.menu.items.first().focus(true);
+        			this.menu.items.first().focus(true,10);
         		},
         		listeners: {
         			afterrender: function(button){
