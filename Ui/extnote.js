@@ -45,7 +45,8 @@ Ext.fdl.SimpleNote = {
 			     var pp=p.ownerCt;
 			     if (!pp) return;
 			     pp.blursoon=true;
-			     setTimeout(function() {	
+			     setTimeout(function() {
+			    	 if (pp.items && pp.items.itemAt(0)) {
 				 pp.items.itemAt(0).body.update('<h2><pre style="min-height:50px;white-space:pre-wrap;">'+(note.getValue('note_text') || '')+'</pre></h2>');
 				 pp.items.itemAt(0).setVisible(true);
 				 pp.items.itemAt(1).setVisible(false);
@@ -54,6 +55,7 @@ Ext.fdl.SimpleNote = {
 				 setTimeout(function() {			     
 				     if (pp) pp.blursoon=false;
 				 },5000);     
+			    	 }
 			     },500);
 			     
 			 }
@@ -75,14 +77,16 @@ Ext.fdl.SimpleNote = {
 		    scope:this,
 		      handler: function(o){
 			  note.remove();
-			  this.window.close();
+			  console.log("close",panel, o, this);
+			  this.close();
+			  //if (this.ownerCt && this.ownerCt.ownerCt)	this.ownerCt.ownerCt.close();
 		      }
 		     }		    		    		    
 		   ],
 
             frame: false,
 	    scope:this,
-	    listeners: (ismynote?{
+	    listeners : (ismynote?{
 		render: function(p) {
 		    // Append the Panel to the click handler's argument list.
 		    // p.getEl().on('click', handlePanelClick.createDelegate(null, [p], true));
