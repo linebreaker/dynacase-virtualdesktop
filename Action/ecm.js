@@ -341,7 +341,12 @@ Ext.onReady(function(){
             win.taskIcon = doc.getIcon({
                 width: 18
             });
-            win.taskTitle = doc.getTitle();
+            
+            if(mode == 'create'){
+            	win.taskTitle = doc.getProperty('fromtitle');
+            } else {
+            	win.taskTitle = this.context._("eui::Creation : ") + doc.getTitle();
+            }
             
             if (!this.docBar[id]) {
             	var button = taskBar.addTaskButton(win);
@@ -1032,8 +1037,10 @@ Ext.onReady(function(){
         		listeners: {
         			afterrender: function(button){
         				this.subscribe('opendocument',function(wid,id,mode,config){
-        					if(button.setNewFamilies(id)){
-        						button.updateMenu();
+        					if(mode == 'create'){
+	        					if(button.setNewFamilies(id)){
+	        						button.updateMenu();
+	        					}
         					}
         				});
         			},
