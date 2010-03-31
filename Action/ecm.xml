@@ -285,31 +285,28 @@
 		<!-- Include javascript after the loading indicator -->
 		<!-- Ext Library -->
         [IF DEBUG]
-	    <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js">
-	    </script>
-		<script type="text/javascript" src="lib/ext/ext-all-debug.js">
-        </script>
+	    <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js"></script>
+		<script type="text/javascript" src="lib/ext/ext-all-debug.js"></script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data-debug.js?v=[WVERSION]"></script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/freedom-extui-debug.js?v=[WVERSION]"></script>
         [ENDIF DEBUG]
 	    [IFNOT DEBUG]
-        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js">
-        </script>
-		<script type="text/javascript" src="lib/ext/ext-all.js">
-        </script>
+        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="lib/ext/ext-all.js"></script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]"></script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]"></script>
 	    [ENDIF DEBUG]
         
         
-        <!--<script src="lib/ext/source/locale/ext-lang-fr.js">
-        </script>-->
-        
-        <!-- Freedom Data Library -->
-        <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]">
-        </script>
-        <script type="text/javascript" src="lib/data/json2.js">
-        </script>
-        
-        <!-- Freedom Widget Library -->
-        <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]">
-        </script>
+      
         
         <!-- Ecm Offline -->
         <script type="text/javascript" src="ECM/Layout/ecmOffline.js?v=[WVERSION]">

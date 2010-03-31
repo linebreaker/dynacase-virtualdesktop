@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 14:13+0200\n"
+"POT-Creation-Date: 2010-03-31 16:16+0200\n"
 "PO-Revision-Date: 2010-02-08 15:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: english anakeen\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "eui::Creation : "
+#, fuzzy
+msgid "eui::Creation :"
 msgstr "Creation : "
 
 msgid "ecm::Loading..."
@@ -63,3 +64,33 @@ msgstr "Families"
 msgid "ecm:A propos"
 msgstr ""
 
+msgid "ecm:Download Freedom Offline"
+msgstr ""
+
+msgid "ecm: view offline containt"
+msgstr ""
+
+msgid "ecm:modify offline containt"
+msgstr ""
+
+#, fuzzy
+msgid "ecm:Refresh"
+msgstr "Refresh desktop"
+
+msgid "ecm:Clear offline folder"
+msgstr ""
+
+msgid "ecm:Do you want clear containt ?"
+msgstr ""
+
+msgid "ecm:detach from offline folder"
+msgstr ""
+
+msgid "ecm:tolock"
+msgstr ""
+
+msgid "ecm:toUnlock"
+msgstr ""
+
+msgid "ecm:impossible. Locked by another user"
+msgstr ""
