@@ -467,7 +467,7 @@ var offlineTab = function() {
 		items : [ grid, gridModif, downloadPanel, dragDropPanel ],
 		dragTemplate : function(fromCol, overCol, dSel, overDoc) {
 
-			console.log('DRAG TEMPLATE',fromCol,overCol,dSel,overDoc);
+			//console.log('DRAG TEMPLATE',fromCol,overCol,dSel,overDoc);
 		
 			var l = dSel.count();
 			var fDoc = dSel.context.getDocument({
@@ -493,7 +493,7 @@ var offlineTab = function() {
 
 			var action = dSel.context._("eui::link to offline");
 
-			return Ext.fdl.Collection.dragTemplateFormat(action,object);
+			return Ext.fdl.Collection.dragTemplateFormat(action,object,'');
 
 		},
 		listeners : {
@@ -501,23 +501,13 @@ var offlineTab = function() {
 				var dropTarget = new Ext.dd.DropTarget(panel.getEl(), {
 					ddGroup : 'docDD',
 					notifyDrop : function(source, e, data) {
-						
-						// var document = context.getDocument({
-						// id: source.dragData.documentId,
-						// useCache: true
-						// });
-						// document.remove();
-						// // TODO Update open window if applicable
-						// //updateDesktop();
+								
+						var dragCol = Fdl.ApplicationManager.context.getDocument({
+							id : source.dragData.selection.collectionId,
+							useCache : true
+						});
 		
-						data.component.mask();
-		
-						var dragCol = me.context.getDocument({
-									id : source.dragData.selection.collectionId,
-									useCache : true
-								});
-		
-						var dropCol = me.collection;
+						var dropCol = null;
 						var dropDoc = null;
 		
 						var dragWid = data.component;
@@ -527,32 +517,38 @@ var offlineTab = function() {
 		
 							var selectionItems = data.selection.selectionItems;
 		
-							var doc = me.context.getDocument({
-										id : selectionItems[0],
-										useCache : true
-									});
+							Fdl.ApplicationManager.context.getOfflineFolder().insertDocument({
+								id: selectionItems[0]
+							});
 		
-							doc.remove();
-		
-							var modifiedDocObj = {};
-							modifiedDocObj[dragCol.id] = dragCol;
-							if (dropDoc) {
-								modifiedDocObj[dropDoc.id] = dropDoc;
+							// Refresh (should be more properly refactored)
+							var westGrid = Ext.getCmp('westGrid');
+							var westGridM = Ext.getCmp('westGridModif');
+							var dragDropPanel = Ext.getCmp('dragDropPanel');
+							var dataGrid = createDataGrid(Fdl.ApplicationManager.context.getOfflineFolder());
+							if (dataGrid.length == 0) {
+								if (!westGrid.hidden) {
+									westGrid.hide();
+								}
+								if (!westGridM.hidden) {
+									westGridM.hide();
+								}
+								dragDropPanel.show();
+							} else {
+								if (westGrid.hidden) {
+									westGridM.hide();
+									dragDropPanel.hide();
+									westGrid.show();
+								}
+								westGrid.store.loadData(dataGrid);
 							}
-		
-							if (dragWid.reload) {
-								dragWid.reload(true, modifiedDocObj);
-							}
-		
-							data.component.unmask();
 		
 						}).defer(5);
 		
 						return true;
 					},
 					notifyEnter : function(source, e, data) {
-						console.log('ENTER',data);
-						data.component.displayProxy(centerPanel);
+						data.component.displayProxy(centerPanel,true);
 					},
 		
 					notifyOver : function(source, e, data) {
