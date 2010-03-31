@@ -295,10 +295,8 @@ var offlineTab = function() {
 		region : 'center',
 		border : false,
 		hidden : false,
-//		enableDrag : true,
 		enableColumnMove : false,
 		enableColumnHide : false,
-//		ddGroup : 'docDD',
 		// title:'remote directory',
 		width : 'auto',
 		stripeRows : true,
@@ -368,8 +366,6 @@ var offlineTab = function() {
 		// autoHeight : true,
 		height : 200,
 		hidden : true,
-//		enableDrag : true,
-//		ddGroup : 'docDD',
 		// title:'remote directory',
 		width : 'auto',
 		stripeRows : true,
@@ -489,7 +485,10 @@ var offlineTab = function() {
 			items : items_on_toolbar
 		}, centerPanel ],
 		listeners : {
-			activate : function(tab) {
+			afterrender : function(tab) {
+		
+				console.log('Activate');
+		
 				Ext.getCmp('westGrid').store.loadData( []);
 				var dataGrid = createDataGrid(context.getOfflineFolder());
 				if (dataGrid.length == 0) {
@@ -502,44 +501,47 @@ var offlineTab = function() {
 				} else {
 					Ext.getCmp('westGrid').store.loadData(dataGrid);
 				}
-
+				
 				// dragDrop
-				var offlinedropTarget = new Ext.dd.DropTarget(Ext
-						.getCmp('offlineTab').body, {
+				console.log('INSTALL DRAG DROP');
+				var offlinedropTarget = new Ext.dd.DropTarget(Ext.getCmp('centerPanel').getEl(), {
 					ddGroup : 'docDD',
 					notifyDrop : function(source, e, data) {
-
 						if (source.dragData.documentId) {
 							// Drop from Desktop on Desktop
-					var document = context.getDocument( {
-						id : source.dragData.documentId
-					});
-				} else {
-					if (source.dragData.selections) {
-						// Drop from Grid on Desktop
-					var document = context.getDocument( {
-						id : source.dragData.selections[0].data.id
-					});
-					var fromId = source.dragData.grid.collectionId;
-				} else {
-					if (source.dragData.node.attributes.collection) {
-						// console.log('Drop from Tree on Desktop');
-						var treedrop = true;
-						var document = context.getDocument( {
-							id : source.dragData.node.attributes.collection
-						});
+							var document = context.getDocument( {
+								id : source.dragData.documentId
+							});
+						} else {
+							if (source.dragData.selections) {
+								// Drop from Grid on Desktop
+								var document = context.getDocument( {
+									id : source.dragData.selections[0].data.id
+								});
+								var fromId = source.dragData.grid.collectionId;
+							} else {
+								if (source.dragData.node.attributes.collection) {
+									// console.log('Drop from Tree on Desktop');
+									var treedrop = true;
+									var document = context.getDocument( {
+										id : source.dragData.node.attributes.collection
+									});
+								}
+							}
+						}
+						addDoc(document.id);
+						Ext.getCmp('westGrid').store.loadData( []);
+						var dataGrid = createDataGrid(context.getOfflineFolder());
+						Ext.getCmp('westGrid').store.loadData(dataGrid);
+	
+						return (true);
+	
+					},
+					notifyOver: function(source, e, data) {
+						console.log('OVER');
 					}
-				}
-			}
-			addDoc(document.id);
-			Ext.getCmp('westGrid').store.loadData( []);
-			var dataGrid = createDataGrid(context.getOfflineFolder());
-			Ext.getCmp('westGrid').store.loadData(dataGrid);
-
-			return (true);
-
-		}
 				});
+				
 			}
 		}
 	});

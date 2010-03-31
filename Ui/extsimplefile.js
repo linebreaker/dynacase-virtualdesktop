@@ -96,7 +96,9 @@ Ext.fdl.DocumentSimpleFile = {
             style: 'height: 500px',
             autoHeight: false,
             anchor: '100% 100%',
+            bodyStyle: 'overflow-y:scroll;',
             frame: false,
+            border: false,
             listeners: {
                 scope: this,
                 bodyresize: function(p, w, h){
@@ -124,8 +126,8 @@ Ext.fdl.DocumentSimpleFile = {
             x: 0,
             y: 50,
             height: '400px',
-            width: '100%',
-            anchor: '100% 100%',
+            //width: '100%',
+            anchor: '-15 100%',
             bodyStyle: 'overflow:auto;',
             mediaCfg: {
                 mediaType: mediaType,
@@ -144,7 +146,7 @@ Ext.fdl.DocumentSimpleFile = {
 			panel.add(new Ext.Panel({
 				html: "<i>Rendu indisponible. Le serveur de transformation n'est pas configuré.</i>",
 				border: false,
-				anchor: '-20',
+				anchor: '-35',
 				bodyStyle: 'text-align:center;background-color:transparent;background-image:url(' + this.document.context.url + 'Images/op75.png);',
 				x: 20,
 				y: 200
@@ -158,7 +160,7 @@ Ext.fdl.DocumentSimpleFile = {
 			panel.add(new Ext.Panel({
 			html: (url)?'<i ext:qtip="<img src='+"'"+url+"'"+'">Rendu non disponible.</i>':'<i>Rendu non disponible.</i>',
 			border: false,
-			anchor: '-20',
+			anchor: '-35',
 			bodyStyle: 'text-align:center;background-color:transparent;background-image:url(' + this.document.context.url + 'Images/op75.png);',
 			x: 20,
 			y: 200
@@ -169,7 +171,7 @@ Ext.fdl.DocumentSimpleFile = {
             xtype: 'panel',
             x: 0,
             y: 25,
-            anchor: '100%',
+            anchor: '-15',
             cls: 'opacity',
             title: 'Créé par ' + this.document.getProperty('ownername') + ', modifié le ' + this.document.getProperty('mdate'),
             collapsible: true,
@@ -203,7 +205,7 @@ Ext.fdl.DocumentSimpleFile = {
         var toolbar = new Ext.Toolbar({
             x: 0,
             y: 0,
-            anchor: '100%'
+            anchor: '-15'
         });
         
         toolbar.add(this.documentToolbarButton());

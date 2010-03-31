@@ -584,6 +584,7 @@ Ext.onReady(function(){
         
         listeners: {
             render: function(grid) {
+            	// Remove completely grid headers.
                 grid.getView().el.select('.x-grid3-header').setStyle('display','none');
             }                
         }
