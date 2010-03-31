@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-30 17:09+0200\n"
-"PO-Revision-Date: 2010-02-08 15:25+0100\n"
+"POT-Creation-Date: 2010-03-31 10:26+0200\n"
+"PO-Revision-Date: 2010-03-31 10:27+0200\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: french anakeen\n"
 "MIME-Version: 1.0\n"
@@ -16,13 +16,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "eui::Creation : "
-msgstr ""
+msgstr "Création"
 
 msgid "ecm::Loading..."
 msgstr "Chargement..."
 
 msgid "ecm::New"
 msgstr "Nouveau"
+
+msgid "ecm::Freedom ECM"
+msgstr "Freedom ECM"
+
+msgid "ecm::Gadgets"
+msgstr "Gadgets"
 
 msgid "ecm::Desktop"
 msgstr "Bureau"
@@ -35,12 +41,6 @@ msgstr "Sélectionner le thème"
 
 msgid "ecm::Select Background"
 msgstr "Sélectionner l'image de fond"
-
-msgid "ecm::Gadgets"
-msgstr "Gadgets"
-
-msgid "ecm::Freedom ECM"
-msgstr "Freedom ECM"
 
 msgid "ecm::About"
 msgstr "A Propos"
@@ -58,5 +58,4 @@ msgid "ecm::family management"
 msgstr "Gestion par famille"
 
 msgid "ecm:A propos"
-msgstr ""
-
+msgstr "A propos"

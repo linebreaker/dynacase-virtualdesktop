@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-30 17:09+0200\n"
+"POT-Creation-Date: 2010-03-31 10:26+0200\n"
 "PO-Revision-Date: 2010-02-08 15:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: english anakeen\n"
@@ -24,6 +24,12 @@ msgstr "Loading..."
 msgid "ecm::New"
 msgstr "New"
 
+msgid "ecm::Freedom ECM"
+msgstr "Freedom ECM"
+
+msgid "ecm::Gadgets"
+msgstr "Gadgets"
+
 msgid "ecm::Desktop"
 msgstr "Desktop"
 
@@ -35,12 +41,6 @@ msgstr "Select theme"
 
 msgid "ecm::Select Background"
 msgstr "Select Background"
-
-msgid "ecm::Gadgets"
-msgstr "Gadgets"
-
-msgid "ecm::Freedom ECM"
-msgstr "Freedom ECM"
 
 msgid "ecm::About"
 msgstr "About"
@@ -59,4 +59,3 @@ msgstr "Families"
 
 msgid "ecm:A propos"
 msgstr ""
-
