@@ -194,8 +194,8 @@ Ext.onReady(function(){
     });
     
     // Change global default configurations.
-    Ext.fdl.Collection.prototype.documentContextMenu = "EXTUI:default-context-menu.xml";
-    Ext.fdl.Collection.prototype.selectionContextMenu = "EXTUI:default-selection-context-menu.xml";
+    Ext.fdl.Collection.documentContextMenu = "EXTUI:default-context-menu.xml";
+    Ext.fdl.Collection.selectionContextMenu = "EXTUI:default-selection-context-menu.xml";
     Ext.fdl.CollectionContainer.prototype.collectionMenu = "EXTUI:default-collection-menu.xml";
     
     // Fdl.ApplicationManager will represent global ecm application behaviour
