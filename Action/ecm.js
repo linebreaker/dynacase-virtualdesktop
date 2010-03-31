@@ -767,15 +767,22 @@ Ext.onReady(function(){
                     region: 'south',
                     margins: '5 5 5 5',
                     activeTab: 0,
+                    
                     height: 200,
-                    items: [homeTree, {
+                    items: [homeTree, 
+                         /*  {
                         title: 'Import',
                         html: '<form id="create_simple_file" enctype="multipart/form-data" method="post" style="height:100%;width:100%;background-image:url(\'Images/our_import.png\');background-repeat:no-repeat;background-position:center;" ><input type="file" name="sfi_file" onchange="this.form.style.backgroundImage=\'url(Images/loading.gif)\';createSimpleFile();this.form.style.backgroundImage=\'url(Images/our_import.png)\';" onclick="event.stopPropagation();return false;" style="font-size:200pt;opacity:0;"/></form>',
-                        disabled: !testDragDropUpload(),
+                        disabled: false,
+                        hideLabel:true,
+                        hideMode:'display',
+                        hidden:true,
                         tabTip: testDragDropUpload() ? 'Importez un fichier depuis votre système' : 'Installez le plugin firefox dragdropupload pour activer cette fonctionalité'
-                    }, {
+                    }, */{
                     	title: 'Offline',
                     	layout: 'fit',
+                        hidden:true,
+                        disabled:!testOffline(),
                 		tabTip: 'Après avoir téléchargé une des applications, travailler en mode déconnecté.',
                     	listeners: {
                     		activate: function(panel){
@@ -1375,8 +1382,17 @@ Ext.onReady(function(){
 function testDragDropUpload(){
     return true; // Since the method given in documentation does not work, we return always true for now
     return window["_dragdropupload"];
-}
+};
 
+/**
+ * Test if Drag Drog Upload Plugin for Firefox is installed.
+ * Documentation for Plugin : http://www.teslacore.it/wiki/index.php?title=DragDropUpload
+ */
+function testOffline(){
+	var version=context.retrieveFile("offline/Apps/VERSION");
+	console.log('offline',version);
+    return (version != null); // Verify version
+};
 var ecm = new Object();
 ecm.getSession = function(config){
     if ((!ecm.session) || (config && config.reset)) {
