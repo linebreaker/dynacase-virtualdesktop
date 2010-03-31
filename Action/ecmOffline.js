@@ -663,20 +663,14 @@ function eraseAllOnServer() {
 	var d = context.getOfflineFolder();
 
 	if (d.isAlive()) {
-		var dl = d.getContent();
-		if (dl) {
-			var p = dl.getDocuments();
-			for ( var i = 0; i < p.length; i++) {
-				var doc = p[i];
-				var rs = d.unlinkDocument( {
-					id : doc.getProperties().id
-				});
-				if (!rs) {
-					Ext.Msg.alert('Error', context.getLastErrorMessage());
-				}
-				Ext.getCmp('westGrid').store.loadData( []);
-			}
+		var good=d.unlinkAllDocuments();
+
+		if (!good) {
+			Ext.Msg.alert('Error', context.getLastErrorMessage());
 		}
+		Ext.getCmp('westGrid').store.loadData( []);
+			
+		
 	}
 
 }
