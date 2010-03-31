@@ -193,6 +193,11 @@ Ext.onReady(function(){
         mouseOffset: [15, -30]
     });
     
+    // Change global default configurations.
+    Ext.fdl.Collection.prototype.documentContextMenu = "EXTUI:default-context-menu.xml";
+    Ext.fdl.Collection.prototype.selectionContextMenu = "EXTUI:default-selection-context-menu.xml";
+    Ext.fdl.CollectionContainer.prototype.collectionMenu = "EXTUI:default-collection-menu.xml";
+    
     // Fdl.ApplicationManager will represent global ecm application behaviour
     // TODO Rename more appropriately but take care because Fdl.ApplicationManager was used in many places
     Fdl.ApplicationManager = new Ext.fdl.Interface({
@@ -566,7 +571,7 @@ Ext.onReady(function(){
                 slice: 'ALL'
             }
         }),
-        useTrash: context.getDocument({
+        useTrash: Fdl.ApplicationManager.context.getDocument({
             id: 'OUR_MYTRASH'
         }),
         bodyStyle: {
@@ -991,14 +996,16 @@ Ext.onReady(function(){
                 text: context.getUser().getDisplayName(),
                 handler: function(){
                 //Ext.Msg.alert('Utilisateur', 'Pas encore implémenté');
-                }
-            }, {
-                xtype: 'tbbutton',
-                cls: 'x-btn-text-icon',
-                icon: 'ECM/Images/our.logout.png',
-                text: Fdl.ApplicationManager.context._("ecm::Logout"),
-                handler: function(){
-                    window.location.href = '?app=AUTHENT&action=LOGOUT&SeenBefore=1&logout=Y';
+                },
+                menu: {
+                	items: [{
+		                cls: 'x-btn-text-icon',
+		                icon: 'ECM/Images/our.logout.png',
+		                text: Fdl.ApplicationManager.context._("ecm::Logout"),
+		                handler: function(){
+		                    window.location.href = '?app=AUTHENT&action=LOGOUT&SeenBefore=1&logout=Y';
+		                }
+		            }]
                 }
             }]
         },
