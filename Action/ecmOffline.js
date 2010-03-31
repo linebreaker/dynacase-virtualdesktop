@@ -485,7 +485,7 @@ var offlineTab = function() {
 			items : items_on_toolbar
 		}, centerPanel ],
 		listeners : {
-			afterrender : function(tab) {
+			activate : function(tab) {
 		
 				console.log('Activate');
 		
