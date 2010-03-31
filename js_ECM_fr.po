@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 10:26+0200\n"
-"PO-Revision-Date: 2010-03-31 10:27+0200\n"
+"POT-Creation-Date: 2010-03-31 14:18+0200\n"
+"PO-Revision-Date: 2010-03-31 14:19+0200\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: french anakeen\n"
 "MIME-Version: 1.0\n"
@@ -59,3 +59,33 @@ msgstr "Gestion par famille"
 
 msgid "ecm:A propos"
 msgstr "A propos"
+
+msgid "ecm:Download Freedom Offline"
+msgstr "Télécharger l'application freedom-offline"
+
+msgid "ecm: view offline containt"
+msgstr "Voir le contenu du dossier Offline"
+
+msgid "ecm:modify offline containt"
+msgstr "Modifier le contenu du dossier Offline"
+
+msgid "ecm:Refresh"
+msgstr "Actualiser"
+
+msgid "ecm:Clear offline folder"
+msgstr "Vider le dossier Offline"
+
+msgid "ecm:Do you want clear containt ?"
+msgstr "Voulez-vous vider le dossier ?"
+
+msgid "ecm:detach from offline folder"
+msgstr "Enlever du dossier Offline"
+
+msgid "ecm:tolock"
+msgstr "Verrouiller"
+
+msgid "ecm:toUnlock"
+msgstr "Déverrouiller"
+
+msgid "ecm:impossible. Locked by another user"
+msgstr "Impossible. Verrouillez par un autre utilisateur"

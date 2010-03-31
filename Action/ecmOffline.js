@@ -52,7 +52,7 @@ var offlineTab = function() {
 		id : 'btnDownload',
 		iconCls : 'iconDl',
 		disabled : false,
-		tooltip : "télécharger l'application Freedom Offline",
+		tooltip : context._("ecm:Download Freedom Offline"),
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -76,7 +76,7 @@ var offlineTab = function() {
 		id : 'btnShowOfflineFolder',
 		iconCls : 'iconOpenFolder',
 		disabled : false,
-		tooltip : "afficher le contenu du dossier 'offline'",
+		tooltip : context._("ecm: view offline containt"),
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -106,7 +106,7 @@ var offlineTab = function() {
 		id : 'btnmodify',
 		iconCls : 'iconModify',
 		disabled : false,
-		tooltip : 'modifier les documents',
+		tooltip : context._("ecm:modify offline containt"),
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -128,7 +128,7 @@ var offlineTab = function() {
 		id : 'btnGoToGears',
 		iconCls : 'iconRefresh',
 		disabled : false,
-		tooltip : 'rafraîchir',
+		tooltip : context._("ecm:Refresh"),
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -158,12 +158,12 @@ var offlineTab = function() {
 		id : 'btnErase',
 		iconCls : 'icon-delete',
 		disabled : false,
-		tooltip : 'supprimer tous les documents du dossier',
+		tooltip : context._("ecm:Clear offline folder"),
 		handler : function(btn) {
 			Ext.Msg
 					.confirm(
 							'warning',
-							'Voulez vous enlever la référence de tous les documents à ce dossier?',
+							context._("ecm:Do you want clear containt ?"),
 							function(r) {
 								if (r == 'yes') {
 									eraseAllOnServer();
@@ -240,7 +240,7 @@ var offlineTab = function() {
 			qtipIndex : 'qtip1'
 		}, {
 			iconCls : 'icon-delete',
-			tooltip : "enlever du dossier 'offline'"
+			tooltip : context._("ecm:detach from offline folder")
 		} ]
 	});
 	action.on( {
@@ -631,15 +631,15 @@ function createDataGrid(docIdContainer) {
 				if (lock === 0) {
 					access = '0';
 					iconActionPath = "icon-lock";
-					qtipAction = "verrouiller";
+					qtipAction = context._("ecm:tolock");
 				} else if (lock !== 0 && myName == locker) {
 					access = '1';
 					iconActionPath = "icon-unlock";
-					qtipAction = "déverrouiller";
+					qtipAction = context._("ecm:toUnlock");
 				} else if (lock !== 0 && myName != locker) {
 					access = '2';
 					iconActionPath = "icon-other-lock";
-					qtipAction = "impossible. Verrouillé par un autre utilisateur";
+					qtipAction = context._("ecm:impossible. Locked by another user");
 				}
 				lineArray.push(doc.getIcon());
 				lineArray.push(doc.getTitle());
