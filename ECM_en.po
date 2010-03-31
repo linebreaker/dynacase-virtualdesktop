@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WORKSPACE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 10:26+0200\n"
+"POT-Creation-Date: 2010-03-31 14:13+0200\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -15,16 +15,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 "\n"
 
-msgid "attach a new note"
-msgstr ""
-
-#, c-format
-msgid "detach note %s"
-msgstr ""
-
-msgid "Loading freedom-ecm 3.0 ..."
-msgstr ""
-
 msgid "defaut family use to create"
 msgstr ""
 
@@ -32,6 +22,9 @@ msgid "ecm session data"
 msgstr ""
 
 msgid "ecm debug mode"
+msgstr ""
+
+msgid "Loading freedom-ecm 3.0 ..."
 msgstr ""
 
 msgid "Desktop"
@@ -52,6 +45,13 @@ msgid "first workspace"
 msgstr ""
 
 msgid "ecm::readme"
+msgstr ""
+
+msgid "attach a new note"
+msgstr ""
+
+#, c-format
+msgid "detach note %s"
 msgstr ""
 
 msgid "Ecm"

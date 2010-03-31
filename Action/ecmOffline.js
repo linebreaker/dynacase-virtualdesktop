@@ -295,10 +295,10 @@ var offlineTab = function() {
 		region : 'center',
 		border : false,
 		hidden : false,
-		enableDrag : true,
+//		enableDrag : true,
 		enableColumnMove : false,
 		enableColumnHide : false,
-		ddGroup : 'documentDD',
+//		ddGroup : 'docDD',
 		// title:'remote directory',
 		width : 'auto',
 		stripeRows : true,
@@ -368,8 +368,8 @@ var offlineTab = function() {
 		// autoHeight : true,
 		height : 200,
 		hidden : true,
-		enableDrag : true,
-		ddGroup : 'documentDD',
+//		enableDrag : true,
+//		ddGroup : 'docDD',
 		// title:'remote directory',
 		width : 'auto',
 		stripeRows : true,
@@ -506,7 +506,7 @@ var offlineTab = function() {
 				// dragDrop
 				var offlinedropTarget = new Ext.dd.DropTarget(Ext
 						.getCmp('offlineTab').body, {
-					ddGroup : 'documentDD',
+					ddGroup : 'docDD',
 					notifyDrop : function(source, e, data) {
 
 						if (source.dragData.documentId) {

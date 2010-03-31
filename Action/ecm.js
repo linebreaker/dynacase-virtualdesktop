@@ -545,14 +545,49 @@ Ext.onReady(function(){
     start = new Date();
     
     // Home TreePanel
-    var homeTreeCollection = new Ext.fdl.TreeCollection({
-        title: 'Personnel',
-        collection: context.getHomeFolder({
+    var homeTreeCollection = new Ext.fdl.GridCollection({
+        title: Fdl.ApplicationManager.context._("ecm::Basket"),
+        
+        header: false,
+        hideHeaders: false,
+        filterColumns: false,
+        
+        defaultDragBehaviour: 'link',
+        
+        columns: [{
+        		dataIndex: 'icon',
+        		width: 30,
+        		sortable: false,
+        		renderer: function(value, metaData, record, rowIndex, colIndex, store){
+               
+		        	if (record.get('_fdldoc')) { // There is a problem on sorting when this is not tested, and it is strange.
+		        		if (this.dataIndex == 'icon') {
+		        			return String.format('<img src="{0}" style="height:15px;width:15px;" />', record.get('_fdldoc').getIcon({
+		        				width: 15
+		        			}));
+		        		}
+		        	}
+		        	
+		        }
+        	},{
+        		dataIndex: 'title',
+        		sortable: true
+        	}        	
+        ],
+        
+        collection: context.getBasketFolder({
             contentStore: true,
             contentConfig: {
                 slice: 'ALL'
             }
-        })
+        }),
+        
+        listeners: {
+            render: function(grid) {
+                grid.getView().el.select('.x-grid3-header').setStyle('display','none');
+            }                
+        }
+            
     });
     var homeTree = homeTreeCollection;
     // EO Home TreePanel

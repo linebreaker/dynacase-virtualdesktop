@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 10:26+0200\n"
+"POT-Creation-Date: 2010-03-31 14:13+0200\n"
 "PO-Revision-Date: 2010-02-08 15:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: english anakeen\n"
@@ -16,10 +16,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "eui::Creation : "
-msgstr ""
+msgstr "Creation : "
 
 msgid "ecm::Loading..."
 msgstr "Loading..."
+
+msgid "ecm::Basket"
+msgstr "Basket"
 
 msgid "ecm::New"
 msgstr "New"
@@ -59,3 +62,4 @@ msgstr "Families"
 
 msgid "ecm:A propos"
 msgstr ""
+
