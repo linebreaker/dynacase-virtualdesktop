@@ -333,7 +333,7 @@ Ext.onReady(function(){
             if(mode == 'create'){
             	win.taskTitle = doc.getProperty('fromtitle');
             } else {
-            	win.taskTitle = this.context._("eui::Creation : ") + doc.getTitle();
+            	win.taskTitle = this.context._("eui::Creation :")+ ' ' + doc.getTitle();
             }
             
             if (!this.docBar[id]) {
