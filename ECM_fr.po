@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NetworkUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-29 15:27+0200\n"
+"POT-Creation-Date: 2010-03-30 17:09+0200\n"
 "PO-Revision-Date: 2010-02-08 15:28+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -53,30 +53,6 @@ msgstr "Pose d'une nouvelle note"
 msgid "detach note %s"
 msgstr "Suppression de la note '%s'"
 
-msgid "cr_init"
-msgstr "initialisé"
-
-msgid "cr_redacted"
-msgstr "rédigé"
-
-msgid "cr_published"
-msgstr "publié"
-
-msgid "cr_refused"
-msgstr "refusé"
-
-msgid "Tcr_published"
-msgstr "pour diffusion"
-
-msgid "Tcr_redacted"
-msgstr "pour approbation"
-
-msgid "Tcr_retry"
-msgstr "à corriger"
-
-msgid "Tcr_refused"
-msgstr "refuser"
-
 msgid "Ecm"
 msgstr ""
 
@@ -94,6 +70,30 @@ msgstr ""
 
 msgid "retrieve all searched use in onefam applications"
 msgstr ""
+
+#~ msgid "cr_init"
+#~ msgstr "initialisé"
+
+#~ msgid "cr_redacted"
+#~ msgstr "rédigé"
+
+#~ msgid "cr_published"
+#~ msgstr "publié"
+
+#~ msgid "cr_refused"
+#~ msgstr "refusé"
+
+#~ msgid "Tcr_published"
+#~ msgstr "pour diffusion"
+
+#~ msgid "Tcr_redacted"
+#~ msgstr "pour approbation"
+
+#~ msgid "Tcr_retry"
+#~ msgstr "à corriger"
+
+#~ msgid "Tcr_refused"
+#~ msgstr "refuser"
 
 #~ msgid "Simple interface to manipulate documents"
 #~ msgstr "Interface simple pour manipuler les documents"

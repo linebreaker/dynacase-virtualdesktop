@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WORKSPACE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-29 15:27+0200\n"
+"POT-Creation-Date: 2010-03-30 17:09+0200\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -52,30 +52,6 @@ msgstr ""
 
 #, c-format
 msgid "detach note %s"
-msgstr ""
-
-msgid "cr_init"
-msgstr ""
-
-msgid "cr_redacted"
-msgstr ""
-
-msgid "cr_published"
-msgstr ""
-
-msgid "cr_refused"
-msgstr ""
-
-msgid "Tcr_published"
-msgstr ""
-
-msgid "Tcr_redacted"
-msgstr ""
-
-msgid "Tcr_retry"
-msgstr ""
-
-msgid "Tcr_refused"
 msgstr ""
 
 msgid "Ecm"

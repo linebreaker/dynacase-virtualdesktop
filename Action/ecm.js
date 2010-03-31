@@ -160,8 +160,6 @@ Ext.fdl.BackgroundComboBox = Ext.extend(Ext.form.ComboBox, {
 //register xtype
 Ext.reg('backgroundcombo', Ext.fdl.BackgroundComboBox);
 
-// eof 
-
 
 // Code to measure execution time
 globalStart = new Date();
@@ -174,23 +172,8 @@ var context = new Fdl.Context({
     url: window.location.pathname
 });
 
-// TODO Think about javascript error managing in ecm and extui
-//	window.onerror = function(msg, url, line){
-//		Ext.Msg.alert('Javascript Error', '<b>Message : </b>' + msg + '<br/>' + '<b>Url : </b>' + url + '<br/>' + '<b>Line : </b>' + line);
-//	};
-
-function logExtEvents() {
-    var o = Ext.util.Observable.prototype;
-    o.fireEvent = o.fireEvent.createInterceptor(function(evt) {
-        var a = arguments;
-        console.log(this, ' fired event ',evt,' with args ',Array.prototype.slice.call(a, 1, a.length));
-    });
-}
-
 Ext.onReady(function(){
-	
-//	logExtEvents();
-		
+			
 	end = new Date();    
     console.log('Execution when Ext.onReady() : ' + (end - start) + ' ms.');
     start = new Date();
@@ -529,21 +512,7 @@ Ext.onReady(function(){
         if (windowName) {
             this.searchWindows[windowName] = window;
         }
-        
-        // Note for later
-        // Highlights were implemented like this in previous versions of ecm
-        //            // customize view config
-        //            viewConfig: {
-        //                forceFit: true,
-        //                enableRowBody: true,
-        //                getRowClass: function(record, rowIndex, p, store){
-        //                    (searchConfig.withHighlight) ? p.body = '<p style="margin:3px;">' + record.data.highlight + '</p>' : null;
-        //                    return 'x-grid3-row-expanded';
-        //                    
-        //                }
-        //                
-        //            },
-		
+        		
 		// Attributes set to be used when rendering the taskbar button
         window.taskTitle = windowTitle;
         
@@ -580,17 +549,18 @@ Ext.onReady(function(){
             }
         })
     });
-    var homeTree = homeTreeCollection.display();
+    var homeTree = homeTreeCollection;
     // EO Home TreePanel
     
     end = new Date();    
     console.log('Execution time before desktopCollection : ' + (end - start) + ' ms.');
     start = new Date();
     
-    Fdl.ApplicationManager.desktopCollection = new Ext.fdl.IconCollection({
+    Fdl.ApplicationManager.desktopPanel = new Ext.fdl.IconCollection({
 		id: 'ecm-center',
+		region: 'center',
 		usePaging: false,
-        collection: context.getDesktopFolder({
+        collection: Fdl.ApplicationManager.context.getDesktopFolder({
             contentStore: true,
             contentConfig: {
                 slice: 'ALL'
@@ -600,24 +570,21 @@ Ext.onReady(function(){
             id: 'OUR_MYTRASH'
         }),
         bodyStyle: {
-            "background-image": "url(" + context.url + "ECM/Images/our.desktop.jpg" + ")"
+            "background-image": "url(" + Fdl.ApplicationManager.context.url + "ECM/Images/our.desktop.jpg" + ")"
         }
     });
-    
+        
     end = new Date();    
-    console.log('Execution time before desktopPanel.display() : ' + (end - start) + ' ms.');
+    console.log('Execution time before desktopPanel : ' + (end - start) + ' ms.');
     start = new Date();
-    
-    Fdl.ApplicationManager.desktopPanel = Fdl.ApplicationManager.desktopCollection.display();
-    Fdl.ApplicationManager.desktopPanel.region = 'center';
-    
+        
     // Reload desktop content and display
     updateDesktop = function(){
-        Fdl.ApplicationManager.desktopCollection.reload();
+        Fdl.ApplicationManager.desktopPanel.reload();
     };
     
     end = new Date();    
-    console.log('Execution time after desktopPanel.display() : ' + (end - start) + ' ms.');
+    console.log('Execution time after desktopPanel : ' + (end - start) + ' ms.');
     start = new Date();
     
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
@@ -643,44 +610,6 @@ Ext.onReady(function(){
         
         form.reset();
     };
-    
-//    getFamilyCreation = function(){
-//    
-//        var sfam = context.getParameter({
-//            //id: 'OUR_NEW_FAMILIES'
-//        	id: 'ECM_NEW_FAMILIES'
-//        });
-//        
-//        console.log('SFAM',sfam);
-//        
-//        var rfam = [];
-//        if (sfam) {
-//            for (var i = 0; i < sfam.length; i++) {
-//            
-//            	if(sfam[i]){
-//            	
-//	                var fam = context.getDocument({
-//	                    id: sfam[i],
-//	                    useCache: true
-//	                });
-//	                
-//	                rfam.push({
-//	                    id: sfam[i],
-//	                    img: fam.getIcon({
-//	                        width: 32
-//	                    }),
-//	                    title: fam.getTitle()
-//	                });
-//                
-//            	}
-//                                
-//            }
-//            
-//            
-//            
-//        }
-//        return rfam;
-//    };
     
     createWorkspacePanel = function(workspace){
     
@@ -756,7 +685,6 @@ Ext.onReady(function(){
                     margins: '5 5 0 5',
                     layout: 'accordion',
                     bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
-                    //bodyStyle: 'background-color:#DFE8F6',
                     listeners: {
                         afterrender: function(panel){
                             treePanel = panel;
@@ -795,73 +723,8 @@ Ext.onReady(function(){
                     }]
                 
                 }]
-            }, Fdl.ApplicationManager.desktopPanel//, 
-//            {
-//                region: 'east',
-//                xtype: 'panel',
-//                bodyStyle: 'overflow:auto;',
-//                bodyCssClass: 'x-border-layout-ct', // To herit the proper background color
-//                id: 'create-document',
-//                title: 'Créer',
-//                collapsible: true,
-//                collapsed: true,
-//                animCollapse: false,
-//                floatable: false,
-//                width: 180,
-//                minSize: 180,
-//                closable: false,
-//                resizable: false,
-//                layout: 'fit',
-//                //frame: true,
-//                //                items: [new Ext.app.SearchField({
-//                //                    width: 140
-//                //                })],
-//                tpl: new Ext.XTemplate('<tpl for="docs">', '<div id="{id}" class="fav clickable" style="height:42px;width:160px;"><div><img src={img} style="float:left;margin: 5px;" /></div><div style="line-height:30px;text-transform:capitalize;font-weight:bold;">{title}</div></div>', '</tpl>'),
-//                
-//                afterRender: function(){
-//                    Ext.Window.prototype.afterRender.apply(this, arguments);
-//                },
-//                
-//                listeners: {
-//                    expand: function(me){
-//                    
-//                        if (!me.loadMask) {
-//                            me.loadMask = new Ext.LoadMask(me.body, {
-//                                msg: Fdl.ApplicationManager.context._("ecm::Loading...")
-//                            });
-//                        }
-//                        me.loadMask.show();
-//                        
-//                        (function(){
-//                            if (!me.loaded) {
-//                            
-//                                me.docs = getFamilyCreation();
-//                                
-//                                console.log('FAMILY',me.docs);
-//                                
-//                                me.tpl.overwrite(me.body, me);
-//                                me.body.on({
-//                                    click: {
-//                                        delegate: 'div.clickable',
-//                                        //stopEvent: true,
-//                                        fn: function(e, t){
-//                                            Fdl.ApplicationManager.displayDocument(t.id, 'create', t);
-//                                        }
-//                                    }
-//                                });
-//                                
-//                            }
-//                            
-//                            me.loaded = true;
-//                            
-//                            me.loadMask.hide();
-//                            
-//                        }).defer(10);
-//                        
-//                    }
-//                }
-//            
-//            }
+            },
+            Fdl.ApplicationManager.desktopPanel
             ]
         });
     };
@@ -1060,41 +923,6 @@ Ext.onReady(function(){
         			}
         		}
             }, {
-                text: Fdl.ApplicationManager.context._("ecm::Desktop"),
-                icon: 'lib/ui/icon/application_edit.png',
-                menu: {
-	            	style: {
-		                overflow: 'visible'     // For the Combo popup
-		            },
-	            	items:[{
-	                    //xtype: 'tbbutton',
-	                    cls: 'x-btn-text-icon',
-	                    icon: 'lib/ui/icon/arrow_refresh.png',
-	                    text: Fdl.ApplicationManager.context._("ecm::Refresh desktop"),
-	                    handler: function(){
-	                        updateDesktop();
-	                    }
-	                }, {
-		            	xtype: 'themecombo',
-		            	iconCls: 'no-icon',
-		            	selectOnFocus: true,
-		                width: 135,
-		                getListParent: function() {
-		                    return this.el.up('.x-menu');
-		                },
-		                emptyText: Fdl.ApplicationManager.context._("ecm::Select Theme")
-		            }, {
-		            	xtype: 'backgroundcombo',
-		            	iconCls: 'no-icon',
-		            	selectOnFocus: true,
-		                width: 135,
-		                getListParent: function() {
-		                    return this.el.up('.x-menu');
-		                },
-		                emptyText: Fdl.ApplicationManager.context._("ecm::Select Background")
-		            }]
-            	}
-            }, {
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: 'lib/ui/icon/application_go.png',
@@ -1103,22 +931,66 @@ Ext.onReady(function(){
                     open('?app=WEBDESK', '_blank');
                 }
             }, {
-                xtype: 'tbbutton',
+            	xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
-                icon: 'ECM/Images/our.gadget.png',
-                text: Fdl.ApplicationManager.context._("ecm::Gadgets"),
-                handler: function(){
-                    ecm.listGadgets();
-                }
-            }, {
-                xtype: 'tbbutton',
-                cls: 'x-btn-text-icon',
-                icon: 'ECM/Images/our.help.png',
-                text: Fdl.ApplicationManager.context._("ecm::Help"),
-                handler: function(){
-            	    ecm.viewApropos();
-                    //open('?sole=Y&app=CORE&action=HELPVIEW&appname=FREEDOM', 'download_frame');
-                }
+                icon: Fdl.ApplicationManager.context.resizeImage('ECM/Images/ecm.png',16),
+                text: Fdl.ApplicationManager.context._("ecm::Freedom ECM"),
+                menu: {
+	            	style: {
+		                overflow: 'visible'
+		            },
+	            	items:[{
+		                cls: 'x-btn-text-icon',
+		                icon: 'ECM/Images/our.gadget.png',
+		                text: Fdl.ApplicationManager.context._("ecm::Gadgets"),
+		                handler: function(){
+		                    ecm.listGadgets();
+		                }
+		            },{
+		                text: Fdl.ApplicationManager.context._("ecm::Desktop"),
+		                icon: 'lib/ui/icon/application_edit.png',
+		                menu: {
+			            	style: {
+				                overflow: 'visible'     // For the Combo popup
+				            },
+			            	items:[{
+			                    //xtype: 'tbbutton',
+			                    cls: 'x-btn-text-icon',
+			                    icon: 'lib/ui/icon/arrow_refresh.png',
+			                    text: Fdl.ApplicationManager.context._("ecm::Refresh desktop"),
+			                    handler: function(){
+			                        updateDesktop();
+			                    }
+			                }, {
+				            	xtype: 'themecombo',
+				            	iconCls: 'no-icon',
+				            	selectOnFocus: true,
+				                width: 135,
+				                getListParent: function() {
+				                    return this.el.up('.x-menu');
+				                },
+				                emptyText: Fdl.ApplicationManager.context._("ecm::Select Theme")
+				            }, {
+				            	xtype: 'backgroundcombo',
+				            	iconCls: 'no-icon',
+				            	selectOnFocus: true,
+				                width: 135,
+				                getListParent: function() {
+				                    return this.el.up('.x-menu');
+				                },
+				                emptyText: Fdl.ApplicationManager.context._("ecm::Select Background")
+				            }]
+		            	}
+		            },{
+		                cls: 'x-btn-text-icon',
+		                icon: 'ECM/Images/our.help.png',
+		                text: Fdl.ApplicationManager.context._("ecm::About"),
+		                handler: function(){
+		            	    ecm.viewApropos();
+		                    //open('?sole=Y&app=CORE&action=HELPVIEW&appname=FREEDOM', 'download_frame');
+		                }
+		            }]
+            	}
             }, {
                 xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
@@ -1196,7 +1068,7 @@ Ext.onReady(function(){
                                 me.workspaceTreeCollection = new Ext.fdl.TreeCollection({
                                     collection: workspace
                                 });
-                                var workspaceTree = me.workspaceTreeCollection.display();
+                                var workspaceTree = me.workspaceTreeCollection;
                             }
                             
                             workspaceTree.border = false;
@@ -1261,7 +1133,7 @@ Ext.onReady(function(){
                                 rootVisible: false,
                                 search: search
                             });
-                            var searchTree = me.searchTreeCollection.display();
+                            var searchTree = me.searchTreeCollection;
                             // EO Search TreePanel
                             
                             searchTree.border = false;
