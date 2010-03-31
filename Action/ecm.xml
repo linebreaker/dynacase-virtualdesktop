@@ -156,9 +156,9 @@
 			}
 			
 			#ecm-center .x-view-selected .freedom-icon-wrap {
-			    background-image: url("Images/op20.png") !important;
-				background-color: transparent !important;
-				background-repeat: repeat !important;
+			    background-image: url("Images/op20.png");
+				background-color: transparent;
+				background-repeat: repeat;
 			}
 			
 			.x-window .freedom-icon-text {
@@ -166,8 +166,9 @@
 			}
 			
 			.x-window .x-view-selected .freedom-icon-wrap {
+				background-image: none !important;
+				background-color: #DFE8F6 !important;
 			    background: #DFE8F6 none repeat scroll 0 0 !important;
-				display: none;
 			}
 			
 			

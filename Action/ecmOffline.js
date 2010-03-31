@@ -52,7 +52,7 @@ var offlineTab = function() {
 		id : 'btnDownload',
 		iconCls : 'iconDl',
 		disabled : false,
-		tooltip : context._("ecm:Download Freedom Offline"),
+		tooltip : "télécharger l'application Freedom Offline",
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -76,7 +76,7 @@ var offlineTab = function() {
 		id : 'btnShowOfflineFolder',
 		iconCls : 'iconOpenFolder',
 		disabled : false,
-		tooltip : context._("ecm: view offline containt"),
+		tooltip : "afficher le contenu du dossier 'offline'",
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -106,7 +106,7 @@ var offlineTab = function() {
 		id : 'btnmodify',
 		iconCls : 'iconModify',
 		disabled : false,
-		tooltip : context._("ecm:modify offline containt"),
+		tooltip : 'modifier les documents',
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -128,7 +128,7 @@ var offlineTab = function() {
 		id : 'btnGoToGears',
 		iconCls : 'iconRefresh',
 		disabled : false,
-		tooltip : context._("ecm:Refresh"),
+		tooltip : 'rafraîchir',
 		handler : function(btn) {
 			var westGrid = Ext.getCmp('westGrid');
 			var westGridM = Ext.getCmp('westGridModif');
@@ -158,12 +158,12 @@ var offlineTab = function() {
 		id : 'btnErase',
 		iconCls : 'icon-delete',
 		disabled : false,
-		tooltip : context._("ecm:Clear offline folder"),
+		tooltip : 'supprimer tous les documents du dossier',
 		handler : function(btn) {
 			Ext.Msg
 					.confirm(
 							'warning',
-							context._("ecm:Do you want clear containt ?"),
+							'Voulez vous enlever la référence de tous les documents à ce dossier?',
 							function(r) {
 								if (r == 'yes') {
 									eraseAllOnServer();
@@ -240,7 +240,7 @@ var offlineTab = function() {
 			qtipIndex : 'qtip1'
 		}, {
 			iconCls : 'icon-delete',
-			tooltip : context._("ecm:detach from offline folder")
+			tooltip : "enlever du dossier 'offline'"
 		} ]
 	});
 	action.on( {
@@ -295,8 +295,10 @@ var offlineTab = function() {
 		region : 'center',
 		border : false,
 		hidden : false,
+//		enableDrag : true,
 		enableColumnMove : false,
 		enableColumnHide : false,
+//		ddGroup : 'docDD',
 		// title:'remote directory',
 		width : 'auto',
 		stripeRows : true,
@@ -366,6 +368,8 @@ var offlineTab = function() {
 		// autoHeight : true,
 		height : 200,
 		hidden : true,
+//		enableDrag : true,
+//		ddGroup : 'docDD',
 		// title:'remote directory',
 		width : 'auto',
 		stripeRows : true,
@@ -460,7 +464,107 @@ var offlineTab = function() {
 		border : false,
 		layout : 'fit',
 		id : 'centerPanel',
-		items : [ grid, gridModif, downloadPanel, dragDropPanel ]
+		items : [ grid, gridModif, downloadPanel, dragDropPanel ],
+		dragTemplate : function(fromCol, overCol, dSel, overDoc) {
+
+			console.log('DRAG TEMPLATE',fromCol,overCol,dSel,overDoc);
+		
+			var l = dSel.count();
+			var fDoc = dSel.context.getDocument({
+				id : dSel.selectionItems[0],
+				useCache : true
+			});
+
+			var object = '';
+
+			var action = '';
+
+			if (l > 1) {
+				object = '<div>' + l + dSel.context._("eui::documents") + '</div>';
+			} else {
+				object = '<img src='
+						+ fDoc.getIcon({
+									width : 16
+								})
+						+ ' style="width:16px;margin-right:2px;float:left;" />'
+						+ '<div style="margin-left:18px;">'
+						+ fDoc.getTitle() + '</div>';
+			}
+
+			var action = dSel.context._("eui::link to offline");
+
+			return Ext.fdl.Collection.dragTemplateFormat(action,object);
+
+		},
+		listeners : {
+			afterrender: function(panel){
+				var dropTarget = new Ext.dd.DropTarget(panel.getEl(), {
+					ddGroup : 'docDD',
+					notifyDrop : function(source, e, data) {
+						
+						// var document = context.getDocument({
+						// id: source.dragData.documentId,
+						// useCache: true
+						// });
+						// document.remove();
+						// // TODO Update open window if applicable
+						// //updateDesktop();
+		
+						data.component.mask();
+		
+						var dragCol = me.context.getDocument({
+									id : source.dragData.selection.collectionId,
+									useCache : true
+								});
+		
+						var dropCol = me.collection;
+						var dropDoc = null;
+		
+						var dragWid = data.component;
+						var dragCol = dragWid.collection;
+		
+						(function		() {
+		
+							var selectionItems = data.selection.selectionItems;
+		
+							var doc = me.context.getDocument({
+										id : selectionItems[0],
+										useCache : true
+									});
+		
+							doc.remove();
+		
+							var modifiedDocObj = {};
+							modifiedDocObj[dragCol.id] = dragCol;
+							if (dropDoc) {
+								modifiedDocObj[dropDoc.id] = dropDoc;
+							}
+		
+							if (dragWid.reload) {
+								dragWid.reload(true, modifiedDocObj);
+							}
+		
+							data.component.unmask();
+		
+						}).defer(5);
+		
+						return true;
+					},
+					notifyEnter : function(source, e, data) {
+						console.log('ENTER',data);
+						data.component.displayProxy(centerPanel);
+					},
+		
+					notifyOver : function(source, e, data) {
+						return this.dropAllowed;
+					},
+		
+					notifyOut : function(source, e, data) {
+						data.component.displayProxy();
+					}
+				});
+			}
+		}
 	});
 
 	if (dataGrid.length == 0) {
@@ -483,12 +587,10 @@ var offlineTab = function() {
 				this.items.removeAt(index);
 			},
 			items : items_on_toolbar
+			
 		}, centerPanel ],
 		listeners : {
 			activate : function(tab) {
-		
-				console.log('Activate');
-		
 				Ext.getCmp('westGrid').store.loadData( []);
 				var dataGrid = createDataGrid(context.getOfflineFolder());
 				if (dataGrid.length == 0) {
@@ -501,12 +603,12 @@ var offlineTab = function() {
 				} else {
 					Ext.getCmp('westGrid').store.loadData(dataGrid);
 				}
-				
+
 				// dragDrop
-				console.log('INSTALL DRAG DROP');
-				var offlinedropTarget = new Ext.dd.DropTarget(Ext.getCmp('centerPanel').getEl(), {
+				var offlinedropTarget = new Ext.dd.DropTarget(Ext.getCmp('offlineTab').getEl(), {
 					ddGroup : 'docDD',
 					notifyDrop : function(source, e, data) {
+
 						if (source.dragData.documentId) {
 							// Drop from Desktop on Desktop
 							var document = context.getDocument( {
@@ -515,10 +617,10 @@ var offlineTab = function() {
 						} else {
 							if (source.dragData.selections) {
 								// Drop from Grid on Desktop
-								var document = context.getDocument( {
-									id : source.dragData.selections[0].data.id
-								});
-								var fromId = source.dragData.grid.collectionId;
+							var document = context.getDocument( {
+								id : source.dragData.selections[0].data.id
+							});
+							var fromId = source.dragData.grid.collectionId;
 							} else {
 								if (source.dragData.node.attributes.collection) {
 									// console.log('Drop from Tree on Desktop');
@@ -533,15 +635,14 @@ var offlineTab = function() {
 						Ext.getCmp('westGrid').store.loadData( []);
 						var dataGrid = createDataGrid(context.getOfflineFolder());
 						Ext.getCmp('westGrid').store.loadData(dataGrid);
-	
+
 						return (true);
-	
+
 					},
 					notifyOver: function(source, e, data) {
 						console.log('OVER');
 					}
 				});
-				
 			}
 		}
 	});
@@ -633,15 +734,15 @@ function createDataGrid(docIdContainer) {
 				if (lock === 0) {
 					access = '0';
 					iconActionPath = "icon-lock";
-					qtipAction = context._("ecm:tolock");
+					qtipAction = "verrouiller";
 				} else if (lock !== 0 && myName == locker) {
 					access = '1';
 					iconActionPath = "icon-unlock";
-					qtipAction = context._("ecm:toUnlock");
+					qtipAction = "déverrouiller";
 				} else if (lock !== 0 && myName != locker) {
 					access = '2';
 					iconActionPath = "icon-other-lock";
-					qtipAction = context._("ecm:impossible. Locked by another user");
+					qtipAction = "impossible. Verrouillé par un autre utilisateur";
 				}
 				lineArray.push(doc.getIcon());
 				lineArray.push(doc.getTitle());
