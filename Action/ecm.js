@@ -1305,8 +1305,7 @@ function testDragDropUpload(){
  */
 function testOffline(){
 	var version=context.retrieveFile("offline/Apps/VERSION");
-	console.log('offline',version);
-    return (version != null); // Verify version
+    return (version != false); // Verify version
 };
 var ecm = new Object();
 ecm.getSession = function(config){
@@ -1461,7 +1460,7 @@ ecm.viewApropos = function () {
        // applyTo:'hello-win',
         layout:'fit',
         width:500,
-        height:300,
+        height:400,
         //closeAction:'hide',
         plain: true,
         title: context._("ecm:A propos"),
