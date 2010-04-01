@@ -1087,9 +1087,9 @@ Ext.onReady(function(){
         
             layout: 'fit',
             title: Fdl.ApplicationManager.context._("ecm::folder tree"),
-            collapsed: true,
+            collapsed: false,
             listeners: {
-                expand: function(me){
+                afterrender: function(me){
                 
                     if (!me.loaded) {
                     
@@ -1139,10 +1139,6 @@ Ext.onReady(function(){
                     }
                 }
             }]
-        });
-        
-        workPanel.on('afterrender',function(panel){
-        	panel.expand();
         });
         
         panel.add(workPanel);
