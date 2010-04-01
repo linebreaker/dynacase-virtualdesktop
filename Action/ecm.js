@@ -1141,6 +1141,10 @@ Ext.onReady(function(){
             }]
         });
         
+        workPanel.on('afterrender',function(panel){
+        	panel.expand();
+        });
+        
         panel.add(workPanel);
         
         var searchPanel = new Ext.Panel({
