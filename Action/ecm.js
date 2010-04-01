@@ -1465,7 +1465,7 @@ ecm.viewApropos = function () {
        // applyTo:'hello-win',
         layout:'fit',
         width:500,
-        height:300,
+        height:400,
         //closeAction:'hide',
         plain: true,
         title: context._("ecm:A propos"),
