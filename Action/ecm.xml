@@ -2,14 +2,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>
-            Ecm
+             [CORE_CLIENT]
         </title>
         
         <!-- Handle console without Firebug -->
         <script>
             if (!("console" in window)) {window.console = {'log': function(s) {}}}
         </script>
-        
+        <link rel="shortcut icon" href="[CORE_LOGOCLIENT]">
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
         <link rel="stylesheet" type="text/css" id="theme"/>
