@@ -1309,8 +1309,7 @@ function testDragDropUpload(){
  */
 function testOffline(){
 	var version=context.retrieveFile("offline/Apps/VERSION");
-	console.log('offline',version);
-    return (version != null); // Verify version
+    return (version != false); // Verify version
 };
 var ecm = new Object();
 ecm.getSession = function(config){
