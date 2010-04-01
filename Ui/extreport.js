@@ -135,8 +135,10 @@ Ext.fdl.FormDocumentReport = {
                             }
                         });
                         
-                        var container = this.ownerCt;
-                        container.close();
+                        this.close();
+                        
+                        //var container = this.ownerCt;
+                        //container.close();
                         
                     }, fdr);
                     
@@ -155,7 +157,7 @@ Ext.fdl.FormDocumentReport = {
                 text: 'Annuler',
                 scope: this,
                 handler: function(){
-                    this.ownerCt.close();
+                    this.close();
                 }
             }));
             
@@ -363,13 +365,11 @@ Ext.fdl.FormDocumentReport = {
         
         this.gridCollection = new Ext.fdl.GridCollection({
             collection: this.tmpDocument,
-            tBar: false
+            collectionLoad: false,
+            filterColumns: false,
+            flex: 1
         });
-        
-        var evaluatePanel = this.gridCollection.display();
-		
-		evaluatePanel.flex = 1 ;
-		
+        		
         this.add(panel);
 		
 		panel.add(this.renderEditToolbar());
@@ -379,7 +379,7 @@ Ext.fdl.FormDocumentReport = {
 //		subpanel.add(evaluatePanel);
 
 		panel.add(this.requester);
-		panel.add(evaluatePanel);
+		panel.add(this.gridCollection);
 				
         //        var tabPanel = new Ext.TabPanel({
         //        
