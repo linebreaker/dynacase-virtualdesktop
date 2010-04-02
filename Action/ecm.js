@@ -421,10 +421,33 @@ Ext.onReady(function(){
             }
             else {
                 if (searchConfig.family) {
-                    var windowTitle = 'Recherche : ' +
-                    this.context.getDocument({
-                        id: searchConfig.family
-                    }).getTitle();
+                	
+                	var family = this.context.getDocument({
+                        id: searchConfig.family,
+                        useCache: true
+                    });
+                	
+                    var windowTitle = 'Recherche : ' + family.getTitle();
+                    
+                    console.log('SearchConfig',searchConfig,family);
+                    
+                    // Display state in title when appropriate
+                    if(searchConfig.criteria && searchConfig.criteria.length == 1 && searchConfig.criteria[0].operator == '=' && searchConfig.criteria[0].left == 'state'){
+                    	var state = searchConfig.criteria[0].right ;
+                    	if(family.hasWorkflow()){
+                    		// TODO A getWorkflow() method should be implemented.
+                    		var workflow = this.context.getDocument({
+                    			id: family.getProperty('wid'),
+                    			useCache: true,
+                    			needWorkflow: true
+                    		});
+                    		// TODO Workflow should have something to get state label given a state identifier
+                    		//console.log('STATES',workflow,workflow.getStates());
+                    		var states = workflow.getStates();
+                    		windowTitle += ' (' + states[state].label + ')';
+                    	}
+                    	console.log('We made a search about egality of state property, we will want to display the state in title');
+                    }
                 }
                 else {
                     var windowTitle = 'Recherche';
