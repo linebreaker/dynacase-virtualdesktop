@@ -428,9 +428,7 @@ Ext.onReady(function(){
                     });
                 	
                     var windowTitle = 'Recherche : ' + family.getTitle();
-                    
-                    console.log('SearchConfig',searchConfig,family);
-                    
+                                        
                     // Display state in title when appropriate
                     if(searchConfig.criteria && searchConfig.criteria.length == 1 && searchConfig.criteria[0].operator == '=' && searchConfig.criteria[0].left == 'state'){
                     	var state = searchConfig.criteria[0].right ;
@@ -442,7 +440,6 @@ Ext.onReady(function(){
                     			needWorkflow: true
                     		});
                     		// TODO Workflow should have something to get state label given a state identifier
-                    		//console.log('STATES',workflow,workflow.getStates());
                     		var states = workflow.getStates();
                     		windowTitle += ' (' + states[state].label + ')';
                     	}
@@ -875,34 +872,49 @@ Ext.onReady(function(){
             	getNewFamilies: function(){
             		
 	            	var sfam = context.getParameter({
-			            //id: 'OUR_NEW_FAMILIES'
 			        	id: 'ECM_NEW_FAMILIES'
 			        });
 			        
-			        //console.log('SFAM',sfam);
-			        
 			        var rfam = [];
-			        if (sfam) {
-			            for (var i = 0; i < sfam.length; i++) {
-			            
+			        
+			        if (sfam) {			        	
+			        	// Create Group Request.
+			        	var g = context.createGroupRequest();
+			        	
+			            for (var i = 0; i < sfam.length; i++) {			            
 			            	if(sfam[i]){
-			            	
-				                var fam = context.getDocument({
-				                    id: sfam[i],
-				                    useCache: true
-				                });
-				                
+			            		
+			            		var famId = sfam[i];
+			            		
+			            		var request = {};
+			            		request[famId] = g.getDocument({
+			            			id: famId
+			            		});
+			            		
+			            		g.addRequest(request);
+			            					                
+			            	}			                                
+			            }
+			            
+			            var r = g.submit();
+			            
+			            // Extract families from group request.
+			            for (var i = 0; i < sfam.length; i++) {			            
+			            	if(sfam[i]){
+			            		
+			            		var famId = sfam[i];
+				                var fam = r.get(famId);				                
 				                rfam.push({
-				                    id: sfam[i],
+				                    id: famId,
 				                    img: fam.getIcon({
 				                        width: 32
 				                    }),
 				                    title: fam.getTitle()
 				                });
 			                
-			            	}
-			                                
-			            }		            
+			            	}			                                
+			            }
+			            
 			            
 			        }
 			        			        
