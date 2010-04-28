@@ -66,9 +66,9 @@ ecm.addGadget = function(gadget) {
 		}
 		var swin = new Ext.fdl.Service( {
 			gadget : cgadget
-		});
-		if (swin)
-			swin.show();
+		},context);
+//		if (swin)
+//			swin.show();
 	}
 };
 ecm.updateSessionGadget = function(gadget) {
@@ -103,6 +103,7 @@ ecm.removeSessionGadget = function(gadget) {
 };
 ecm.initializeGadgets = function() {
 	var session = ecm.getSession();
+	console.log('SESSION GADGETS',session.gadgets);
 	if (session.gadgets) {
 		for ( var i = 0; i < session.gadgets.length; i++) {
 			ecm.addGadget(session.gadgets[i]);
@@ -220,7 +221,8 @@ ecm.listGadgets = function() {
 											.getValue('gad_editwidget') != null),
 									height : parseInt(document
 											.getValue('gad_height')),
-									userPref : {}
+									userPref : {},
+									javascript : document.getValue('gad_javascript')
 								};
 								var up = document.getArrayValues('gad_t_parameters');
 								console.log('up=',up);
