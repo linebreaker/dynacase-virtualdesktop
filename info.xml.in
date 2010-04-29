@@ -22,5 +22,11 @@
     <process command="programs/post_migration ECM" />
     <process command="programs/update_catalog" />
   </post-upgrade>
+  
+  <changelog>
+    <version number="0.2.1" date="2010-04-29">
+      <change title="Gadget Family support for Javascript attribute" />
+    </version>
+  </changelog>
 
 </module>
