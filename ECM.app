@@ -37,6 +37,7 @@ $app_desc = array (
 $app_acl = array (
   array(
    "name"               =>"NORMAL",
+   "group_default"  => "Y",
    "description"        =>N_("Access to ecm"))
   
 );
