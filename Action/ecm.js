@@ -903,14 +903,16 @@ Ext.onReady(function(){
 			            	if(sfam[i]){
 			            		
 			            		var famId = sfam[i];
-				                var fam = r.get(famId);				                
-				                rfam.push({
-				                    id: famId,
-				                    img: fam.getIcon({
-				                        width: 32
-				                    }),
-				                    title: fam.getTitle()
-				                });
+				                var fam = r.get(famId);
+				                if(fam){
+					                rfam.push({
+					                    id: famId,
+					                    img: fam.getIcon({
+					                        width: 32
+					                    }),
+					                    title: fam.getTitle()
+					                });
+				                }
 			                
 			            	}			                                
 			            }
