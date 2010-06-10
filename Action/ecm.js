@@ -851,7 +851,12 @@ Ext.onReady(function(){
 	            			this.ownerCt.ownerCt.hideMenu();
 	            			this.publish('opendocument',null,id,'create').defer(10);	            			
 	            		}
-	            	},'-'],
+	            	},{
+                        xtype: 'menuseparator',
+                        style: {
+                            width: 155
+                        }
+                    }],
 	            	// See removeAll in Ext JS API for reference.
 		          	removeNewFamilies: function(autoDestroy){
 	        			this.initItems();
@@ -1039,7 +1044,12 @@ Ext.onReady(function(){
 			                    handler: function(){
 			                        updateDesktop();
 			                    }
-			                }, {
+			                },{
+		                        xtype: 'menuseparator',
+		                        style: {
+		                            width: 155
+		                        }
+		                    }, {
 				            	xtype: 'themecombo',
 				            	iconCls: 'no-icon',
 				            	selectOnFocus: true,
