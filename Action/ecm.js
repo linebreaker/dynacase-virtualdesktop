@@ -674,7 +674,7 @@ Ext.onReady(function(){
     
     createWorkspacePanel = function(workspace){
     
-        return new Ext.Panel({
+        var workspacePanel = new Ext.Panel({
             title: (workspace) ? workspace.getTitle() : 'Indéfini',
             closable: true,
             layout: 'border',
@@ -752,13 +752,14 @@ Ext.onReady(function(){
                         }
                     }
                 }, {
+                    id: 'south-tabpanel',
                     xtype: 'tabpanel',
                     region: 'south',
                     margins: '5 5 5 5',
                     activeTab: 0,
                     
                     height: 200,
-                    items: [homeTree, 
+                    items: [homeTree//, 
                          /*  {
                         title: 'Import',
                         html: '<form id="create_simple_file" enctype="multipart/form-data" method="post" style="height:100%;width:100%;background-image:url(\'Images/our_import.png\');background-repeat:no-repeat;background-position:center;" ><input type="file" name="sfi_file" onchange="this.form.style.backgroundImage=\'url(Images/loading.gif)\';createSimpleFile();this.form.style.backgroundImage=\'url(Images/our_import.png)\';" onclick="event.stopPropagation();return false;" style="font-size:200pt;opacity:0;"/></form>',
@@ -767,28 +768,36 @@ Ext.onReady(function(){
                         hideMode:'display',
                         hidden:true,
                         tabTip: testDragDropUpload() ? 'Importez un fichier depuis votre système' : 'Installez le plugin firefox dragdropupload pour activer cette fonctionalité'
-                    }, */{
-                    	title: 'Offline',
-                    	layout: 'fit',
-                        hidden:true,
-                        disabled:!testOffline(),
-                		tabTip: 'Après avoir téléchargé une des applications, travailler en mode déconnecté.',
-                    	listeners: {
-                    		activate: function(panel){
-                    			if(!panel.loaded){
-                    				panel.add(offlineTab());
-                    			}
-                    			panel.loaded = true;
-                    		}
-                    	}
-                    }]
+                    }, */]
                 
                 }]
             },
             Fdl.ApplicationManager.desktopPanel
             ]
         });
-    };
+        
+        if(testOffline()){
+            Ext.getCmp('south-tabpanel').add( {
+                title: 'Offline',
+                layout: 'fit',
+                //hidden:true,
+                disabled:!testOffline(),
+                tabTip: 'Après avoir téléchargé une des applications, travailler en mode déconnecté.',
+                listeners: {
+                    activate: function(panel){
+                        if(!panel.loaded){
+                            panel.add(offlineTab());
+                        }
+                        panel.loaded = true;
+                    }
+                }
+            });
+            Ext.getCmp('south-tabpanel').doLayout();
+        }
+        
+        return workspacePanel;
+        
+    };   
     
     var workspacePanel = createWorkspacePanel(workspace);
     var tab = [];
