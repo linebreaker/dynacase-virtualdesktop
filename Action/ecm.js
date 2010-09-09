@@ -398,15 +398,19 @@ Ext.onReady(function(){
         	d.withHighlight = true;
         }
         
-        var filter = new Fdl.DocumentFilter({
-            key: key
-        });
-        
         if (searchConfig) {
+            
+            var filter = new Fdl.DocumentFilter({
+                key: key
+            });        
+       
             filter = Ext.apply(filter, searchConfig);
-        }
+            
+            d.filter = filter;
         
-        d.filter = filter;
+        } else {
+            d.filter = [];
+        }
         
         if (!widgetConfig || !widgetConfig.pageSize) {
             var pageSize = 10;
@@ -443,7 +447,7 @@ Ext.onReady(function(){
                     		var states = workflow.getStates();
                     		windowTitle += ' (' + states[state].label + ')';
                     	}
-                    	console.log('We made a search about egality of state property, we will want to display the state in title');
+                    	//console.log('We made a search about egality of state property, we will want to display the state in title');
                     }
                 }
                 else {
@@ -724,13 +728,22 @@ Ext.onReady(function(){
                             this.hasSearch = true;
                             this.triggers[0].show();
                             if (v != '') {
-                                Fdl.ApplicationManager.displaySearch(v, {
-                                    criteria: [{
-                                        operator: '~*',
-                                        left: 'svalues',
-                                        right: v
-                                    }]                                
-                                }, {
+//                                Fdl.ApplicationManager.displaySearch(v, {
+//                                    criteria: [{
+//                                        operator: '~*',
+//                                        left: 'svalues',
+//                                        right: v
+//                                    }]                                
+//                                }, {
+//                                    windowName: 'simplesearch'
+//                                });
+                                Fdl.ApplicationManager.displaySearch(v, //{
+//                                    criteria: [{
+//                                        operator: '~*',
+//                                        left: 'svalues',
+//                                        right: v
+//                                    }]                                
+                                /* }, */null, {
                                     windowName: 'simplesearch'
                                 });
                             }
