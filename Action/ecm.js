@@ -205,6 +205,7 @@ Ext.onReady(function(){
 		context: context,
         // These are ecm new specific properties to handle window positioning
         windows: {},
+        createWindows: {},
         windowX: 0,
         windowY: 0,
 		    
@@ -238,7 +239,7 @@ Ext.onReady(function(){
         	
     	var me = this ;
     	
-        if (!this.windows[id]) {
+        if ((mode=='create'&&!this.createWindows[id]) || (mode!='create'&&!this.windows[id])) {
                 	
         	if (!config) config={};
         	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
@@ -263,7 +264,7 @@ Ext.onReady(function(){
                         win.loaded = true;
                     },
                     close: function(win){
-                        win.publish('closedocument', win.fdlId);
+                        win.publish('closedocument', win.fdlId, mode);
                     },
                     afterlayout: function(win, layout){
                         // Adjust maximum size to container size
@@ -279,7 +280,7 @@ Ext.onReady(function(){
                 
                 onDocumentModified: function(newDoc,prevId){
                 	
-                	//console.log('DOCMOD',newDoc, me.docBar);
+                	console.log('DOCMOD',newDoc, me.docBar);
                 	
                 	var subId ;
                 	if(newDoc.id){
@@ -288,25 +289,40 @@ Ext.onReady(function(){
                 		subId = newDoc.getProperty('fromid');
                 	}
                 	
-                	if(subId != prevId){
+                	if(mode=='create'){
                 		
-                		//console.log('ID CHANGED', subId, prevId);
+                		me.windows[subId] = me.createWindows[id]
+                		delete me.createWindows[id];
                 		
-                		// Update window array
-                		me.windows[subId] = me.windows[prevId];
-	                	delete me.windows[prevId];	                	
+                		if(me.docBar['create-'+id]){
+	                		me.docBar['create-'+id].updateDocument(newDoc);
+	                		me.docBar[subId] = me.docBar['create-'+id];
+	                		delete me.docBar['create-'+id];
+	                	}
                 		
-	                	// Update docbar array
-                		me.docBar[subId] = me.docBar[prevId];
-                		delete me.docBar[prevId];
-                		
-                	}
+                	} else {
                 	
-                	if(me.docBar[subId]){
-                		me.docBar[subId].updateDocument(newDoc);
+	                	if(subId != prevId){
+	                		
+	                		//console.log('ID CHANGED', subId, prevId);
+	                		
+	                		// Update window array
+	                		me.windows[subId] = me.windows[prevId];
+		                	delete me.windows[prevId];	                	
+	                		
+		                	// Update docbar array
+	                		me.docBar[subId] = me.docBar[prevId];
+	                		delete me.docBar[prevId];
+	                		
+	                	}
+	                	
+	                	if(me.docBar[subId]){
+	                		me.docBar[subId].updateDocument(newDoc);
+	                	}
+	                	
+	                	win.fdlId = subId;
+	                	
                 	}
-                	
-                	win.fdlId = subId;
                 	
                 }
                 
@@ -319,7 +335,11 @@ Ext.onReady(function(){
             this.windowX = this.windowX + 25;
             this.windowY = this.windowY + 25;
             
-            this.windows[id] = win;
+            if(mode=='create'){
+            	this.createWindows[id] = win;
+            } else {
+            	this.windows[id] = win;
+            }
             
             var doc = win.document;
             
@@ -336,7 +356,7 @@ Ext.onReady(function(){
             	win.taskTitle = this.context._("eui::Creation :")+ ' ' + doc.getTitle();
             }
             
-            if (!this.docBar[id]) {
+            if ((mode=='create'&&!this.docBar['create-'+id]) || (mode!='create'&&!this.docBar[id])) {
             	var button = taskBar.addTaskButton(win);
             	button.updateDocument = function(doc){
             		if (doc.getProperty('id')) {
@@ -357,24 +377,42 @@ Ext.onReady(function(){
                 });
                 button.updateDocument(doc);    
                 
-                this.docBar[id] = button;
+                if(mode=='create'){
+                	this.docBar['create-'+id] = button;
+                } else {
+                	this.docBar[id] = button;
+                }
                 console.log('DOCBAR SUBSCRIPT AT ID ', id, this.docBar);
             }
             
         } else {
-        	this.windows[id].show();
-        	this.windows[id].toFront();
+        	if(mode=='create'){
+        		this.createWindows[id].show();
+       		 	this.createWindows[id].toFront();
+			} else {
+        		this.windows[id].show();
+        		this.windows[id].toFront();
+			}
         }
         
     };
     
-    Fdl.ApplicationManager.onCloseDocument = function(id){
+    Fdl.ApplicationManager.onCloseDocument = function(id,mode){
     
-        if (this.docBar[id]) {
-            taskBar.removeTaskButton(this.docBar[id]);
-            this.docBar[id] = null;
-        }
-        this.windows[id] = null;
+    	if(mode=='create'){
+    		if (this.docBar['create-'+id]) {
+	            taskBar.removeTaskButton(this.docBar['create-'+id]);
+	            this.docBar['create-'+id] = null;
+	        }
+    		this.createWindows[id] = null;
+    	} else {
+	        if (this.docBar[id]) {
+	            taskBar.removeTaskButton(this.docBar[id]);
+	            this.docBar[id] = null;
+	        }
+	        this.windows[id] = null;
+    	}
+        
         
     };
     
