@@ -244,6 +244,11 @@ Ext.onReady(function(){
         	if (!config) config={};
         	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
         	config.targetUrl='Fdl.ApplicationManager.openUrl("%V%","%L% : %TITLE%")';
+        	
+        	var winClose = function(win){
+        		win.publish('closedocument', win.fdlId, mode);
+        	}
+        	
             var win = new Ext.fdl.Window({
                 mode: mode,
                 context: this.context,
@@ -263,9 +268,7 @@ Ext.onReady(function(){
                         }
                         win.loaded = true;
                     },
-                    close: function(win){
-                        win.publish('closedocument', win.fdlId, mode);
-                    },
+                    close: winClose,
                     afterlayout: function(win, layout){
                         // Adjust maximum size to container size
                         var max = Fdl.ApplicationManager.desktopPanel.getHeight();
@@ -298,6 +301,16 @@ Ext.onReady(function(){
 	                		me.docBar['create-'+id].updateDocument(newDoc);
 	                		me.docBar[subId] = me.docBar['create-'+id];
 	                		delete me.docBar['create-'+id];
+	                		
+	                		console.log('DOCBAR',me.docBar);
+	                		
+	                		win.un('close',winClose);
+	                		
+	                		win.on('close',function(){
+	                			console.log('Rewritted close');
+	                			win.publish('closedocument', subId);
+	                		});
+	                		
 	                	}
                 		
                 	} else {
