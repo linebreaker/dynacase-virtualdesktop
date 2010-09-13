@@ -935,13 +935,15 @@ Ext.onReady(function(){
 			            		var famId = sfam[i];
 				                var fam = r.get(famId);
 				                if(fam){
-					                rfam.push({
-					                    id: famId,
-					                    img: fam.getIcon({
-					                        width: 32
-					                    }),
-					                    title: fam.getTitle()
-					                });
+				                	if(fam.control('icreate')){
+						                rfam.push({
+						                    id: famId,
+						                    img: fam.getIcon({
+						                        width: 32
+						                    }),
+						                    title: fam.getTitle()
+						                });
+				                	}
 				                }
 			                
 			            	}			                                
