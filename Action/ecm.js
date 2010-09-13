@@ -340,7 +340,7 @@ Ext.onReady(function(){
             	var button = taskBar.addTaskButton(win);
             	button.updateDocument = function(doc){
             		if (doc.getProperty('id')) {
-            			button.setText(doc.getTitle());
+            			button.setText(Ext.util.Format.ellipsis(doc.getTitle(),15));
 	                    button.setTooltip('<b>titre : ' + doc.getTitle() + '</b>' +
 	                    '<br/>propriétaire : ' +
 	                    doc.getProperty('ownername') +
@@ -871,7 +871,10 @@ Ext.onReady(function(){
 	            		familySelect: function(id){
 	            			this.reset();
 	            			this.ownerCt.ownerCt.hideMenu();
-	            			this.publish('opendocument',null,id,'create').defer(10);	            			
+	            			var me = this;
+	            			(function(){
+	            			    me.publish('opendocument',null,id,'create');
+	            			}).defer(10);	            			
 	            		}
 	            	},{
                         xtype: 'menuseparator',
