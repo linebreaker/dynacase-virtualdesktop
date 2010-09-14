@@ -54,18 +54,35 @@ function ecm(&$action)  {
         $home->addFile($desktop->initid);
     }
     $desktop=getTDoc($dbaccess,'FLDOFFLINE_'.$action->user->id);
-    if (! $desktop) {
-         
-        $desktop = createDoc($dbaccess,"DIR");
-        $desktop->title = _("Offline");
-        $desktop->setTitle($desktop ->title);
-        $desktop->setValue("ba_desc", sprintf(_("Offline folder of %s"),$action->user->firstname." ".$action->user->lastname));
-        $desktop->icon = 'fldoffline.png';
-        $desktop->name = 'FLDOFFLINE_'.$action->user->id;
-        $desktop->Add();
+    
+    // detect offline
+    $offlineInstalled=file_exists(DEFAULT_PUBDIR.'/offline/Apps/VERSION');
+    
+    if ($offlineInstalled) {
+       
+        if (! $desktop) {
+             
+            $desktop = createDoc($dbaccess,"DIR");
+            $desktop->title = _("Offline");
+            $desktop->setTitle($desktop ->title);
+            $desktop->setValue("ba_desc", sprintf(_("Offline folder of %s"),$action->user->firstname." ".$action->user->lastname));
+            $desktop->icon = 'fldoffline.png';
+            $desktop->name = 'FLDOFFLINE_'.$action->user->id;
+            $desktop->Add();
 
-        $home=$desktop->getHome();
-        $home->addFile($desktop->initid);
+            $home=$desktop->getHome();
+            $home->addFile($desktop->initid);
+        } else {
+            if ($desktop["locked"] == -1) {
+                $ddesk=new_doc($dbaccess,$desktop["id"]);
+                if (! $ddesk->isAlive()) $ddesk->revive();
+            }
+        }
+    } else {
+        if ($desktop && ($desktop["locked"] != -1)) {
+            $ddesk=new_doc($dbaccess,$desktop["id"]);
+            if ($ddesk->isAlive()) $ddesk->delete();
+        }
     }
 
     // create first worksapce automatically
