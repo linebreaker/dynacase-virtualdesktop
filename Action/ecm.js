@@ -198,6 +198,323 @@ Ext.onReady(function(){
     Ext.fdl.Collection.selectionContextMenu = "EXTUI:default-selection-context-menu.xml";
     Ext.fdl.CollectionContainer.prototype.collectionMenu = "EXTUI:default-collection-menu.xml";
     
+    /** Drag & Drop overrides for ECM. If extui is updated, this will need to be updated as well. */
+    
+    Ext.fdl.Collection.dragBehaviour = function(fromCol, overCol, dSel, overDoc){
+    	
+    	if (this.notifyDocumentDragOver(null,fromCol, overCol, dSel, overDoc)) {
+        	    		
+    		
+        	if(fromCol && fromCol.getProperty('name') == 'OUR_MYTRASH'){
+        		if (Ext.fdl.KeyBoard.keys[16] && Ext.fdl.KeyBoard.keys[17]){
+        			return 'link';
+        		} else if (Ext.fdl.KeyBoard.keys[17]) {
+        			return 'duplicate';
+        		} else if (Ext.fdl.KeyBoard.keys[16]) {
+                    return 'move';
+                } else {
+                	return 'restore' ;
+                }
+        	} else if(overCol && overCol.getProperty('name') == 'OUR_MYTRASH'){
+        		if (Ext.fdl.KeyBoard.keys[16] && Ext.fdl.KeyBoard.keys[17]){
+        			return 'link';
+        		} else if (Ext.fdl.KeyBoard.keys[17]) {
+        			return 'duplicate';
+        		} else if (Ext.fdl.KeyBoard.keys[16]) {
+                    return 'move';
+                } else {
+                	return 'delete' ;
+                }
+        	} else if(!fromCol || (fromCol.isCollection &&fromCol.isSearch())){
+        		// Behaviour when we are dragging from nothing or from a search
+        		if (Ext.fdl.KeyBoard.keys[17] && !Ext.fdl.KeyBoard.keys[16]) {
+        			return 'duplicate';
+        		} else {
+        			return 'link';
+        		}
+        	} else {
+        		// Behaviour when we are dragging from a folder
+        		if (Ext.fdl.KeyBoard.keys[16] && Ext.fdl.KeyBoard.keys[17]){
+        			return 'link';
+        		} else if (Ext.fdl.KeyBoard.keys[17]) {
+        			return 'duplicate';
+        		} else if (Ext.fdl.KeyBoard.keys[16]) {
+                    return 'move';
+                } else {
+                	if((overDoc && overDoc.getProperty('fromname')=='BASKET') || (overCol && overCol.getProperty('fromname')=='BASKET')){
+                		return 'link';
+                	} else {
+                		return this.defaultDragBehaviour ;
+                	}
+                }
+        	}
+            
+        }
+        
+        return false ;
+    	
+    };
+    
+    Ext.fdl.Collection.dragTemplate = function(fromCol, overCol, dSel, overDoc){
+    	
+		//console.log('DRAGTEMPLATE',fromCol,overCol,dSel, overDoc, Ext.fdl.KeyBoard.keys);
+	
+        var l = dSel.count();
+        var fDoc = dSel.context.getDocument({
+            id: dSel.selectionItems[0],
+            useCache: true
+        });
+        
+        var object = '';
+        
+        var target = '';
+        
+        if (overDoc && overDoc.isCollection() && overDoc.isFolder()) {
+            target = this.context._("eui::infolder") +' <b>' + overDoc.getTitle() + '</b>';
+        }
+        
+        if (l > 1) {
+            object = '<div>' + l + ' documents' + '</div>';
+        }
+        else {
+            object = '<img src=' +
+            fDoc.getIcon({
+                width: 16
+            }) +
+            ' style="width:16px;margin-right:2px;float:left;" />' +
+            '<div style="margin-left:18px;">' +
+            fDoc.getTitle() +
+            '</div>';
+        }
+        
+        var behaviour = this.dragBehaviour(fromCol, overCol, dSel, overDoc);
+        
+        var action = '';
+        
+        switch (behaviour){
+        	case 'duplicate':
+        		action = this.context._("eui::Duplicate");
+        	break;
+        	case 'link':
+        		action = this.context._("eui::Link");
+        	break;
+        	case 'move':
+        		action = this.context._("eui::Move");
+        	break;
+        	case 'restore':
+        		action = this.context._("eui::Restore");
+        	break;
+        	case 'delete':
+        		action = this.context._("eui::Delete");
+        	break;
+        }
+                
+        return this.dragTemplateFormat(action,object,target);
+        
+    },
+    
+    Ext.fdl.Collection.notifyDocumentDragOver = function(dragWid, fromCol, overCol, dragSel, overDoc){
+		    	
+		//console.log('dragWid',dragWid,'fromCol',fromCol,'overCol',overCol,'dragSel',dragSel,'overDoc',overDoc);
+        if ((overCol && overCol.isCollection() && overCol.isFolder() && ((overCol != fromCol) || (Ext.fdl.KeyBoard.keys[17] && (!Ext.fdl.KeyBoard.keys[16])) )) // overCol is a folder and (is different from source folder or action is cloning)
+        	|| (overDoc && overDoc.isCollection() && overDoc.isFolder())
+        	|| (overCol && overCol.getProperty('name') == 'OUR_MYTRASH' && !(fromCol && fromCol.getProperty('name') == 'OUR_MYTRASH'))) { // OR overDoc is a folder
+            return true;
+        }
+        
+        return false;
+        
+    },
+    
+    Ext.fdl.Collection.notifyDocumentDrop = function(dragWid, dragCol, dropCol, dragSel, dropDoc){
+    	
+    	//console.log('Before Document Drop Allowed and Processed', dragWid, dragCol, dropCol, dragSel, dropDoc );
+		
+		if(!this.notifyDocumentDragOver(dragWid, dragCol, dropCol, dragSel, dropDoc)){
+			return true;
+		}
+		
+		//console.log('Document Drop Allowed and Processed', dragWid, dragCol, dropCol, dragSel, dropDoc );
+		        
+        var targetCol;
+        if (dropDoc && dropDoc.isCollection() && dropDoc.isFolder()) {
+            targetCol = dropDoc;
+        }
+        else {
+            targetCol = dropCol;
+        }
+        
+        var context = targetCol.context;
+        
+        var g = context.createGroupRequest();
+        
+        g.addRequest({
+            drop: g.getDocument({
+                id: targetCol.id
+            })
+        });
+        
+		if (dragSel.collectionId) {
+			g.addRequest({
+				drag: g.getDocument({
+					id: dragSel.collectionId
+				})
+			});
+		}
+		
+		var dragColModified = false ;
+		
+		var behaviour = this.dragBehaviour(dragCol, dropCol, dragSel, dropDoc);
+        
+        switch (behaviour){
+        	
+        	case 'delete':
+        	
+        		if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
+        			Ext.Msg.alert('freedom ecm','Delete for multiple selection is not implemented.');
+        			return true;
+        		} else {
+        			
+        			var doc = context.getDocument({
+        				id: dragSel.selectionItems[0]
+        			});
+        			
+        			doc.remove();
+        			
+        			dragColModified = true;
+
+        		}
+        	
+        	break;
+        	case 'restore':
+        	
+        		if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
+        			Ext.Msg.alert('freedom ecm','Restore for multiple selection is not implemented.');
+        			return true;
+        		} else {
+        			
+        			var doc = context.getDocument({
+        				id: dragSel.selectionItems[0]
+        			});
+        			
+        			doc.restore();
+        			
+        			g.addRequest({
+	                	a: g.get('drag').callMethod('moveDocuments', {
+	                    	selection: dragSel,
+	                    	targetIdentificator: targetCol.id
+	                	})
+	            	});
+	            	dragColModified = true;
+        			
+        		}
+        	break;
+        	case 'duplicate':
+        		
+				if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
+        			Ext.Msg.alert('freedom ecm','Duplicate for multiple selection must be implemented.');
+        			return true;
+        		} else {
+        			g.addRequest({
+        				doc: g.getDocument({
+        					id: dragSel.selectionItems[0]
+        				})
+        			});
+        			g.addRequest({
+        				clone: g.get('doc').callMethod('cloneDocument', {
+        					linkFolder: false
+        				})
+        			});
+        			g.addRequest({
+        				insert: g.get('clone').callMethod('moveto', {
+        					folderId: targetCol.id
+        				})
+        			});
+        			if(targetCol.id == dragCol.id){
+        				dragColModified = true;
+        			}
+        		}
+        	
+        	
+        	break;
+        	case 'link':
+        		
+        		g.addRequest({
+        	        a: g.get('drop').callMethod('insertDocuments', {
+            	        selection: dragSel
+            	    })
+            	});
+        	
+        	
+        	break;
+        	case 'move':
+        		
+				g.addRequest({
+                	a: g.get('drag').callMethod('moveDocuments', {
+                    	selection: dragSel,
+                    	targetIdentificator: targetCol.id
+                	})
+            	});
+            	dragColModified = true;
+        	
+        	break;
+        }
+			
+        
+        g.addRequest({
+            c: g.get('drop').callMethod('getContent')
+        });
+		if (dragColModified) {
+			g.addRequest({
+				d: g.get('drag').callMethod('getContent')
+			});
+		}
+        
+        var r = g.submit();
+        
+        console.log('R',r);
+        
+		var modifiedDocObj = {};
+		if (dragCol) {
+			modifiedDocObj[dragCol.id] = dragCol;
+		}
+		
+		if (targetCol) {
+			modifiedDocObj[targetCol.id] = targetCol;
+		}
+		
+        if (dragWid.reload && dragColModified) {
+			if (r.get('drag').getProperty('id') == dragWid.collection.getProperty('id')) {
+				dragWid.documentList = r.get('d');
+				dragWid.content = dragWid.documentList.getDocuments();
+				dragWid.collection = r.get('drag');
+				//console.log('Problem : collection should have a count here', r.get('drag'), r.get('drag').count());
+				dragWid.reload(false, modifiedDocObj);
+			} else {
+				dragWid.reload(true, modifiedDocObj);
+			}
+        }
+		
+		//console.log('DROP WIDGET',this,this.collection, this.collection.isSearch());
+        
+        // Test if this drop widget is not the same than drag widget
+        if (dragWid != this && this.collection && (!this.collection.isSearch() || this.collection.getProperty('name')=='OUR_MYTRASH')){
+			// If this drop widget is representing the collection in which drop was done
+        	if (r.get('drop').getProperty('id') == this.collection.getProperty('id')) {
+				this.documentList = r.get('c');
+				this.content=this.documentList.getDocuments();
+				this.collection = r.get('drop');
+				this.reload(false,modifiedDocObj);
+			} else {
+				this.reload(true,modifiedDocObj);
+			}
+            
+        }
+        
+        return true;
+        
+    };
+    
     // Fdl.ApplicationManager will represent global ecm application behaviour
     // TODO Rename more appropriately but take care because Fdl.ApplicationManager was used in many places
     Fdl.ApplicationManager = new Ext.fdl.Interface({
@@ -621,13 +938,13 @@ Ext.onReady(function(){
     
     // Home TreePanel
     var homeTreeCollection = new Ext.fdl.GridCollection({
-        title: Fdl.ApplicationManager.context._("ecm::Basket"),
+        title: Fdl.ApplicationManager.context._("ecm::Personnal Space"),
         
         header: false,
         hideHeaders: false,
         filterColumns: false,
         
-        defaultDragBehaviour: 'link',
+        //defaultDragBehaviour: 'link',
         
         columns: [{
         		dataIndex: 'icon',

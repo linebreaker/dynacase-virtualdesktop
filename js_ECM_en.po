@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-01 15:25+0200\n"
+"POT-Creation-Date: 2010-09-14 15:39+0200\n"
 "PO-Revision-Date: 2010-02-08 15:26+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: english anakeen\n"
@@ -15,8 +15,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "eui::infolder"
+msgstr "in folder"
+
+msgid "eui::Duplicate"
+msgstr "Duplicate"
+
+msgid "eui::Link"
+msgstr "Link"
+
+msgid "eui::Move"
+msgstr "Move"
+
+msgid "eui::Restore"
+msgstr "Restore"
+
+msgid "eui::Delete"
+msgstr "Delete"
+
 msgid "eui::Creation :"
-msgstr ""
+msgstr "Creation"
 
 msgid "ecm::Loading..."
 msgstr "Loading..."
@@ -61,11 +79,10 @@ msgid "ecm::family management"
 msgstr "Families"
 
 msgid "ecm:A propos"
-msgstr ""
+msgstr "About"
 
 msgid "eui::documents"
 msgstr ""
 
 msgid "eui::link to offline"
 msgstr ""
-
