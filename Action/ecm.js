@@ -175,7 +175,7 @@ var context = new Fdl.Context({
 Ext.onReady(function(){
 			
 	end = new Date();    
-    console.log('Execution when Ext.onReady() : ' + (end - start) + ' ms.');
+    //console.log('Execution when Ext.onReady() : ' + (end - start) + ' ms.');
     start = new Date();
 
     // Necessary to Ext
@@ -483,7 +483,7 @@ Ext.onReady(function(){
         
         var r = g.submit();
         
-        console.log('R',r);
+        //console.log('R',r);
         
 		var modifiedDocObj = {};
 		if (dragCol) {
@@ -631,7 +631,7 @@ Ext.onReady(function(){
 	                		win.un('close',winClose);
 	                		
 	                		win.on('close',function(){
-	                			console.log('Rewritted close');
+	                			//console.log('Rewritted close');
 	                			win.publish('closedocument', subId);
 	                		});
 	                		
@@ -959,7 +959,7 @@ Ext.onReady(function(){
     };
     
     end = new Date();    
-    console.log('Execution time before homeTreeCollection : ' + (end - start) + ' ms.');
+    //console.log('Execution time before homeTreeCollection : ' + (end - start) + ' ms.');
     start = new Date();
     
     // Home TreePanel
@@ -1012,7 +1012,7 @@ Ext.onReady(function(){
     // EO Home TreePanel
     
     end = new Date();    
-    console.log('Execution time before desktopCollection : ' + (end - start) + ' ms.');
+    //console.log('Execution time before desktopCollection : ' + (end - start) + ' ms.');
     start = new Date();
     
     Fdl.ApplicationManager.desktopPanel = new Ext.fdl.IconCollection({
@@ -1034,7 +1034,7 @@ Ext.onReady(function(){
     });
         
     end = new Date();    
-    console.log('Execution time before desktopPanel : ' + (end - start) + ' ms.');
+    //console.log('Execution time before desktopPanel : ' + (end - start) + ' ms.');
     start = new Date();
         
     // Reload desktop content and display
@@ -1043,7 +1043,7 @@ Ext.onReady(function(){
     };
     
     end = new Date();    
-    console.log('Execution time after desktopPanel : ' + (end - start) + ' ms.');
+    //console.log('Execution time after desktopPanel : ' + (end - start) + ' ms.');
     start = new Date();
     
     // Create SimpleFile from the form in the import block (id:'create_simple_file')
@@ -1211,7 +1211,7 @@ Ext.onReady(function(){
     tab.push(workspacePanel);
     
     end = new Date();    
-    console.log('Execution time after createWorkspacePanel : ' + (end - start) + ' ms.');
+    //console.log('Execution time after createWorkspacePanel : ' + (end - start) + ' ms.');
     start = new Date();
     
     for (var i = 1; i < wr.length; i++) {
@@ -1224,7 +1224,7 @@ Ext.onReady(function(){
     }
     
     end = new Date();    
-    console.log('Execution time before tabs : ' + (end - start) + ' ms.');
+    //console.log('Execution time before tabs : ' + (end - start) + ' ms.');
     start = new Date();
     
     // Main Tab display
@@ -1524,7 +1524,7 @@ Ext.onReady(function(){
     });
     
     end = new Date();    
-    console.log('Execution time before viewport : ' + (end - start) + ' ms.');
+    //console.log('Execution time before viewport : ' + (end - start) + ' ms.');
     start = new Date();
     
     var viewport = new Ext.Viewport({
@@ -1540,13 +1540,13 @@ Ext.onReady(function(){
     });
     
     end = new Date();    
-    console.log('Execution time before addTreeToPanel() : ' + (end - start) + ' ms.');
+    //console.log('Execution time before addTreeToPanel() : ' + (end - start) + ' ms.');
     start = new Date();
     
     addTreeToPanel(treePanel);
     
     end = new Date();    
-    console.log('Execution time after addTreeToPanel() : ' + (end - start) + ' ms.');
+    //console.log('Execution time after addTreeToPanel() : ' + (end - start) + ' ms.');
     start = new Date();
     
     function addTreeToPanel(panel){
@@ -1739,7 +1739,7 @@ Ext.onReady(function(){
     ecm.initializeGadgets();
     
     end = new Date();    
-    console.log('Execution time before viewport.render() : ' + (end - start) + ' ms.');
+    //console.log('Execution time before viewport.render() : ' + (end - start) + ' ms.');
     start = new Date();
         
     viewport.render(Ext.getBody());
@@ -1750,11 +1750,11 @@ Ext.onReady(function(){
     
     // Code to measure execution time
     end = new Date();    
-    console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
+    //console.log('Execution time (ecm.js only) : ' + (end - start) + ' ms.');
     start = new Date();
     
     globalEnd = new Date();
-    console.log('freedom ecm','Execution time (ecm.js only) : ' + (globalEnd - globalStart) + ' ms.');
+    //console.log('freedom ecm','Execution time (ecm.js only) : ' + (globalEnd - globalStart) + ' ms.');
 
 });
 
@@ -1772,8 +1772,9 @@ function testDragDropUpload(){
  * Documentation for Plugin : http://www.teslacore.it/wiki/index.php?title=DragDropUpload
  */
 function testOffline(){
-	var version=context.retrieveFile("offline/Apps/VERSION");
-    return (version != false); // Verify version
+	return offlineInstalled || false;
+//	var version=context.retrieveFile("offline/Apps/VERSION");
+//    return (version != false); // Verify version
 };
 var ecm = new Object();
 ecm.getSession = function(config){
@@ -1815,7 +1816,7 @@ ecm.getOnefamGrid = function(appid){
         action: 'GETASSOCIATEDSEARCHES',
         appid: appid
     });
-    console.log(famsearches);
+    //console.log(famsearches);
     
     var afamilies = ecm.getOnefamSearches(famsearches.admin);
     var ufamilies = ecm.getOnefamSearches(famsearches.user);

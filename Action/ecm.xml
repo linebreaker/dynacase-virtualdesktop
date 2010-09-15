@@ -306,7 +306,9 @@
         <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]"></script>
 	    [ENDIF DEBUG]
         
-        
+        <script type="text/javascript">
+        	window.offlineInstalled = [OFFLINE_INSTALLED];
+        </script>
       
         
         <!-- Ecm Offline -->

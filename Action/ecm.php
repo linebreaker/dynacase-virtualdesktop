@@ -57,6 +57,11 @@ function ecm(&$action)  {
     
     // detect offline
     $offlineInstalled=file_exists(DEFAULT_PUBDIR.'/offline/Apps/VERSION');
+    if($offlineInstalled){
+    	$action->lay->set('OFFLINE_INSTALLED', json_encode(true));
+    } else {
+    	$action->lay->set('OFFLINE_INSTALLED', json_encode(false));
+    }
     
     if ($offlineInstalled) {
        
