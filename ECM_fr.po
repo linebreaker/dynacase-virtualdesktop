@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NetworkUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-14 18:20+0200\n"
+"POT-Creation-Date: 2010-09-15 15:48+0200\n"
 "PO-Revision-Date: 2010-03-31 10:27+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -18,10 +18,16 @@ msgid "defaut family use to create"
 msgstr "Famille utilisée pour la création"
 
 msgid "ecm session data"
-msgstr ""
+msgstr "Données de session"
 
 msgid "ecm debug mode"
-msgstr ""
+msgstr "Mode debug"
+
+msgid "ecm default drop behaviour"
+msgstr "Comportement de drag&drop par défaut (initialement 'move')"
+
+msgid "ecm document basket drop behaviour"
+msgstr "Comportement de drag&drop pour le porte-document (initialement 'link')"
 
 msgid "Loading freedom-ecm 3.0 ..."
 msgstr "Chargement de freedom-ecm 3.0 ..."
@@ -71,135 +77,3 @@ msgstr ""
 msgid "retrieve all searched use in onefam applications"
 msgstr ""
 
-#~ msgid "cr_init"
-#~ msgstr "initialisé"
-
-#~ msgid "cr_redacted"
-#~ msgstr "rédigé"
-
-#~ msgid "cr_published"
-#~ msgstr "publié"
-
-#~ msgid "cr_refused"
-#~ msgstr "refusé"
-
-#~ msgid "Tcr_published"
-#~ msgstr "pour diffusion"
-
-#~ msgid "Tcr_redacted"
-#~ msgstr "pour approbation"
-
-#~ msgid "Tcr_retry"
-#~ msgstr "à corriger"
-
-#~ msgid "Tcr_refused"
-#~ msgstr "refuser"
-
-#~ msgid "Simple interface to manipulate documents"
-#~ msgstr "Interface simple pour manipuler les documents"
-
-#~ msgid "Access to ouranos"
-#~ msgstr "Accès à ouranos"
-
-#~ msgid "ouranos session data"
-#~ msgstr "Données de sessions"
-
-#~ msgid "crredacted"
-#~ msgstr "rédigé"
-
-#~ msgid "crpublished"
-#~ msgstr "publié"
-
-#~ msgid "Tcrpublished"
-#~ msgstr "publication"
-
-#~ msgid "Tcrredacted"
-#~ msgstr "rédaction"
-
-#~ msgid "Tretry"
-#~ msgstr "recommence"
-
-#~ msgid "Trealised"
-#~ msgstr "réalisation"
-
-#~ msgid "transmited"
-#~ msgstr "transmie"
-
-#~ msgid "accepted"
-#~ msgstr "accepté"
-
-#~ msgid "host of the LDAP"
-#~ msgstr "adresse du serveur LDAP"
-
-#~ msgid "base path of LDAP"
-#~ msgstr "racine du LDAP"
-
-#~ msgid "DN of user which can access of all user and group of the LDAP"
-#~ msgstr "DN de l'utilisateur pouvant accéder au LDAP"
-
-#~ msgid "password of the DN"
-#~ msgstr "mot de passe du DN"
-
-#~ msgid "kind of users LDAP for authentification"
-#~ msgstr "type du LDAP : Active directory ou Posix"
-
-#~ msgid "Create User From LDAP"
-#~ msgstr "Créer un utilisateur à partir de l'annuaire LDAP"
-
-#~ msgid "Name or login"
-#~ msgstr "Nom ou login"
-
-#~ msgid "Result"
-#~ msgstr "Résultat"
-
-#~ msgid "Network users"
-#~ msgstr "Utilisateurs réseaux"
-
-#~ msgid "Network users and LDAP authentification"
-#~ msgstr "Utilisateurs réseaux et authentification LDAP"
-
-#~ msgid "cannot create user %s: %s"
-#~ msgstr "ne peut créer l'utilisateur %s : %s"
-
-#~ msgid "user %s not exists for FREEDOM"
-#~ msgstr "l'utilisateur %s existe pour FREEDOM"
-
-#~ msgid "Unable to bind to LDAP server %s"
-#~ msgstr "Impossible de joindre le serveur LDAP %s"
-
-#~ msgid "Unable to connect to LDAP server %s"
-#~ msgstr "Impossible de se connecter au serveur LDAP %s"
-
-#~ msgid "Cannot create LDAP %s [%s] : %s"
-#~ msgstr "Ne peut créer LDAP %s [%s] : %s"
-
-#~ msgid "Cannot find user [%s]"
-#~ msgstr "Utilisateur inconnu [%s]"
-
-#~ msgid "Find mutiple user with same id  [%s]"
-#~ msgstr "Plusieurs utilisateur avec le même identifiant trouvés [%s]"
-
-#~ msgid "Cannot find group [%s]"
-#~ msgstr "Groupe inconnu [%s]"
-
-#~ msgid "Find mutiple grp with same login  [%s]"
-#~ msgstr "Plusieurs groupes avec le même identifiant trouvés [%s]"
-
-#~ msgid "Active Directory"
-#~ msgstr "Active Directory"
-
-#~ msgid "Active Directory Authentification"
-#~ msgstr "Anthentification Active Directory"
-
-#~ msgid "host of the ldap active directory"
-#~ msgstr "adresse du serveur LDAP"
-
-#~ msgid "base path of ldap"
-#~ msgstr "chemin racine du LDAP"
-
-#~ msgid ""
-#~ "DN of user which can access of all user and group of the Active directory"
-#~ msgstr "DN de l'utilisateur pouvant accéder au LDAP"
-
-#~ msgid "password of then DN"
-#~ msgstr "mot de passe du DN"
