@@ -30,7 +30,20 @@ $app_const= array(
 			  "global"=>"Y",
 			  "user"=>"N",
 			  "descr"=>N_("ecm debug mode"),
-			  "kind"=>"enum(yes|no)")
+			  "kind"=>"enum(yes|no)"),
+			  
+			"ECM_DEFAULT_DROP"    =>array("val"=>'move',
+				"descr"=>N_("ecm default drop behaviour"),
+				"user"=>"N",
+				"kind"=>"text",
+				"global"=>"Y"),
+				
+			"ECM_BASKET_DROP"    =>array("val"=>'link',
+				"descr"=>N_("ecm document basket drop behaviour"),
+				"user"=>"N",
+				"kind"=>"text",
+				"global"=>"Y")
+				
 		);
 
 ?>

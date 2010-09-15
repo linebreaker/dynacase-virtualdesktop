@@ -193,10 +193,21 @@ Ext.onReady(function(){
         mouseOffset: [15, -30]
     });
     
+    // TODO parameter for basket (link/move), parameter for all (link/move)
+    var defaultDrag = context.getParameter({
+    	id: 'ECM_DEFAULT_DROP'
+    });
+    
+    var basketDrag = context.getParameter({
+    	id: 'ECM_BASKET_DROP'
+    });
+    
     // Change global default configurations.
     Ext.fdl.Collection.documentContextMenu = "EXTUI:default-context-menu.xml";
     Ext.fdl.Collection.selectionContextMenu = "EXTUI:default-selection-context-menu.xml";
     Ext.fdl.CollectionContainer.prototype.collectionMenu = "EXTUI:default-collection-menu.xml";
+    
+    Ext.fdl.Collection.defaultDragBehaviour = defaultDrag;
     
     /** Drag & Drop overrides for ECM. If extui is updated, this will need to be updated as well. */
     
@@ -242,7 +253,7 @@ Ext.onReady(function(){
                     return 'move';
                 } else {
                 	if((overDoc && overDoc.getProperty('fromname')=='BASKET') || (overCol && overCol.getProperty('fromname')=='BASKET')){
-                		return 'link';
+                		return basketDrag;
                 	} else {
                 		return this.defaultDragBehaviour ;
                 	}
@@ -555,7 +566,7 @@ Ext.onReady(function(){
     Fdl.ApplicationManager.onOpenDocument = function(wid, id, mode, config){
         	
     	var me = this ;
-    	
+    	    	
         if ((mode=='create'&&!this.createWindows[id]) || (mode!='create'&&!this.windows[id])) {
                 	
         	if (!config) config={};
@@ -580,7 +591,7 @@ Ext.onReady(function(){
                 
                 listeners: {
                     show: function(win){
-                        if (!win.loaded) {
+                        if (!win.loaded) {                        	
                             win.updateDocumentId(id);
                         }
                         win.loaded = true;
@@ -599,9 +610,7 @@ Ext.onReady(function(){
                 },
                 
                 onDocumentModified: function(newDoc,prevId){
-                	
-                	console.log('DOCMOD',newDoc, me.docBar);
-                	
+                	                               	
                 	var subId ;
                 	if(newDoc.id){
                 		subId = newDoc.id;
@@ -618,9 +627,7 @@ Ext.onReady(function(){
 	                		me.docBar['create-'+id].updateDocument(newDoc);
 	                		me.docBar[subId] = me.docBar['create-'+id];
 	                		delete me.docBar['create-'+id];
-	                		
-	                		console.log('DOCBAR',me.docBar);
-	                		
+	                			                		
 	                		win.un('close',winClose);
 	                		
 	                		win.on('close',function(){
@@ -653,6 +660,16 @@ Ext.onReady(function(){
 	                	win.fdlId = subId;
 	                	
                 	}
+                	
+                	
+                	if(!me.blockecmmodify){
+                		this.publish('ecmmodifydocument',newDoc,prevId);
+                		me.blockecmmodify = true;
+                	}
+                	
+                	(function(){
+                		me.blockecmmodify = false;
+                	}).defer(50);
                 	
                 }
                 
@@ -712,7 +729,7 @@ Ext.onReady(function(){
                 } else {
                 	this.docBar[id] = button;
                 }
-                console.log('DOCBAR SUBSCRIPT AT ID ', id, this.docBar);
+                //console.log('DOCBAR SUBSCRIPT AT ID ', id, this.docBar);
             }
             
         } else {
@@ -724,7 +741,7 @@ Ext.onReady(function(){
         		this.windows[id].toFront();
 			}
         }
-        
+                
     };
     
     Fdl.ApplicationManager.onCloseDocument = function(id,mode){
@@ -747,7 +764,7 @@ Ext.onReady(function(){
     };
     
     Fdl.ApplicationManager.onOpenSearch = function(wid, filter, config){
-        console.log('FILTER', filter);
+        //console.log('FILTER', filter);
         Fdl.ApplicationManager.displaySearch(null, filter, config);
     };
     
@@ -862,7 +879,7 @@ Ext.onReady(function(){
             
             renderTo: Fdl.ApplicationManager.desktopPanel.body,
             listeners: {
-                show: function(){
+                show: function(window){
                 
                     if (!Fdl.ApplicationManager.docBar[window.id]) {
                         Fdl.ApplicationManager.docBar[window.id] = taskBar.addTaskButton(window);
@@ -876,6 +893,15 @@ Ext.onReady(function(){
                     if (this.getHeight() > max) {
                         this.setHeight(max);
                     }
+                    
+                    if(family){
+			        	window.subscribe('ecmmodifydocument',function(fdlDoc,prevId){
+			        		if(fdlDoc.getProperty('fromid') == family.id){
+			        			window.documentPanel.collectionPanel.reload();
+			        		}
+			        	});
+			        }
+                    
                     
                 },
                 close: function(){
@@ -908,7 +934,7 @@ Ext.onReady(function(){
         
         if (windowName) {
             this.searchWindows[windowName] = window;
-        }
+        }        
         		
 		// Attributes set to be used when rendering the taskbar button
         window.taskTitle = windowTitle;
