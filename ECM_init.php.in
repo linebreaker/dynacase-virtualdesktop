@@ -35,13 +35,13 @@ $app_const= array(
 			"ECM_DEFAULT_DROP"    =>array("val"=>'move',
 				"descr"=>N_("ecm default drop behaviour"),
 				"user"=>"N",
-				"kind"=>"text",
+                                "kind"=>"enum(link|move|duplicate)",
 				"global"=>"Y"),
 				
 			"ECM_BASKET_DROP"    =>array("val"=>'link',
 				"descr"=>N_("ecm document basket drop behaviour"),
 				"user"=>"N",
-				"kind"=>"text",
+				"kind"=>"enum(link|move|duplicate)",
 				"global"=>"Y")
 				
 		);
