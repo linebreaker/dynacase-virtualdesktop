@@ -896,8 +896,11 @@ Ext.onReady(function(){
                     
                     if(family){
 			        	window.subscribe('ecmmodifydocument',function(fdlDoc,prevId){
+			        		console.log('SUBSCRIBED');
 			        		if(fdlDoc.getProperty('fromid') == family.id){
-			        			window.documentPanel.collectionPanel.reload();
+			        			if(window && window.documentPanel && window.documentPanel.collectionPanel){
+			        				window.documentPanel.collectionPanel.reload();
+			        			}
 			        		}
 			        	});
 			        }
@@ -905,6 +908,9 @@ Ext.onReady(function(){
                     
                 },
                 close: function(){
+                	
+                	window.removeSubscriptionsFor('ecmmodifydocument');
+                	
                     if (Fdl.ApplicationManager.docBar[window.id]) {
                         taskBar.removeTaskButton(Fdl.ApplicationManager.docBar[window.id]);
                     }
