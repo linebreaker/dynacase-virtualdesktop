@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-15 15:48+0200\n"
+"POT-Creation-Date: 2010-09-16 15:30+0200\n"
 "PO-Revision-Date: 2010-03-31 14:42+0200\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: french anakeen\n"
@@ -36,6 +36,12 @@ msgstr "Supprimer"
 
 msgid "eui::Creation :"
 msgstr "Création"
+
+msgid "ecm::Search : "
+msgstr "Recherche : "
+
+msgid "ecm::Search"
+msgstr "Rechercher"
 
 msgid "ecm::Loading..."
 msgstr "Chargement..."
@@ -87,3 +93,4 @@ msgstr ""
 
 msgid "eui::link to offline"
 msgstr ""
+

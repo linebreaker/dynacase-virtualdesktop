@@ -806,7 +806,7 @@ Ext.onReady(function(){
         
         if (!widgetConfig || !widgetConfig.windowTitle) {
             if (key) {
-                var windowTitle = 'Recherche : ' + key;
+                var windowTitle = Fdl.ApplicationManager.context._("ecm::Search :") + key;
             }
             else {
                 if (searchConfig.family) {
@@ -816,7 +816,7 @@ Ext.onReady(function(){
                         useCache: true
                     });
                 	
-                    var windowTitle = 'Recherche : ' + family.getTitle();
+                    var windowTitle = Fdl.ApplicationManager.context._("ecm::Search :") + family.getTitle();
                                         
                     // Display state in title when appropriate
                     if(searchConfig.criteria && searchConfig.criteria.length == 1 && searchConfig.criteria[0].operator == '=' && searchConfig.criteria[0].left == 'state'){
@@ -836,7 +836,7 @@ Ext.onReady(function(){
                     }
                 }
                 else {
-                    var windowTitle = 'Recherche';
+                    var windowTitle = Fdl.ApplicationManager.context._("ecm::Search");
                 }
             }
         }
@@ -1094,10 +1094,10 @@ Ext.onReady(function(){
                     margins: '0 0 0 0',
                     autoHeight: true,
                     items: [{
-                        text: 'Chercher : ',
+                        text: Fdl.ApplicationManager.context._("ecm::Search :"),
                         xtype: 'tbtext'
                     }, new Ext.app.SearchField({
-                        width: 140,
+                        width: 134,
                         
                         validationEvent: false,
                         validateOnBlur: false,
