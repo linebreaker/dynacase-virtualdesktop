@@ -919,9 +919,7 @@ Ext.onReady(function(){
 									var reloaddate = window.documentPanel.collectionPanel.reloadDate;
 									
 									if(!reloaddate || reloaddate < mdate){
-			        				
-				        				console.log('DATE COMPARE',mdate,reloaddate);
-				        				
+			        								        				
 			        					window.documentPanel.collectionPanel.reload();
 			        				
 									}
