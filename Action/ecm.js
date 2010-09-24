@@ -382,7 +382,7 @@ Ext.onReady(function(){
         	case 'delete':
         	
         		if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-        			Ext.Msg.alert('freedom ecm','Delete for multiple selection is not implemented.');
+        			Ext.Msg.alert('dynacase ecm','Delete for multiple selection is not implemented.');
         			return true;
         		} else {
         			
@@ -400,7 +400,7 @@ Ext.onReady(function(){
         	case 'restore':
         	
         		if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-        			Ext.Msg.alert('freedom ecm','Restore for multiple selection is not implemented.');
+        			Ext.Msg.alert('dynacase ecm','Restore for multiple selection is not implemented.');
         			return true;
         		} else {
         			
@@ -423,7 +423,7 @@ Ext.onReady(function(){
         	case 'duplicate':
         		
 				if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-        			Ext.Msg.alert('freedom ecm','Duplicate for multiple selection must be implemented.');
+        			Ext.Msg.alert('dynacase ecm','Duplicate for multiple selection must be implemented.');
         			return true;
         		} else {
         			g.addRequest({
@@ -961,7 +961,7 @@ Ext.onReady(function(){
         workspace = wr[0];
     }
     else {
-        Ext.Msg.alert('freedom ecm', 'No workspace');
+        Ext.Msg.alert('dynacase ecm', 'No workspace');
     };
     
     end = new Date();    
@@ -1444,7 +1444,7 @@ Ext.onReady(function(){
             	xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: Fdl.ApplicationManager.context.resizeImage('ECM/Images/ecm.png',16),
-                text: Fdl.ApplicationManager.context._("ecm::Freedom ECM"),
+                text: Fdl.ApplicationManager.context._("ecm::Dynacase ECM"),
                 menu: {
 	            	style: {
 		                overflow: 'visible'
