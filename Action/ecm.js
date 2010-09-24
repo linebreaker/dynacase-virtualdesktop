@@ -896,10 +896,33 @@ Ext.onReady(function(){
                     
                     if(family){
 			        	window.subscribe('ecmmodifydocument',function(fdlDoc,prevId){
-			        		console.log('SUBSCRIBED');
+			        		//console.log('SUBSCRIBED',fdlDoc.getProperty('mdate'),window.documentPanel.collectionPanel);
+			        		
+			        		
+			        		
+//			        		var date = new Date().add(Date.SECOND,-20);
+//			        		var dateFormat = date.format('d/m/Y H:i:s');
+//			        		console.log('NOW',dateFormat);
+			        		
 			        		if(fdlDoc.getProperty('fromid') == family.id){
 			        			if(window && window.documentPanel && window.documentPanel.collectionPanel){
-			        				window.documentPanel.collectionPanel.reload();
+			        				
+			        				var mdate = fdlDoc.getProperty('mdate');
+			        				
+			        				var day = mdate.substring(0,2);
+									var month = mdate.substring(3,5);
+									var year = mdate.substring(6,10);
+									var hour = mdate.substring(11);
+									
+									mdate = year+'-'+month+'-'+day+' '+hour;
+									
+									var reloaddate = window.documentPanel.collectionPanel.reloadDate;
+									
+									if(!reloaddate || reloaddate < mdate){
+			        								        				
+			        					window.documentPanel.collectionPanel.reload();
+			        				
+									}
 			        			}
 			        		}
 			        	});
