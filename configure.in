@@ -18,7 +18,7 @@ VERSION=`cat VERSION`
 AC_SUBST(RELEASE)
 RELEASE=`cat RELEASE`
 AC_SUBST(PACKAGE)
-PACKAGE=freedom-ecm
+PACKAGE=dynacase-ecm
 AC_SUBST(APPNAME)
 APPNAME=ECM
 
@@ -44,4 +44,4 @@ AC_MSG_NOTICE([PubRule located at $PUBRULE])
 
 
 
-AC_OUTPUT(Makefile ECM_init.php freedom-ecm.spec debian/changelog info.xml)
+AC_OUTPUT(Makefile ECM_init.php info.xml)

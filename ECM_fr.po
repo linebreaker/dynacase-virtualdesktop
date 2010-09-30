@@ -6,13 +6,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NetworkUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-16 15:30+0200\n"
-"PO-Revision-Date: 2010-03-31 10:27+0200\n"
+"POT-Creation-Date: 2010-09-24 17:45+0200\n"
+"PO-Revision-Date: 2010-09-24 17:43+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "attach a new note"
+msgstr "Pose d'une nouvelle note"
+
+#, c-format
+msgid "detach note %s"
+msgstr "Suppression de la note '%s'"
+
+msgid "Loading dynacase-ecm 3.0 ..."
+msgstr "Chargement de dynacase-ecm 3.0 ..."
 
 msgid "defaut family use to create"
 msgstr "Famille utilisée pour la création"
@@ -28,9 +38,6 @@ msgstr "Comportement de drag&drop par défaut (initialement 'move')"
 
 msgid "ecm document basket drop behaviour"
 msgstr "Comportement de drag&drop pour le porte-document (initialement 'link')"
-
-msgid "Loading freedom-ecm 3.0 ..."
-msgstr "Chargement de freedom-ecm 3.0 ..."
 
 msgid "Desktop"
 msgstr "Bureau"
@@ -52,13 +59,6 @@ msgstr "Premier espace"
 msgid "ecm::readme"
 msgstr "Lisez moi"
 
-msgid "attach a new note"
-msgstr "Pose d'une nouvelle note"
-
-#, c-format
-msgid "detach note %s"
-msgstr "Suppression de la note '%s'"
-
 msgid "Ecm"
 msgstr ""
 
@@ -76,3 +76,6 @@ msgstr ""
 
 msgid "retrieve all searched use in onefam applications"
 msgstr ""
+
+#~ msgid "Loading freedom-ecm 3.0 ..."
+#~ msgstr "Chargement de freedom-ecm 3.0 ..."

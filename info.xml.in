@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
-<module name="freedom-ecm" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
-  <description>ECM interface to manipulate document in freedom.</description>
+<module name="dynacase-ecm" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
+  <description>ECM interface to manipulate document in dynacase.</description>
+
+  <replaces>
+        <module name="freedom-ecm" />
+  </replaces>
 
   <requires>
-    <module name="freedom-toolbox" />
-    <module name="freedom-workspace" />
+    <module name="dynacase-platform" />
+    <module name="dynacase-workspace" />
   </requires>
 
   <post-install>
@@ -24,7 +28,7 @@
   
   <changelog> 
     <version number="0.3.0" date="2010-09-15">
-      <change title="New parameters for drag&amp;drop" url="http://dev.freedom-ecm.org/versions/show/39"/>        
+      <change title="New parameters for drag&amp;drop" url="http://dev.dynacase.org/versions/show/39"/>
     </version>
     <version number="0.2.1" date="2010-04-29">
       <change title="Gadget Family support for Javascript attribute" />
