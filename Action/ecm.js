@@ -690,7 +690,9 @@ Ext.onReady(function(){
             
             var doc = win.document;
             
-            
+            if(!doc){
+            	return;
+            }
             
             // Attributes set to be used when rendering the taskbar button
             win.taskIcon = doc.getIcon({
