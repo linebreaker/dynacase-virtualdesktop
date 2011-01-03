@@ -382,7 +382,7 @@ Ext.onReady(function(){
         	case 'delete':
         	
         		if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-        			Ext.Msg.alert('dynacase ecm','Delete for multiple selection is not implemented.');
+        		    Ext.Msg.alert(context._("ecm::warning"), context._("ecm::Delete for multiple selection is not implemented."));
         			return true;
         		} else {
         			
@@ -400,7 +400,7 @@ Ext.onReady(function(){
         	case 'restore':
         	
         		if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-        			Ext.Msg.alert('dynacase ecm','Restore for multiple selection is not implemented.');
+        		    Ext.Msg.alert(context._("ecm::warning"), context._("ecm::Restore for multiple selection is not implemented."));
         			return true;
         		} else {
         			
@@ -423,7 +423,7 @@ Ext.onReady(function(){
         	case 'duplicate':
         		
 				if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-        			Ext.Msg.alert('dynacase ecm','Duplicate for multiple selection must be implemented.');
+        			    Ext.Msg.alert(context._("ecm::warning"), context._("ecm::Duplicate for multiple selection must be implemented."));
         			return true;
         		} else {
         			g.addRequest({
@@ -986,7 +986,7 @@ Ext.onReady(function(){
         workspace = wr[0];
     }
     else {
-        Ext.Msg.alert('dynacase ecm', 'No workspace');
+        Ext.Msg.alert(context._("ecm::warning"), context._("ecm::No workspace"));
     };
     
     end = new Date();    
@@ -1403,7 +1403,7 @@ Ext.onReady(function(){
 					        id: 'ECM_NEW_FAMILIES',
 					        value: JSON.stringify(newFamilies)
 					    })) {
-					        Ext.Msg.alert('Error on set families');
+					    Ext.Msg.alert(context._("ecm::Error on set families"));
 					    }
 					    
 					    return true ;
@@ -1826,7 +1826,7 @@ ecm.setSession = function(v){
         id: 'OUR_SESSION',
         value: JSON.stringify(ecm.session)
     })) {
-        Ext.Msg.alert('No ecm_session');
+        Ext.Msg.alert(context._("ecm::No ecm_session"));
     }
     return ecm.session;
 };

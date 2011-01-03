@@ -6,39 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WORKSPACE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-24 17:45+0200\n"
-"PO-Revision-Date: 2010-09-24 17:48+0200\n"
+"POT-Creation-Date: 2011-01-03 15:25+0100\n"
+"PO-Revision-Date: 2011-01-03 15:44+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 "\n"
-
-msgid "attach a new note"
-msgstr ""
-
-#, c-format
-msgid "detach note %s"
-msgstr ""
-
-msgid "Loading dynacase-ecm 3.0 ..."
-msgstr ""
-
-msgid "defaut family use to create"
-msgstr ""
-
-msgid "ecm session data"
-msgstr ""
-
-msgid "ecm debug mode"
-msgstr ""
-
-msgid "ecm default drop behaviour"
-msgstr ""
-
-msgid "ecm document basket drop behaviour"
-msgstr ""
 
 msgid "Desktop"
 msgstr ""
@@ -58,16 +34,23 @@ msgid "first workspace"
 msgstr ""
 
 msgid "ecm::readme"
+msgstr "Readme"
+
+msgid "attach a new note"
+msgstr ""
+
+#, c-format
+msgid "detach note %s"
 msgstr ""
 
 msgid "Ecm"
-msgstr ""
+msgstr "Virtual Desktop"
 
 msgid "Rich interface to manipulate documents"
 msgstr ""
 
 msgid "Access to ecm"
-msgstr ""
+msgstr "Access to Virtual Desktop"
 
 msgid "main interface"
 msgstr ""
@@ -77,3 +60,21 @@ msgstr ""
 
 msgid "retrieve all searched use in onefam applications"
 msgstr ""
+
+msgid "defaut family use to create"
+msgstr ""
+
+msgid "ecm session data"
+msgstr "Session's data"
+
+msgid "ecm debug mode"
+msgstr "Debug mode"
+
+msgid "ecm default drop behaviour"
+msgstr "Default drag-and-drop dehaviour"
+
+msgid "ecm document basket drop behaviour"
+msgstr "Briefcase drag-and-drop behaviour"
+
+msgid "Loading dynacase-ecm 3.0 ..."
+msgstr "Loading in progress..."

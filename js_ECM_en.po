@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-24 17:45+0200\n"
-"PO-Revision-Date: 2010-09-24 17:48+0200\n"
+"POT-Creation-Date: 2011-01-03 15:25+0100\n"
+"PO-Revision-Date: 2011-01-03 15:40+0100\n"
 "Last-Translator: anakeen <EMAIL@ADDRESS>\n"
 "Language-Team: english anakeen\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,6 +34,18 @@ msgstr "Restore"
 msgid "eui::Delete"
 msgstr "Delete"
 
+msgid "ecm::warning"
+msgstr "Warning"
+
+msgid "ecm::Delete for multiple selection is not implemented."
+msgstr "Deletion of multiple elements is not implemented."
+
+msgid "ecm::Restore for multiple selection is not implemented."
+msgstr "Restoration of multiple elements is not implemented."
+
+msgid "ecm::Duplicate for multiple selection must be implemented."
+msgstr "Duplication of multiple elements is not implemented."
+
 msgid "eui::Creation :"
 msgstr "Creation"
 
@@ -45,14 +58,20 @@ msgstr "Search"
 msgid "ecm::Loading..."
 msgstr "Loading..."
 
+msgid "ecm::No workspace"
+msgstr "No workspace"
+
 msgid "ecm::Personnal Space"
 msgstr "Personnal Space"
 
 msgid "ecm::New"
 msgstr "New"
 
+msgid "ecm::Error on set families"
+msgstr "Error storing parameter on family"
+
 msgid "ecm::Dynacase ECM"
-msgstr "Dynacase ECM"
+msgstr "Dynacase Virtual Desktop"
 
 msgid "ecm::Gadgets"
 msgstr "Gadgets"
@@ -83,6 +102,9 @@ msgstr "Searches"
 
 msgid "ecm::family management"
 msgstr "Families"
+
+msgid "ecm::No ecm_session"
+msgstr "No session"
 
 msgid "ecm:A propos"
 msgstr "About"

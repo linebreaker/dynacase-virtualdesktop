@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ECM\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-24 17:45+0200\n"
-"PO-Revision-Date: 2010-09-24 17:47+0200\n"
+"POT-Creation-Date: 2011-01-03 15:25+0100\n"
+"PO-Revision-Date: 2011-01-03 15:40+0100\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: french anakeen\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,6 +34,18 @@ msgstr "Restaurer"
 msgid "eui::Delete"
 msgstr "Supprimer"
 
+msgid "ecm::warning"
+msgstr "Avertissement"
+
+msgid "ecm::Delete for multiple selection is not implemented."
+msgstr "La suppression de plusieurs éléments n'est pas supportée."
+
+msgid "ecm::Restore for multiple selection is not implemented."
+msgstr "La restauration de plusieurs éléments n'est pas supportée."
+
+msgid "ecm::Duplicate for multiple selection must be implemented."
+msgstr "La duplication de plusieurs éléments n'est pas supportée."
+
 msgid "eui::Creation :"
 msgstr "Création"
 
@@ -45,14 +58,20 @@ msgstr "Rechercher"
 msgid "ecm::Loading..."
 msgstr "Chargement..."
 
+msgid "ecm::No workspace"
+msgstr "Pas d'espace de travail"
+
 msgid "ecm::Personnal Space"
 msgstr "Espace personnel"
 
 msgid "ecm::New"
 msgstr "Nouveau"
 
+msgid "ecm::Error on set families"
+msgstr "Erreur de stockage du paramètre de la famille"
+
 msgid "ecm::Dynacase ECM"
-msgstr "Dynacase ECM"
+msgstr "Dynacase Virtual Desktop"
 
 msgid "ecm::Gadgets"
 msgstr "Gadgets"
@@ -83,6 +102,9 @@ msgstr "Recherches"
 
 msgid "ecm::family management"
 msgstr "Gestion par famille"
+
+msgid "ecm::No ecm_session"
+msgstr "Pas de session"
 
 msgid "ecm:A propos"
 msgstr "A propos"

@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<module name="dynacase-ecm" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
-  <description>ECM interface to manipulate document in dynacase.</description>
+<module name="dynacase-virtualdesktop" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
+  <description>Virtual Desktop proof-of-concept interface to manipulate document in dynacase.</description>
 
   <replaces>
         <module name="freedom-ecm" />
+	<module name="dynacase-ecm" />
   </replaces>
 
   <requires>
