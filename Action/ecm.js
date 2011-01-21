@@ -567,11 +567,26 @@ Ext.onReady(function(){
         	
     	var me = this ;
     	    	
+    	var latest=true;
+    	if (config && config.latest === false) latest=false;
+        var vdocument = this.context.getDocument({
+            id: id,
+			contentStore: true,
+			latest: latest,
+			getUserTags: true
+        });
+        if (vdocument.id) {
+        	id=vdocument.id;
+        } else {
+        	Ext.Msg.alert(this.context._("eui::missing right"),this.context._("eui::You have no right to access this document"));
+        }
         if ((mode=='create'&&!this.createWindows[id]) || (mode!='create'&&!this.windows[id])) {
                 	
         	if (!config) config={};
-        	config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
+        	//config.targetRelation='Fdl.ApplicationManager.onOpenDocument(null,%V%,"view")';
         	config.targetUrl='Fdl.ApplicationManager.openUrl("%V%","%L% : %TITLE%")';
+
+        
         	
         	var winClose = function(win){
         		win.publish('closedocument', win.fdlId, mode);
@@ -591,8 +606,10 @@ Ext.onReady(function(){
                 
                 listeners: {
                     show: function(win){
-                        if (!win.loaded) {                        	
-                            win.updateDocumentId(id);
+                        if (!win.loaded) { 
+                        	
+                            	win.updateDocumentId(id,config);
+                            
                         }
                         win.loaded = true;
                     },
@@ -1795,7 +1812,7 @@ Ext.onReady(function(){
  */
 function testDragDropUpload(){
     return true; // Since the method given in documentation does not work, we return always true for now
-    return window["_dragdropupload"];
+   // return window["_dragdropupload"];
 };
 
 /**
