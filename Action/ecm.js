@@ -1475,14 +1475,6 @@ Ext.onReady(function(){
         			}
         		}
             }, {
-                xtype: 'tbbutton',
-                cls: 'x-btn-text-icon',
-                icon: 'lib/ui/icon/application_go.png',
-                text: 'Freedom 2',
-                handler: function(){
-                    open('?app=WEBDESK', '_blank');
-                }
-            }, {
             	xtype: 'tbbutton',
                 cls: 'x-btn-text-icon',
                 icon: Fdl.ApplicationManager.context.resizeImage('ECM/Images/ecm.png',16),
