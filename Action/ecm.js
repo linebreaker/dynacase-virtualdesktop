@@ -1530,14 +1530,6 @@ Ext.onReady(function(){
 				                emptyText: Fdl.ApplicationManager.context._("ecm::Select Background")
 				            }]
 		            	}
-		            },{
-		                cls: 'x-btn-text-icon',
-		                icon: 'ECM/Images/our.help.png',
-		                text: Fdl.ApplicationManager.context._("ecm::About"),
-		                handler: function(){
-		            	    ecm.viewApropos();
-		                    //open('?sole=Y&app=CORE&action=HELPVIEW&appname=FREEDOM', 'download_frame');
-		                }
 		            }]
             	}
             }, {
@@ -1962,26 +1954,6 @@ ecm.getOnefamSearches = function(searches){
         });
     }
     return families;
-};
-ecm.viewApropos = function () {
-	var apropo=context.retrieveFile('apropos.html');
-    var win = new Ext.Window({
-       // applyTo:'hello-win',
-        layout:'fit',
-        width:500,
-        height:400,
-        //closeAction:'hide',
-        plain: true,
-        title: context._("ecm:A propos"),
-
-        items: [{
-            html: apropo
-        }]
-
-      
-    });
-
-   win.show();
 };
 
 Ext.Info = function(){
