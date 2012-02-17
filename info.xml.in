@@ -10,6 +10,7 @@
   <requires>
     <module name="dynacase-platform" />
     <module name="dynacase-workspace" />
+    <module name="dynacase-extui" />
   </requires>
 
   <post-install>
