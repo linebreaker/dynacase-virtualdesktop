@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module name="dynacase-virtualdesktop" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="no">
+<module name="dynacase-virtualdesktop" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="no" license="@LICENSE@">
   <description>Virtual Desktop proof-of-concept interface to manipulate document in dynacase.</description>
 
   <replaces>
