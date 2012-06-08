@@ -1,49 +1,52 @@
 <?php
-
-/**
+/*
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- */
-
-// ---------------------------------------------------------------
-// $Id:  $
-// $Source:  $
-// ---------------------------------------------------------------
+ * @package ECM
+*/
 
 global $app_const;
 
-$app_const= array(
-		  "INIT" => "yes",
-		  "VERSION" => "@VERSION@-@RELEASE@",
-		  "ECM_NEW_FAMILIES"    =>array("val"=>'["SIMPLEFILE","DIR"]',
-						"descr"=>N_("defaut family use to create"),
-						"user"=>"Y",
-						"kind"=>"json",
-						"global"=>"Y"),
-		  "OUR_SESSION"    =>array("val"=>'',
-						"descr"=>N_("ecm session data"),
-						"user"=>"Y",
-						"kind"=>"json",
-						"global"=>"Y"),
-		  
-		  "ECM_DEBUG" =>array("val"=>"no",
-			  "global"=>"Y",
-			  "user"=>"N",
-			  "descr"=>N_("ecm debug mode"),
-			  "kind"=>"enum(yes|no)"),
-			  
-			"ECM_DEFAULT_DROP"    =>array("val"=>'move',
-				"descr"=>N_("ecm default drop behaviour"),
-				"user"=>"N",
-                                "kind"=>"enum(link|move|duplicate)",
-				"global"=>"Y"),
-				
-			"ECM_BASKET_DROP"    =>array("val"=>'link',
-				"descr"=>N_("ecm document basket drop behaviour"),
-				"user"=>"N",
-				"kind"=>"enum(link|move|duplicate)",
-				"global"=>"Y")
-				
-		);
-
+$app_const = array(
+    "INIT" => "yes",
+    "VERSION" => "@VERSION@-@RELEASE@",
+    "ECM_NEW_FAMILIES" => array(
+        "val" => '["SIMPLEFILE","DIR"]',
+        "descr" => N_("defaut family use to create") ,
+        "user" => "Y",
+        "kind" => "json",
+        "global" => "Y"
+    ) ,
+    "OUR_SESSION" => array(
+        "val" => '',
+        "descr" => N_("ecm session data") ,
+        "user" => "Y",
+        "kind" => "json",
+        "global" => "Y"
+    ) ,
+    
+    "ECM_DEBUG" => array(
+        "val" => "no",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("ecm debug mode") ,
+        "kind" => "enum(yes|no)"
+    ) ,
+    
+    "ECM_DEFAULT_DROP" => array(
+        "val" => 'move',
+        "descr" => N_("ecm default drop behaviour") ,
+        "user" => "N",
+        "kind" => "enum(link|move|duplicate)",
+        "global" => "Y"
+    ) ,
+    
+    "ECM_BASKET_DROP" => array(
+        "val" => 'link',
+        "descr" => N_("ecm document basket drop behaviour") ,
+        "user" => "N",
+        "kind" => "enum(link|move|duplicate)",
+        "global" => "Y"
+    )
+);
 ?>
